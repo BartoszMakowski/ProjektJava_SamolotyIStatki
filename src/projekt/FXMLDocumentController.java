@@ -118,6 +118,7 @@ public class FXMLDocumentController implements Initializable {
                 Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
+                            
 //                                Pojazd p = Projekt.sp;
 //                                moveSp(Projekt.sp.getPolozenie().getX(), Projekt.sp.getPolozenie().getY());
 //                                lInfoPDW.setText("" + p.getPolozenie().getX());
@@ -125,14 +126,15 @@ public class FXMLDocumentController implements Initializable {
 //                                LId.setText("" + p.getId());
 //                                lNazwa.setText("Samolot");
 //                                lCel.setText(p.getNajblizszyCel().getNazwa());
-                                switch(coWyswietlane){
+                                switch(FXMLDocumentController.this.coWyswietlane){
                                     case "pojazdCywilny":
                                     {
+                                        
                                     lInfoLG.setText("X:");                
-                                    lInfoLGW.setText(""  + FXMLDocumentController.this.wyswietlanyPojazd.getPolozenie().getX());
+                                    lInfoLGW.setText(""  + wyswietlanyPojazd.getPolozenie().getX());
                     //                        setText("" + nowySP.getPolozenie().getX());
                                     lInfoPG.setText("Y:");
-                                    lInfoPGW.setText(""  + FXMLDocumentController.this.wyswietlanyPojazd.getPolozenie().getY());
+                                    lInfoPGW.setText(""  + wyswietlanyPojazd.getPolozenie().getY());
 
                                     lInfoLD.setText("V:");
                                     lInfoLDW.setText("" + FXMLDocumentController.this.wyswietlanyPojazd.getPredkosc());
@@ -148,17 +150,18 @@ public class FXMLDocumentController implements Initializable {
                                                 olw.add(p.getImie() + " " + p.getNazwisko());
                                             }
                                     }
-                                    else
+                                    else{
                                         if (FXMLDocumentController.this.wyswietlanyPojazd.getTrasa().size() > 0)
                                             for (Lokalizacja l  : FXMLDocumentController.this.wyswietlanyPojazd.getTrasa()){
                                                 olw.add(l.getNazwa());
                                             }
-                                        lvTrasa.setItems(olw);
+                                    }
+                                    lvTrasa.setItems(olw);
                                 }
                                     break;
                                 
                                     case "skrzyzowanie":
-                                {
+                                    {
 //                                    lInfoLG.setText("X:");                
 //                                    lInfoLGW.setText(""  + FXMLDocumentController.this.wyswietlanaLokalizacja.getPolozenie().getX());
 //                    //                        setText("" + nowySP.getPolozenie().getX());
@@ -167,7 +170,7 @@ public class FXMLDocumentController implements Initializable {
 //                                    
 //                                    lNazwa.setText(FXMLDocumentController.this.wyswietlanaLokalizacja.toString());
                              
-//                                    ObservableList<String> olw = FXCollections.observableArrayList();
+//                                    
 ////                                    lvTrasa.getItems().clear();
 //
 //                                    if (FXMLDocumentController.this.wyswietlanaLokalizacja.getOdleglosci().size() > 0)
@@ -179,7 +182,32 @@ public class FXMLDocumentController implements Initializable {
                                 }
                                 break;
                                 
+                                    case "lotniskoCywilne":
+                                    {
+                                        ObservableList<String> olw = FXCollections.observableArrayList();
+                                        if(czyPasazerowie){
+                                            if (((Lotnisko)wyswietlanaLokalizacja).getOdwiedzajacy().size() > 0)
+                                                for (Podrozny p  : ((Lotnisko)wyswietlanaLokalizacja).getOdwiedzajacy()){
+                                                    olw.add(p.getImie() + " " + p.getNazwisko());
+                                                }
+                                            else
+                                                olw.clear();
+                                    }
+                                    else{
+                                        if (wyswietlanaLokalizacja.getOdleglosci().size() > 0)
+                                            for (Drogowskaz d  : wyswietlanaLokalizacja.getOdleglosci()){
+                                                olw.add(d.getDokad().getNazwa() + "   " + d.getKierunek() + "   " + d.getOdleglosc() );
+                                            }
+//                                        lvTrasa.setItems(olw);
+//                                        lvTrasa.setItems(null);
+                                    }
+                                    lvTrasa.setItems(olw);
+                                    }
+                                    break;
+                                    
+                                
                                 }
+//                                lvTrasa.setItems(olw);
                                 
                                 
                             }                    
@@ -212,8 +240,9 @@ public class FXMLDocumentController implements Initializable {
                 FXMLDocumentController.this.czyPojazd = true;
                 bTrasaZawartosc.setDisable(false);
                 System.out.println("kliknieto" + event.getSource());
-                FXMLDocumentController.this.coWyswietlane = "pojazdCywilny";
+                coWyswietlane = "pojazdCywilny";
                 lNazwa.setText(nowySP.toString());
+                lNaglowek.setText("Trasa:");
                 FXMLDocumentController.this.wyswietlanyPojazd = nowySP;
 //                Bindings.createStringBinding(lNazwa.textProperty(), nowySP.getP);
 //                lInfoLG.setText("X:");
@@ -241,7 +270,7 @@ public class FXMLDocumentController implements Initializable {
     private void skrzyzowanieInfo(MouseEvent event) {
         System.out.println("kliknieto " + event.getSource());
         System.out.println("kliknieto " + (int)((Circle)event.getSource()).centerXProperty().get());
-        FXMLDocumentController.this.coWyswietlane = "skrzyzowanie";
+        coWyswietlane = "skrzyzowanie";
         FXMLDocumentController.this.czyPojazd = false;
         FXMLDocumentController.this.wyswietlanaLokalizacja = 
                 Projekt.lokalizacje.get(
@@ -269,7 +298,7 @@ public class FXMLDocumentController implements Initializable {
     private void lotniskoInfo(MouseEvent event) {
         System.out.println("kliknieto " + event.getSource());
         System.out.println("kliknieto " + (int)((Circle)event.getSource()).centerXProperty().get());
-        FXMLDocumentController.this.coWyswietlane = "lotniskoCywilne";
+        coWyswietlane = "lotniskoCywilne";
         bTrasaZawartosc.setDisable(false);
         FXMLDocumentController.this.czyPojazd = false;
         FXMLDocumentController.this.wyswietlanaLokalizacja = 
@@ -285,12 +314,19 @@ public class FXMLDocumentController implements Initializable {
         lInfoPGW.setText("" + wyswietlanaLokalizacja.getPolozenie().getY());
         lNaglowek.setText("Drogowskazy:");
         
+        ObservableList<String> olw = FXCollections.observableArrayList();
+        if (wyswietlanaLokalizacja.getOdleglosci().size() > 0)
+            for (Drogowskaz d  : wyswietlanaLokalizacja.getOdleglosci()){
+                olw.add(d.getDokad().getNazwa() + "   " + d.getKierunek() + "   " + d.getOdleglosc() );
+            }
+        lvTrasa.setItems(olw);
+        
     }
     
     @FXML
     private void zmienCzyPasazerowie(){
-        FXMLDocumentController.this.czyPasazerowie = !FXMLDocumentController.this.czyPasazerowie;
-        if (FXMLDocumentController.this.czyPasazerowie){
+        czyPasazerowie = !czyPasazerowie;
+        if (czyPasazerowie){
                     lNaglowek.setText("Pasażerowie:");
         }
         else
@@ -299,7 +335,7 @@ public class FXMLDocumentController implements Initializable {
                 case "pojazdCywilny":
                     lNaglowek.setText("Trasa:");
                     break;
-                case "lotnisko":
+                case "lotniskoCywilne":
                     lNaglowek.setText("Drogowskazy:");
                     break;
                     

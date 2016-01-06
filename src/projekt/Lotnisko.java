@@ -34,7 +34,7 @@ public class Lotnisko extends Lokalizacja {
         this.pojemnosc = pojemnosc;
         this.zajetosc = 0;
         this.rodzaj = rodzaj;
-        this.odwiedzajacy = null;
+        this.odwiedzajacy = new LinkedList<>();
         this.zajetePrzez = new ArrayList<>();
     }
 
