@@ -130,14 +130,22 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
     }
 
     @Override
-    public void przesiadkaPasazera(Podrozny pasazer, Pasazerski dokad) {
-        if (!pasazer.isOdpoczywa()){
-            synchronized(dokad){
-                if ((pasazer.czyWysiasc(dokad)) && dokad.czyJestMiejsce()) {
-                    this.usunPasazera(pasazer);
-                    dokad.dodajPasazera(pasazer);
+    public void przesiadkaPasazera(Pasazerski dokad) {
+        LinkedList<Podrozny> doUsuniecia = new LinkedList<>();
+        for (Podrozny pasazer : this.odwiedzajacy){
+            if (!pasazer.isOdpoczywa()){
+                System.out.println("NIE ODPOCZYWAM");
+                synchronized(dokad){
+                    if ( (pasazer.czyWsiasc(dokad)) && (dokad.czyJestMiejsce()) ) {
+                        doUsuniecia.add(pasazer);
+                        dokad.dodajPasazera(pasazer);
+                    }
                 }
             }
+        }
+        
+        for (Podrozny p : doUsuniecia){
+            this.usunPasazera(p);
         }
     }
 
