@@ -202,7 +202,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void dodajSP(){
-        final SamolotPasazerski nowySP = new SamolotPasazerski((Lotnisko)Projekt.lotniska.get("550_20"));
+        final SamolotPasazerski nowySP = new SamolotPasazerski((Lotnisko)wyswietlanaLokalizacja);
         Thread nowySPWatek = new Thread(nowySP);
         final ImageView ikonaSP = nowySP.getObrazek();
         this.ap.getChildren().add(ikonaSP);
