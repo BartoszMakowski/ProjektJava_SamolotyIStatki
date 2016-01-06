@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.effect.*?>
@@ -62,6 +63,50 @@
                         <Text layoutX="544.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" text="S12" />
                         <Text layoutX="242.0" layoutY="566.0" strokeType="OUTSIDE" strokeWidth="0.0" text="S13" />
                         <Text layoutX="443.0" layoutY="566.0" strokeType="OUTSIDE" strokeWidth="0.0" text="S14" />
+                        <Circle centerX="30.0" centerY="320.0" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+                                 <stops>
+                                    <Stop color="#093c2e" />
+                                    <Stop color="WHITE" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill>
+                        </Circle>
+                        <Circle centerX="250.0" centerY="20.0" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+                                 <stops>
+                                    <Stop color="#093c2e" />
+                                    <Stop color="WHITE" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill>
+                        </Circle>
+                        <Circle centerX="460.0" centerY="400.0" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+                                 <stops>
+                                    <Stop color="#093c2e" />
+                                    <Stop color="WHITE" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill>
+                        </Circle>
+                        <Circle centerX="250.0" centerY="460.0" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+                                 <stops>
+                                    <Stop color="#093c2e" />
+                                    <Stop color="WHITE" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill>
+                        </Circle>
+                        <Text layoutX="235.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Powidz" />
+                        <Text layoutX="15.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Alcatraz" />
+                        <Text layoutX="235.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pasy Krótkie" />
+                        <Text layoutX="445.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Murzynno" />
                      </children>
                   </AnchorPane>
                </children></AnchorPane>
