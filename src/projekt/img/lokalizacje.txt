@@ -1,0 +1,39 @@
+Lotniska cywilne:
+550, 20 - Brzyskorzystewko - 3
+550, 360 - Koty - 5
+550, 550 - Samoklęski Małe - 2
+365, 200 - Kity - 4
+380, 550 - Leszcze - 1
+90, 550 - Zławieś Wielka - 3
+
+Lotniska wojskowe:
+250, 20 - Powidz
+30, 320 - Alcatraz
+460, 400 - Murzynno
+250, 460 - Pasy Krótkie
+
+Skrzyżowania:
+365, 20 - S1
+250, 200 - S2
+30, 200 - S3
+550, 200 - S4
+90, 320 - S5
+
+90, 400 - S6
+250, 400 - S7
+365, 400 - S8
+90, 460 - S9
+365, 460 - S10
+
+460, 460 - S11
+550, 460 - S12
+250, 550 - S13
+460, 550 - S14
+
+Połączenia
+
+Brzyskorzystewko - S1 - Kity - S8 - S10 - Leszcze
+Brzyskorzystewko - S4 - Kity
+Brzyskorzystewko - S4 - Koty
+Brzyskorzystewko - S4 - Koty
+
