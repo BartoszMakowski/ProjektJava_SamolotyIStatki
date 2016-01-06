@@ -14,7 +14,7 @@ enum TypPortu {
  * Implementuje lotnisko.
  * @author bartosz
  */
-public class Lotnisko extends Lokalizacja {
+public class Lotnisko extends Lokalizacja implements Pasazerski{
     private int pojemnosc;
     private int zajetosc;
     private TypPortu rodzaj;
@@ -127,5 +127,35 @@ public class Lotnisko extends Lokalizacja {
             if(this.zajetosc<this.pojemnosc)
                 this.zajetosc++;
         }  
+    }
+
+    @Override
+    public void przesiadkaPasazera(Podrozny pasazer, Pasazerski dokad) {
+        if (!pasazer.isOdpoczywa()){
+            synchronized(dokad){
+                if ((pasazer.czyWysiasc(dokad)) && dokad.czyJestMiejsce()) {
+                    this.usunPasazera(pasazer);
+                    dokad.dodajPasazera(pasazer);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void dodajPasazera(Podrozny pasazer) {
+        this.odwiedzajacy.add(pasazer);
+    }
+
+    @Override
+    public void usunPasazera(Podrozny pasazer) {
+        this.odwiedzajacy.remove(pasazer);
+    }
+
+    @Override
+    public boolean czyJestMiejsce() {
+        if (this.rodzaj.equals(rodzaj.CYWILNY)){
+            return true;
+        }
+        return false;
     }
 }
