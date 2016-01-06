@@ -1,6 +1,9 @@
 package projekt;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by bartosz on 19.10.15.
@@ -37,6 +40,11 @@ public class Podrozny implements Runnable{
             this.imie = "D";
             this.nazwisko = "B";
         }
+        
+        int i = (int) (Math.random() * Projekt.trasy.get("" + dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).size());
+        List<Lokalizacja> plan = new LinkedList<>();
+        plan.addAll(Projekt.trasy.get( dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).get(i));
+        
     }
 
     public String getImie() {
@@ -76,10 +84,31 @@ public class Podrozny implements Runnable{
     public void setGdzieAktualnie(Object gdzieAktualnie) {
         this.gdzieAktualnie = gdzieAktualnie;
     }
+    
+    public boolean czyWsiascWysiasc(Pojazd pojazd){
+        for (Lokalizacja l : pojazd.getTrasa()){
+            if (l.equals(plan.get(0))){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+        
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        while(true){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Podrozny.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
+        
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 //    public losujCzlowieka()
