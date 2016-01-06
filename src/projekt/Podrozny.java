@@ -22,6 +22,7 @@ public class Podrozny implements Runnable{
     private Lokalizacja cel;
     private RodzajPodrozy rodzajPodrozy;
     private Object gdzieAktualnie;
+    private boolean odpoczywa;
 
     public Podrozny(String imie, String nazwisko, long pesel, Lokalizacja dom) {
         this.imie = imie;
@@ -35,6 +36,7 @@ public class Podrozny implements Runnable{
         this.nazwisko=nazwiska[(int) (Math.random() * (nazwiska.length -1))];
         this.pesel = (long) (50000000000L + Math.random()*65011000000L) % 50000000000L;
         this.dom = dom;
+        this.odpoczywa = false;
         
         if(Math.random()<0.01){
             this.imie = "D";
@@ -42,8 +44,11 @@ public class Podrozny implements Runnable{
         }
         
         int i = (int) (Math.random() * Projekt.trasy.get("" + dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).size());
+        System.out.println("Wylosowano trasę: " + i);
         List<Lokalizacja> plan = new LinkedList<>();
         plan.addAll(Projekt.trasy.get( dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).get(i));
+        this.plan = plan;
+        System.out.println(this.plan);
         
     }
 
@@ -85,14 +90,37 @@ public class Podrozny implements Runnable{
         this.gdzieAktualnie = gdzieAktualnie;
     }
     
-    public boolean czyWsiascWysiasc(Pojazd pojazd){
-        for (Lokalizacja l : pojazd.getTrasa()){
-            if (l.equals(plan.get(0))){
+    public boolean czyWsiasc(Pasazerski pojazd){
+        for (Lokalizacja l : ((Pojazd)pojazd).getTrasa()){
+            System.out.println("SPRAWDZAM, CZY WSIADAĆ");
+            if (l.equals(this.plan.get(0))){
                 return true;
             }
         }
+        System.out.println("NIE WSIADAM");
         return false;
     }
+    
+    public boolean czyWysiasc(Pasazerski l){
+        if (l.equals(plan.get(0))){
+                return true;
+        }        
+        return false;
+    }
+    
+    public void odpocznij() throws InterruptedException{
+        if (this.rodzajPodrozy.equals(RodzajPodrozy.PRYWATNA)){
+            this.odpoczywa = true;
+            Thread.sleep(15000);
+        }
+        else{
+            this.odpoczywa = true;
+            Thread.sleep(25000);
+        }
+        this.odpoczywa = false;
+    }
+    
+//    public void wsiadzWysiadz()
     
         
 
@@ -117,5 +145,12 @@ public class Podrozny implements Runnable{
 //        this.nazwisko = "Kowalski";
 //        return this;
 //    }
+
+    /**
+     * @return the czyOdpoczywa
+     */
+    public boolean isOdpoczywa() {
+        return odpoczywa;
+    }
 
 }
