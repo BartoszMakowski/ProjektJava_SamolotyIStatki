@@ -37,6 +37,7 @@ public class Podrozny implements Runnable{
         this.pesel = (long) (50000000000L + Math.random()*65011000000L) % 50000000000L;
         this.dom = dom;
         this.odpoczywa = false;
+        this.rodzajPodrozy = Math.random() > 0.5 ? RodzajPodrozy.PRYWATNA : RodzajPodrozy.SLUZBOWA; 
         
         if(Math.random()<0.01){
             this.imie = "D";
@@ -46,7 +47,12 @@ public class Podrozny implements Runnable{
         int i = (int) (Math.random() * Projekt.trasy.get("" + dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).size());
         System.out.println("Wylosowano trasę: " + i);
         List<Lokalizacja> plan = new LinkedList<>();
-        plan.addAll(Projekt.trasy.get( dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).get(i));
+        
+        for (Lokalizacja l : Projekt.trasy.get( dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).get(i)){
+            if (l instanceof Pasazerski){
+                plan.add(l);
+            }
+        }
         this.plan = plan;
         System.out.println(this.plan);
         
@@ -102,7 +108,9 @@ public class Podrozny implements Runnable{
     }
     
     public boolean czyWysiasc(Pasazerski l){
-        if (l.equals(plan.get(0))){
+        System.out.println("jestem w: " + ((Lokalizacja)l).getNazwa() + "   chcę do: " + this.plan.get(0).getNazwa() );
+        if (((Lokalizacja)l).equals(this.plan.get(0))){
+            System.out.println("TAK, WYSIADAM");
                 return true;
         }        
         return false;
@@ -110,14 +118,14 @@ public class Podrozny implements Runnable{
     
     public void odpocznij() throws InterruptedException{
         if (this.rodzajPodrozy.equals(RodzajPodrozy.PRYWATNA)){
-            this.odpoczywa = true;
+            this.setOdpoczywa(true);
             Thread.sleep(15000);
         }
         else{
-            this.odpoczywa = true;
+            this.setOdpoczywa(true);
             Thread.sleep(25000);
         }
-        this.odpoczywa = false;
+        this.setOdpoczywa(false);
     }
     
 //    public void wsiadzWysiadz()
@@ -127,8 +135,15 @@ public class Podrozny implements Runnable{
     @Override
     public void run() {
         while(true){
+            if(this.odpoczywa){
+                try {
+                    this.odpocznij();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Podrozny.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(200);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Podrozny.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -151,6 +166,13 @@ public class Podrozny implements Runnable{
      */
     public boolean isOdpoczywa() {
         return odpoczywa;
+    }
+
+    /**
+     * @param odpoczywa the odpoczywa to set
+     */
+    public void setOdpoczywa(boolean odpoczywa) {
+        this.odpoczywa = odpoczywa;
     }
 
 }
