@@ -66,6 +66,11 @@ public class Projekt extends Application {
                 Lotnisko leszcze = new Lotnisko(365, 550, "Leszcze", 1, TypPortu.CYWILNY);
                 Lotnisko zlawies = new Lotnisko(90, 550, "Zławieś Wielka", 3, TypPortu.CYWILNY);
                 
+                Lotnisko alcatraz = new Lotnisko(30, 320, "Alcatraz", 1, TypPortu.WOJSKOWY);
+                Lotnisko powidz = new Lotnisko(250, 20, "Powidz", 3, TypPortu.WOJSKOWY);
+                Lotnisko murzynno = new Lotnisko(460, 400, "Murzynno", 2, TypPortu.WOJSKOWY);
+                Lotnisko pasy = new Lotnisko(250, 460, "Pasy Krótkie", 2, TypPortu.WOJSKOWY);
+                
                 lotniska.put("550_20", brzysko);
                 lotniska.put("365_200", kity);
                 lotniska.put("550_550", samokleski);
