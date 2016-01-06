@@ -129,6 +129,7 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
                 if (p.czyWysiasc(dokad)){
                     doUsuniecia.add(p);
                     dokad.dodajPasazera(p);
+//                    p.getPlan().remove(0);
                 }
             }
 //            try {
@@ -149,7 +150,7 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
 
     @Override
     public void dodajPasazera(Podrozny pasazer) {
-        this.pasazerowie.add(pasazer);        
+        this.pasazerowie.add(pasazer);       
     }
 
     @Override

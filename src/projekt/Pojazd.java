@@ -68,7 +68,7 @@ public abstract class Pojazd implements Runnable {
     
     private void zmienCel(Lokalizacja lok){
         this.najblizszyCel = lok;
-        System.out.println( "Ustalono nowy cel: " + this.najblizszyCel.getNazwa() + this.najblizszyCel.getPolozenie() );
+        System.out.println( this.toString() +  ": Ustalono nowy cel: " + this.najblizszyCel.getNazwa() + this.najblizszyCel.getPolozenie() );
         this.setKierunek(this.trasa.get(0).jakDojechac( this.najblizszyCel ).getKierunek());
         
          switch (this.getKierunek())
@@ -162,12 +162,13 @@ public abstract class Pojazd implements Runnable {
                     while (this.getOdleglosc()>0)
                     {
                     this.przemiescSie();
-                    this.obrazek.setX(this.getPolozenie().getX() -8);
-                    this.obrazek.setY(this.getPolozenie().getY() -8);
+                    this.obrazek.setX(this.getPolozenie().getX() -8 + this.modyfikatorX);
+                    this.obrazek.setY(this.getPolozenie().getY() -8 + this.modyfikatorY);
                     }
                     
                     if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
                     {
+                        System.out.println("        " + this.trasa.get(0).getNazwa());
                         ((Pasazerski)this).przesiadkaPasazera((Pasazerski)this.trasa.get(0));
                     }
                     
@@ -185,8 +186,9 @@ public abstract class Pojazd implements Runnable {
                         this.trasa = new LinkedList<>(Projekt.trasy.get(this.polozenie.getX() +"_" + this.polozenie.getY())
                                 .get((int)Math.random() * Projekt.trasy.
                                         get(this.polozenie.getX() + "_" + this.polozenie.getY()).size()));
-                        this.trasa.add(0, null);
+//                        this.trasa.add(0, null);
 //                        this.setTrasa(
+                          this.zmienCel(this.trasa.get(1));
                     }
                     
                     System.out.println("PASAŻEROWIE, WSIADAJCIE!");

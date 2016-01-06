@@ -267,7 +267,11 @@ public class Projekt extends Application {
                 trasa.add(kity);                
                 tr365_550.add(trasa);
                 
-                trasa = new LinkedList<>(trasa);
+                trasa = new LinkedList<>();
+                trasa.add(leszcze);
+                trasa.add(s10);
+                trasa.add(s8);
+                trasa.add(kity); 
                 trasa.add(s4);
                 trasa.add(brzysko);               
                 tr365_550.add(trasa);

@@ -44,16 +44,9 @@ public class Podrozny implements Runnable{
             this.nazwisko = "B";
         }
         
-        int i = (int) (Math.random() * Projekt.trasy.get("" + dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).size());
-        System.out.println("Wylosowano trasę: " + i);
-        List<Lokalizacja> plan = new LinkedList<>();
+        losujPlan(dom);
         
-        for (Lokalizacja l : Projekt.trasy.get( dom.getPolozenie().getX() + "_" + dom.getPolozenie().getY()).get(i)){
-            if (l instanceof Pasazerski){
-                plan.add(l);
-            }
-        }
-        this.plan = plan;
+ 
         System.out.println(this.plan);
         
     }
@@ -86,7 +79,20 @@ public class Podrozny implements Runnable{
         return rodzajPodrozy;
     }
 
-    public void losujPlan(){}
+    private void losujPlan(Lokalizacja start){
+        int i = (int) (Math.random() * Projekt.trasy.get("" + start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).size());
+        System.out.println("Wylosowano trasę: " + i);
+        List<Lokalizacja> plan = new LinkedList<>();
+        
+        for (Lokalizacja l : Projekt.trasy.get( start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).get(i)){
+            if (l instanceof Pasazerski){
+                plan.add(l);
+            }
+        }
+        this.plan = plan;
+        this.plan.remove(0);
+        
+    }
 
     public Object getGdzieAktualnie() {
         return gdzieAktualnie;
@@ -97,21 +103,26 @@ public class Podrozny implements Runnable{
     }
     
     public boolean czyWsiasc(Pasazerski pojazd){
+        if (this.plan.size()<1){
+            losujPlan(((Pojazd)pojazd).getTrasa().get(0));
+        }
+//        System.out.println("jestem w: " + ((Pojazd)pojazd).getTrasa().get(0).getNazwa() + "   chcę do: " + this.plan.get(0).getNazwa() );
         for (Lokalizacja l : ((Pojazd)pojazd).getTrasa()){
-            System.out.println("SPRAWDZAM, CZY WSIADAĆ");
+//            System.out.println("SPRAWDZAM, CZY WSIADAĆ");
             if (l.equals(this.plan.get(0))){
                 return true;
             }
         }
-        System.out.println("NIE WSIADAM");
+//        System.out.println("NIE WSIADAM");
         return false;
     }
     
     public boolean czyWysiasc(Pasazerski l){
-        System.out.println("jestem w: " + ((Lokalizacja)l).getNazwa() + "   chcę do: " + this.plan.get(0).getNazwa() );
+//        System.out.println("jestem w: " + ((Lokalizacja)l).getNazwa() + "   chcę do: " + this.plan.get(0).getNazwa() );
         if (((Lokalizacja)l).equals(this.plan.get(0))){
-            System.out.println("TAK, WYSIADAM");
-                return true;
+//            System.out.println("TAK, WYSIADAM");
+//            this.plan.remove(0);
+            return true;
         }        
         return false;
     }

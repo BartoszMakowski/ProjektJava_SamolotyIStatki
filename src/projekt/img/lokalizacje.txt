@@ -3,7 +3,7 @@ Lotniska cywilne:
 550, 360 - Koty - 5
 550, 550 - Samoklęski Małe - 2
 365, 200 - Kity - 4
-380, 550 - Leszcze - 1
+365, 550 - Leszcze - 1
 90, 550 - Zławieś Wielka - 3
 
 Lotniska wojskowe:
