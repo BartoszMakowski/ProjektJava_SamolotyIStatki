@@ -9,18 +9,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import javafx.application.Application;
-import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import static javafx.application.Application.launch;
 
 /**
  *
  * @author bartosz
  */
 public class Projekt extends Application {
-    public static HashMap<String, Lotnisko> lotniska;
+    public static HashMap<String, Lotnisko> lotniskaCywilne;
+    public static HashMap<String, Lotnisko> lotniskaWojskowe;
     public static HashMap<String, Lokalizacja> lokalizacje;
     public static HashMap<String, Skrzyzowanie> skrzyzowania;
     public static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> trasy;
@@ -32,7 +33,7 @@ public class Projekt extends Application {
      * @return the lotniska
      */
     public static HashMap<String, Lotnisko> getLotniska() {
-        return lotniska;
+        return lotniskaCywilne;
     }
     
     @Override
@@ -48,7 +49,8 @@ public class Projekt extends Application {
             
             @Override
             public void run(){
-                lotniska = new HashMap<String, Lotnisko>();
+                lotniskaCywilne = new HashMap<String, Lotnisko>();
+                lotniskaWojskowe = new HashMap<String, Lotnisko>();
                 lokalizacje = new HashMap<String, Lokalizacja>();
                 skrzyzowania = new HashMap<String, Skrzyzowanie>();
                 trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
@@ -66,17 +68,23 @@ public class Projekt extends Application {
                 Lotnisko leszcze = new Lotnisko(365, 550, "Leszcze", 1, TypPortu.CYWILNY);
                 Lotnisko zlawies = new Lotnisko(90, 550, "Zławieś Wielka", 3, TypPortu.CYWILNY);
                 
+                lotniskaCywilne.put("550_20", brzysko);
+                lotniskaCywilne.put("365_200", kity);
+                lotniskaCywilne.put("550_550", samokleski);
+                lotniskaCywilne.put("550_360", koty);
+                lotniskaCywilne.put("365_550", leszcze);
+                lotniskaCywilne.put("90_550", zlawies);
+                
                 Lotnisko alcatraz = new Lotnisko(30, 320, "Alcatraz", 1, TypPortu.WOJSKOWY);
                 Lotnisko powidz = new Lotnisko(250, 20, "Powidz", 3, TypPortu.WOJSKOWY);
                 Lotnisko murzynno = new Lotnisko(460, 400, "Murzynno", 2, TypPortu.WOJSKOWY);
                 Lotnisko pasy = new Lotnisko(250, 460, "Pasy Krótkie", 2, TypPortu.WOJSKOWY);
                 
-                lotniska.put("550_20", brzysko);
-                lotniska.put("365_200", kity);
-                lotniska.put("550_550", samokleski);
-                lotniska.put("550_360", koty);
-                lotniska.put("365_550", leszcze);
-                lotniska.put("90_550", zlawies);
+                lotniskaWojskowe.put("30_320", alcatraz);
+                lotniskaWojskowe.put("250_20", powidz);
+                lotniskaWojskowe.put("460_400", murzynno);
+                lotniskaWojskowe.put("250_460", pasy);
+                
                 
                 Skrzyzowanie s1 = new Skrzyzowanie(365, 20, "S1");
                 skrzyzowania.put("365_20", s1);
@@ -182,7 +190,7 @@ public class Projekt extends Application {
 //                s1.dodajDrogowskaz(new Drogowskaz(40, niebieskie, Kierunek.LEWO));
 //                czerwone.dodajDrogowskaz(new Drogowskaz(70, s1, Kierunek.GORA));
                 
-                lokalizacje.putAll(lotniska);
+                lokalizacje.putAll(lotniskaCywilne);
                 lokalizacje.putAll(skrzyzowania);
 
                 System.out.println("Utworzone lokalizacje: ");
