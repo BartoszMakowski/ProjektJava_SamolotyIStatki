@@ -139,6 +139,7 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
                     if ( (pasazer.czyWsiasc(dokad)) && (dokad.czyJestMiejsce()) ) {
                         doUsuniecia.add(pasazer);
                         dokad.dodajPasazera(pasazer);
+                        pasazer.getPlan().remove(0);
                     }
                 }
             }

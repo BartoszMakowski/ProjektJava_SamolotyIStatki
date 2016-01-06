@@ -166,7 +166,7 @@ public abstract class Pojazd implements Runnable {
                     this.obrazek.setY(this.getPolozenie().getY() -8);
                     }
                     
-                    if (this instanceof Pasazerski)
+                    if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
                     {
                         ((Pasazerski)this).przesiadkaPasazera((Pasazerski)this.trasa.get(0));
                     }
@@ -190,7 +190,7 @@ public abstract class Pojazd implements Runnable {
                     }
                     
                     System.out.println("PASAŻEROWIE, WSIADAJCIE!");
-                    if (this instanceof Pasazerski)
+                    if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
                     {
                         ((Pasazerski)this.trasa.get(0)).przesiadkaPasazera((Pasazerski)this);
                     }

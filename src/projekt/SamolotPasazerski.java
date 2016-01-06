@@ -123,19 +123,25 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
 
     @Override
     public void przesiadkaPasazera(Pasazerski dokad) {
+        LinkedList<Podrozny> doUsuniecia = new LinkedList<>();
         for (Podrozny p : this.pasazerowie){
             synchronized(dokad){
                 if (p.czyWysiasc(dokad)){
-                    this.usunPasazera(p);
+                    doUsuniecia.add(p);
                     dokad.dodajPasazera(p);
                 }
             }
-            try {
-                p.getPlan().remove(0);
-                p.odpocznij();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SamolotPasazerski.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            try {
+//                p.getPlan().remove(0);
+                System.out.println("NIECH ODPOCZNIE");
+                p.setOdpoczywa(true);
+//                p.odpocznij();
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(SamolotPasazerski.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+        }
+        for(Podrozny p : doUsuniecia){
+            this.usunPasazera(p);
         }
         
         
@@ -148,7 +154,7 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
 
     @Override
     public void usunPasazera(Podrozny pasazer) {
-        this.pasazerowie.remove(pasazer);
+        this.getPasazerowie().remove(pasazer);
     }
 
     @Override
