@@ -166,6 +166,11 @@ public abstract class Pojazd implements Runnable {
                     this.obrazek.setY(this.getPolozenie().getY() -8);
                     }
                     
+                    if (this instanceof Pasazerski)
+                    {
+                        ((Pasazerski)this).przesiadkaPasazera((Pasazerski)this.trasa.get(0));
+                    }
+                    
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException ex) {
@@ -183,6 +188,13 @@ public abstract class Pojazd implements Runnable {
                         this.trasa.add(0, null);
 //                        this.setTrasa(
                     }
+                    
+                    System.out.println("PASAŻEROWIE, WSIADAJCIE!");
+                    if (this instanceof Pasazerski)
+                    {
+                        ((Pasazerski)this.trasa.get(0)).przesiadkaPasazera((Pasazerski)this);
+                    }
+                    
                     this.najblizszyCel.startujPojazd(this);
                     this.trasa.remove(0);
              //   }
