@@ -2,12 +2,14 @@ package projekt;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.image.ImageView;
 
 /**
  * Created by bartosz on 19.10.15.
  */
-public class SamolotPasazerski extends Samolot {
+public class SamolotPasazerski extends Samolot implements Pasazerski{
     private int zajeteMiejsca;
     private int miejsca;
     private List <Podrozny> pasazerowie;
@@ -24,7 +26,8 @@ public class SamolotPasazerski extends Samolot {
         
         for (i=0; i<this.miejsca/2; i++){
             Podrozny p = new Podrozny(lokalizacja);
-            this.pasazerowie.add(p);
+//            this.pasazerowie.add(p);
+            ((Lotnisko)this.getNajblizszyCel()).getOdwiedzajacy().add(p);
             Thread t = new Thread(p);
             t.setDaemon(true);
             t.start();
@@ -115,6 +118,40 @@ public class SamolotPasazerski extends Samolot {
     @Override
     public String toString() {
         return "Samolot Pasażerski " + this.getId(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+    @Override
+    public void przesiadkaPasazera(Podrozny pasazer, Pasazerski dokad) {
+        synchronized(dokad){
+            if (pasazer.czyWysiasc(dokad)){
+                this.usunPasazera(pasazer);
+                dokad.dodajPasazera(pasazer);
+            }
+        }
+        try {
+            pasazer.odpocznij();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SamolotPasazerski.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void dodajPasazera(Podrozny pasazer) {
+        this.pasazerowie.add(pasazer);        
+    }
+
+    @Override
+    public void usunPasazera(Podrozny pasazer) {
+        this.pasazerowie.remove(pasazer);
+    }
+
+    @Override
+    public boolean czyJestMiejsce() {
+        if (this.getPasazerowie().size() < this.getMiejsca()){
+            return true;
+        }
+        return false;
     }
     
     
