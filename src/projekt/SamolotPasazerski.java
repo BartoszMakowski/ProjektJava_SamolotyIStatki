@@ -122,18 +122,23 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
 
 
     @Override
-    public void przesiadkaPasazera(Podrozny pasazer, Pasazerski dokad) {
-        synchronized(dokad){
-            if (pasazer.czyWysiasc(dokad)){
-                this.usunPasazera(pasazer);
-                dokad.dodajPasazera(pasazer);
+    public void przesiadkaPasazera(Pasazerski dokad) {
+        for (Podrozny p : this.pasazerowie){
+            synchronized(dokad){
+                if (p.czyWysiasc(dokad)){
+                    this.usunPasazera(p);
+                    dokad.dodajPasazera(p);
+                }
+            }
+            try {
+                p.getPlan().remove(0);
+                p.odpocznij();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SamolotPasazerski.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        try {
-            pasazer.odpocznij();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(SamolotPasazerski.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        
     }
 
     @Override
