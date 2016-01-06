@@ -11,7 +11,7 @@ package projekt;
  */
 public interface Pasazerski {
     
-    public void przesiadkaPasazera(Podrozny pasazer, Pasazerski dokad);    
+    public void przesiadkaPasazera(Pasazerski dokad);    
     public void dodajPasazera(Podrozny pasazer);
     public void usunPasazera(Podrozny pasazer);
     public boolean czyJestMiejsce();
