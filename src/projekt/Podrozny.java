@@ -39,10 +39,7 @@ public class Podrozny implements Runnable{
         this.odpoczywa = false;
         this.rodzajPodrozy = Math.random() > 0.5 ? RodzajPodrozy.PRYWATNA : RodzajPodrozy.SLUZBOWA; 
         
-        if(Math.random()<0.01){
-            this.imie = "D";
-            this.nazwisko = "B";
-        }
+
         
         losujPlan(dom);
         
