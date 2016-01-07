@@ -23,19 +23,19 @@ public class SamolotWojskowy extends Samolot {
         System.out.println("WSZYSTKO OK");
         
         
-        this.obrazek = new ImageView(getClass().getResource("img/SamolotWojskowy4.png").toExternalForm());
-        this.obrazek.fitHeightProperty().set(25);
-        this.obrazek.fitWidthProperty().set(25);
-        this.obrazek.xProperty().set(this.getPolozenie().getX());
-        this.obrazek.yProperty().set(this.getPolozenie().getY());
-        this.obrazek.setId("" + this.getId());
+        setObrazek(new ImageView(getClass().getResource("img/SamolotWojskowy4.png").toExternalForm()));
+        getObrazek().fitHeightProperty().set(25);
+        getObrazek().fitWidthProperty().set(25);
+        getObrazek().xProperty().set(this.getPolozenie().getX());
+        getObrazek().yProperty().set(this.getPolozenie().getY());
+        getObrazek().setId("" + this.getId());
     }
 
     public Uzbrojenie getUzbrojenie() {
         return uzbrojenie;
     }
     
-    public javafx.scene.image.ImageView getObrazek() {
-        return obrazek;
-    }
+//    public javafx.scene.image.ImageView getObrazek() {
+//        return getObrazek();
+//    }
 }

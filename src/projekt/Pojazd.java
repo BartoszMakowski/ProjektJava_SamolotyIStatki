@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 
 /**
  * Created by bartosz on 18.10.15.
@@ -17,7 +18,7 @@ public abstract class Pojazd implements Runnable {
     private Lokalizacja najblizszyCel;
     private List <Lokalizacja> trasa;
     private Kierunek kierunek;
-    javafx.scene.image.ImageView obrazek;
+    private javafx.scene.image.ImageView obrazek;
     private int modyfikatorX;
     private int modyfikatorY;
 
@@ -147,8 +148,15 @@ public abstract class Pojazd implements Runnable {
                 while (this.getOdleglosc()>15)
                 {
                     this.przemiescSie();
-                    this.obrazek.setX(this.getPolozenie().getX()-8 + this.modyfikatorX);
-                    this.obrazek.setY(this.getPolozenie().getY()-8 + this.modyfikatorY);
+                    Platform.runLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            getObrazek().setX(getPolozenie().getX()-8 + modyfikatorX);
+                            getObrazek().setY(getPolozenie().getY()-8 + modyfikatorY);
+                        }
+                    });
+                    
 //                    try {                    
 //                        Thread.sleep(100);
 //                    } catch (InterruptedException ex) {
@@ -157,13 +165,19 @@ public abstract class Pojazd implements Runnable {
                 }      
                 
 //                if( this.polozenie.equals( this.najblizszyCel.getPolozenie() ) ){
-                    this.najblizszyCel.stopujPojazd(this);
+//                    this.najblizszyCel.stopujPojazd(this);
                     
                     while (this.getOdleglosc()>0)
                     {
                     this.przemiescSie();
-                    this.obrazek.setX(this.getPolozenie().getX() -8 + this.modyfikatorX);
-                    this.obrazek.setY(this.getPolozenie().getY() -8 + this.modyfikatorY);
+                    Platform.runLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            getObrazek().setX(getPolozenie().getX()-8 + modyfikatorX);
+                            getObrazek().setY(getPolozenie().getY()-8 + modyfikatorY);
+                        }
+                    });
                     }
                     
                     if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
@@ -197,7 +211,7 @@ public abstract class Pojazd implements Runnable {
                         ((Pasazerski)this.trasa.get(0)).przesiadkaPasazera((Pasazerski)this);
                     }
                     
-                    this.najblizszyCel.startujPojazd(this);
+//                    this.najblizszyCel.startujPojazd(this);
                     this.trasa.remove(0);
              //   }
              
@@ -211,5 +225,19 @@ public abstract class Pojazd implements Runnable {
      */
     public int getOdleglosc() {
         return odleglosc;
+    }
+
+    /**
+     * @return the obrazek
+     */
+    public javafx.scene.image.ImageView getObrazek() {
+        return obrazek;
+    }
+
+    /**
+     * @param obrazek the obrazek to set
+     */
+    public void setObrazek(javafx.scene.image.ImageView obrazek) {
+        this.obrazek = obrazek;
     }
 }
