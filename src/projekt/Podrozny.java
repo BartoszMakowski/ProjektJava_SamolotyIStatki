@@ -34,7 +34,7 @@ public class Podrozny implements Runnable{
     public Podrozny(Lokalizacja dom){
         this.imie=imiona[(int) (Math.random() * (imiona.length -1))];
         this.nazwisko=nazwiska[(int) (Math.random() * (nazwiska.length -1))];
-        this.pesel = (long) (50000000000L + Math.random()*65011000000L) % 50000000000L;
+        this.pesel = (long) (50000000000L + Math.random()*65011000000L) % 100000000000L;
         this.dom = dom;
         this.odpoczywa = false;
         this.rodzajPodrozy = Math.random() > 0.5 ? RodzajPodrozy.PRYWATNA : RodzajPodrozy.SLUZBOWA; 
