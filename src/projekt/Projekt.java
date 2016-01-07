@@ -215,6 +215,7 @@ public class Projekt extends Application {
 //                czerwone.dodajDrogowskaz(new Drogowskaz(70, s1, Kierunek.GORA));
                 
                 lokalizacje.putAll(lotniskaCywilne);
+                lokalizacje.putAll(lotniskaWojskowe);
                 lokalizacje.putAll(skrzyzowania);
 
                 System.out.println("Utworzone lokalizacje: ");
@@ -324,6 +325,7 @@ public class Projekt extends Application {
                 tr550_360.add(trasa);
                 
                 
+                
                 trasy.put("550_20", tr550_20);
                 trasy.put("365_200", tr365_200);
                 trasy.put("365_550", tr365_550);
@@ -331,6 +333,16 @@ public class Projekt extends Application {
                 trasy.put("550_360", tr550_360);
                 trasy.put("90_550", tr90_550);
                 
+                ArrayList<LinkedList<Lokalizacja>> tr250_20 = new ArrayList<>();
+                
+                trasa = new LinkedList<>();
+                trasa.add(powidz);
+                trasa.add(s3);
+                trasa.add(s2);
+                trasa.add(alcatraz);
+                tr250_20.add(trasa);
+                
+                trasy.put("250_20", tr250_20);
 
 
 //                sp = new SamolotPasazerski(new Polozenie(10, 0), 1, niebieskie, trasa, Kierunek.DOL);
