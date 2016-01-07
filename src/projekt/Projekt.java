@@ -138,19 +138,37 @@ public class Projekt extends Application {
                 samokleski.dodajDrogowskaz(new Drogowskaz(samokleski, s14));
                 samokleski.dodajDrogowskaz(new Drogowskaz(samokleski, s12));
                 
+                alcatraz.dodajDrogowskaz(new Drogowskaz(alcatraz, s2));
+                alcatraz.dodajDrogowskaz(new Drogowskaz(alcatraz, s5));
+                
+                powidz.dodajDrogowskaz(new Drogowskaz(powidz, s1));
+                powidz.dodajDrogowskaz(new Drogowskaz(powidz, s3));
+                
+                pasy.dodajDrogowskaz(new Drogowskaz(pasy, s7));
+                pasy.dodajDrogowskaz(new Drogowskaz(pasy, s9));
+                pasy.dodajDrogowskaz(new Drogowskaz(pasy, s10));
+                pasy.dodajDrogowskaz(new Drogowskaz(pasy, s13));
+                
+                murzynno.dodajDrogowskaz(new Drogowskaz(murzynno, s8));
+                murzynno.dodajDrogowskaz(new Drogowskaz(murzynno, s11));
+                
                 s1.dodajDrogowskaz(new Drogowskaz(s1, brzysko));
-                s1.dodajDrogowskaz(new Drogowskaz(s1,kity));
+                s1.dodajDrogowskaz(new Drogowskaz(s1, kity));
+                s1.dodajDrogowskaz(new Drogowskaz(s1, powidz));
                 
                 s2.dodajDrogowskaz(new Drogowskaz(s2, s3));
+                s2.dodajDrogowskaz(new Drogowskaz(s2, alcatraz));
                 
                 s3.dodajDrogowskaz(new Drogowskaz(s3, kity));
                 s3.dodajDrogowskaz(new Drogowskaz(s3, s2));
+                s3.dodajDrogowskaz(new Drogowskaz(s3, powidz));
                 
                 s4.dodajDrogowskaz(new Drogowskaz(s4,brzysko));
                 s4.dodajDrogowskaz(new Drogowskaz(s4, kity));
                 s4.dodajDrogowskaz(new Drogowskaz(s4, koty));
                 
                 s5.dodajDrogowskaz(new Drogowskaz(s5, s6));
+                s5.dodajDrogowskaz(new Drogowskaz(s5, alcatraz));
                 
                 s6.dodajDrogowskaz(new Drogowskaz(s6, s5));
                 s6.dodajDrogowskaz(new Drogowskaz(s6, s7));
@@ -158,21 +176,26 @@ public class Projekt extends Application {
                 
                 s7.dodajDrogowskaz(new Drogowskaz(s7, s6));
                 s7.dodajDrogowskaz(new Drogowskaz(s7, s8));
+                s7.dodajDrogowskaz(new Drogowskaz(s7, pasy));
                 
                 s8.dodajDrogowskaz(new Drogowskaz(s8, s7));
                 s8.dodajDrogowskaz(new Drogowskaz(s8, s10));
                 s8.dodajDrogowskaz(new Drogowskaz(s8, kity));
+                s8.dodajDrogowskaz(new Drogowskaz(s8, murzynno));
                 
                 s9.dodajDrogowskaz(new Drogowskaz(s9, s6));
                 s9.dodajDrogowskaz(new Drogowskaz(s9, zlawies));
+                s9.dodajDrogowskaz(new Drogowskaz(s9, pasy));
                 
                 s10.dodajDrogowskaz(new Drogowskaz(s10, s8));
                 s10.dodajDrogowskaz(new Drogowskaz(s10, s11));                
                 s10.dodajDrogowskaz(new Drogowskaz(s10, leszcze));
+                s10.dodajDrogowskaz(new Drogowskaz(s10, pasy));
                 
                 s11.dodajDrogowskaz(new Drogowskaz(s11, s10));
                 s11.dodajDrogowskaz(new Drogowskaz(s11, s12));
                 s11.dodajDrogowskaz(new Drogowskaz(s11, s14));
+                s11.dodajDrogowskaz(new Drogowskaz(s11, murzynno));
                 
                 s12.dodajDrogowskaz(new Drogowskaz(s12, s11));
                 s12.dodajDrogowskaz(new Drogowskaz(s12, koty));
@@ -180,6 +203,7 @@ public class Projekt extends Application {
                 
                 s13.dodajDrogowskaz(new Drogowskaz(s13, zlawies));
                 s13.dodajDrogowskaz(new Drogowskaz(s13, leszcze));
+                s13.dodajDrogowskaz(new Drogowskaz(s13, pasy));
                 
                 s14.dodajDrogowskaz(new Drogowskaz(s14, s11));
                 s14.dodajDrogowskaz(new Drogowskaz(s14, leszcze));
