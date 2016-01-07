@@ -24,15 +24,15 @@
                               <Image url="@img/Mapa.png" />
                            </image></ImageView>
                         <Circle centerX="365.0" centerY="20.0" fill="DODGERBLUE" onMouseClicked="#skrzyzowanieInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle centerX="550.0" centerY="20.0" fill="#ff1f1f" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle centerX="550.0" centerY="20.0" fill="#ff1f1f" onMouseClicked="#lotniskoCywilneInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
                         <Text layoutX="352.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kity" />
                         <Text layoutX="478.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brzyskorzystewko" />
                         <Text layoutX="356.0" layoutY="36.0" onMouseClicked="#lokInfo" strokeType="OUTSIDE" strokeWidth="0.0" text="S1" />
-                        <Circle centerX="365.0" centerY="200.0" fill="#ff1f1f" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle centerX="550.0" centerY="360.0" fill="#ff1f1f" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle centerX="550.0" centerY="550.0" fill="#ff1f1f" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle centerX="365.0" centerY="550.0" fill="#ff1f1f" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle centerX="90.0" centerY="550.0" fill="#ff1f1f" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle centerX="365.0" centerY="200.0" fill="#ff1f1f" onMouseClicked="#lotniskoCywilneInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle centerX="550.0" centerY="360.0" fill="#ff1f1f" onMouseClicked="#lotniskoCywilneInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle centerX="550.0" centerY="550.0" fill="#ff1f1f" onMouseClicked="#lotniskoCywilneInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle centerX="365.0" centerY="550.0" fill="#ff1f1f" onMouseClicked="#lotniskoCywilneInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle centerX="90.0" centerY="550.0" fill="#ff1f1f" onMouseClicked="#lotniskoCywilneInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
                         <Circle fx:id="s3" centerX="250.0" centerY="200.0" fill="DODGERBLUE" onMouseClicked="#skrzyzowanieInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
                         <Circle centerX="30.0" centerY="200.0" fill="DODGERBLUE" onMouseClicked="#skrzyzowanieInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
                         <Circle centerX="550.0" centerY="200.0" fill="DODGERBLUE" onMouseClicked="#skrzyzowanieInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
@@ -63,7 +63,7 @@
                         <Text layoutX="544.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" text="S12" />
                         <Text layoutX="242.0" layoutY="566.0" strokeType="OUTSIDE" strokeWidth="0.0" text="S13" />
                         <Text layoutX="443.0" layoutY="566.0" strokeType="OUTSIDE" strokeWidth="0.0" text="S14" />
-                        <Circle centerX="30.0" centerY="320.0" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                        <Circle centerX="30.0" centerY="320.0" onMouseClicked="#lotniskoWojskoweInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
                                  <stops>
@@ -73,7 +73,7 @@
                               </RadialGradient>
                            </fill>
                         </Circle>
-                        <Circle centerX="250.0" centerY="20.0" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                        <Circle centerX="250.0" centerY="20.0" onMouseClicked="#lotniskoWojskoweInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
                                  <stops>
@@ -83,7 +83,7 @@
                               </RadialGradient>
                            </fill>
                         </Circle>
-                        <Circle centerX="460.0" centerY="400.0" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                        <Circle centerX="460.0" centerY="400.0" onMouseClicked="#lotniskoWojskoweInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
                                  <stops>
@@ -93,7 +93,7 @@
                               </RadialGradient>
                            </fill>
                         </Circle>
-                        <Circle centerX="250.0" centerY="460.0" onMouseClicked="#lotniskoInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                        <Circle centerX="250.0" centerY="460.0" onMouseClicked="#lotniskoWojskoweInfo" radius="5.0" stroke="BLACK" strokeType="INSIDE">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" cycleMethod="REFLECT" radius="0.5">
                                  <stops>
@@ -136,7 +136,7 @@
                      </font>
                   </Label>
                   <Label fx:id="lCel" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="16.0" layoutY="304.0" prefHeight="55.0" prefWidth="130.0" textAlignment="CENTER" wrapText="true" />
-                  <Button fx:id="bUsunDodaj" layoutX="11.0" layoutY="462.0" mnemonicParsing="false" onAction="#dodajSP" prefWidth="180.0" text="Dodaj samolot" />
+                  <Button fx:id="bUsunDodaj" layoutX="11.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#dodajSP" prefWidth="180.0" text="Dodaj samolot" />
                   <Button fx:id="bTrasaZawartosc" layoutX="11.0" layoutY="494.0" mnemonicParsing="false" onAction="#zmienCzyPasazerowie" prefWidth="180.0" text="Zmień listę" />
                   <Button fx:id="bZmien" layoutX="11.0" layoutY="527.0" mnemonicParsing="false" onAction="#dodajSP" prefWidth="180.0" text="Button" />
                   <Button fx:id="bAwaria" layoutX="12.0" layoutY="559.0" mnemonicParsing="false" onAction="#dodajSP" prefWidth="180.0" text="Button" />
