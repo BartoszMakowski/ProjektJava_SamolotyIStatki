@@ -2,8 +2,6 @@ package projekt;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.image.ImageView;
 
 /**
@@ -17,14 +15,10 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
     public SamolotPasazerski(Lotnisko lokalizacja){
         super(lokalizacja.getPolozenie(), (int) (5 + Math.random() * 25), lokalizacja, null);
         this.miejsca = 2 + (int) (Math.random()+8);
-        int i = (int) (Math.random() * Projekt.trasy.get("" + lokalizacja.getPolozenie().getX() + "_" + lokalizacja.getPolozenie().getY()).size());
-        List<Lokalizacja> mojaTrasa = new LinkedList<>();
-        mojaTrasa.addAll(Projekt.trasy.get("" + lokalizacja.getPolozenie().getX() + "_" + lokalizacja.getPolozenie().getY()).get(i));
-        this.setTrasa(mojaTrasa);
         this.pasazerowie = new LinkedList<>();
         System.out.println("WSZYSTKO OK");
         
-        for (i=0; i<this.miejsca/2; i++){
+        for (int i=0; i<this.miejsca/2; i++){
             Podrozny p = new Podrozny(lokalizacja);
 //            this.pasazerowie.add(p);
             ((Lotnisko)this.getNajblizszyCel()).getOdwiedzajacy().add(p);
