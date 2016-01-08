@@ -26,7 +26,7 @@ public class Swiat extends Application {
     public static HashMap<String, Skrzyzowanie> skrzyzowania;
     public static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> trasy;
     public static HashMap<String, LinkedList<Lokalizacja>> rozklady;
-    private static LinkedList<Pojazd> pojazdy;
+    private static HashMap<String, Pojazd> pojazdy;
     public static SamolotPasazerski sp;
     
 //    public static LinkedList<Lokalizacj> ptrasa;
@@ -41,9 +41,10 @@ public class Swiat extends Application {
     /**
      * @return the pojazdy
      */
-    public static LinkedList<Pojazd> getPojazdy() {
+    public static HashMap<String, Pojazd> getPojazdy() {
         return pojazdy;
     }
+
     
     @Override
     public void start(Stage stage) throws Exception {
