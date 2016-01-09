@@ -49,7 +49,7 @@ public class Drogowskaz {
         this.odleglosc = odleglosc;
         this.kierunek = kierunek;
 //        System.out.println( "Ile lokalizacji?: " + Projekt.getLotniska().size() );
-        this.dokad = Projekt.getLotniska().get( (x + "_" + y).toString() );
+        this.dokad = Swiat.getLotniska().get( (x + "_" + y).toString() );
 
     }
     /**

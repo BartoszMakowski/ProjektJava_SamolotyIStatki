@@ -63,6 +63,7 @@ public class Swiat extends Application {
                 lotniskaWojskowe = new HashMap<String, Lotnisko>();
                 lokalizacje = new HashMap<String, Lokalizacja>();
                 skrzyzowania = new HashMap<String, Skrzyzowanie>();
+                pojazdy = new HashMap<String, Pojazd>();
                 trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
 //                Lotnisko niebieskie = new Lotnisko(10, 20, "Niebieskie", 5, TypPortu.CYWILNY);
 //                Lotnisko czerwone = new Lotnisko(50, 90, "Czerwone", 3, TypPortu.CYWILNY);

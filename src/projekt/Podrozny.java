@@ -77,11 +77,11 @@ public class Podrozny implements Runnable{
     }
 
     private void losujPlan(Lokalizacja start){
-        int i = (int) (Math.random() * Projekt.trasy.get("" + start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).size());
+        int i = (int) (Math.random() * Swiat.trasy.get("" + start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).size());
         System.out.println("Wylosowano trasę: " + i);
         List<Lokalizacja> plan = new LinkedList<>();
         
-        for (Lokalizacja l : Projekt.trasy.get( start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).get(i)){
+        for (Lokalizacja l : Swiat.trasy.get( start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).get(i)){
             if (l instanceof Pasazerski){
                 plan.add(l);
             }

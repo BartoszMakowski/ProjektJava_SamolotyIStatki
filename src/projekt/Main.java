@@ -49,19 +49,19 @@ public class Main {
             System.out.println(l.getNazwa());
         }
 
-        LinkedList<Lotnisko> trasa = new LinkedList<Lotnisko>();
-        for(Lotnisko l : getLotniska().values()){
+//        LinkedList<Lotnisko> trasa = new LinkedList<Lotnisko>();
+//        for(Lotnisko l : getLotniska().values()){
+//
+//        }
 
-        }
+//        SamolotWojskowy sw1 = new SamolotWojskowy(l1.getPolozenie(),2,l1,new LinkedList<Lokalizacja>(lotniska.values()));
+//
+//        sw1.przemiescSie();
+//        sw1.przemiescSie();
+//        sw1.przemiescSie();
+//        for(int i=0; i<200; i++) sw1.przemiescSie();
 
-        SamolotWojskowy sw1 = new SamolotWojskowy(l1.getPolozenie(),2,l1,new LinkedList<Lokalizacja>(lotniska.values()));
-
-        sw1.przemiescSie();
-        sw1.przemiescSie();
-        sw1.przemiescSie();
-        for(int i=0; i<200; i++) sw1.przemiescSie();
-
-        System.out.println(sw1.getPolozenie().getX() + " " + sw1.getPolozenie().getY());
+//        System.out.println(sw1.getPolozenie().getX() + " " + sw1.getPolozenie().getY());
 
     }
 
