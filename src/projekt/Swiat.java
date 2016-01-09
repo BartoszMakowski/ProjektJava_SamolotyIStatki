@@ -26,7 +26,7 @@ public class Swiat extends Application {
     public static HashMap<String, Skrzyzowanie> skrzyzowania;
     public static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> trasy;
     public static HashMap<String, LinkedList<Lokalizacja>> rozklady;
-    private static HashMap<String, Pojazd> pojazdy;
+    private static HashMap<String, Samolot> samoloty;
     public static SamolotPasazerski sp;
     
 //    public static LinkedList<Lokalizacj> ptrasa;
@@ -41,8 +41,8 @@ public class Swiat extends Application {
     /**
      * @return the pojazdy
      */
-    public static HashMap<String, Pojazd> getPojazdy() {
-        return pojazdy;
+    public static HashMap<String, Samolot> getSamoloty() {
+        return samoloty;
     }
 
     
@@ -63,14 +63,8 @@ public class Swiat extends Application {
                 lotniskaWojskowe = new HashMap<String, Lotnisko>();
                 lokalizacje = new HashMap<String, Lokalizacja>();
                 skrzyzowania = new HashMap<String, Skrzyzowanie>();
-                pojazdy = new HashMap<String, Pojazd>();
+                samoloty = new HashMap<String, Samolot>();
                 trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
-//                Lotnisko niebieskie = new Lotnisko(10, 20, "Niebieskie", 5, TypPortu.CYWILNY);
-//                Lotnisko czerwone = new Lotnisko(50, 90, "Czerwone", 3, TypPortu.CYWILNY);
-//                Skrzyzowanie s1 = new Skrzyzowanie(50, 20, "Skrzyzowanie Jedyne");
-//                lotniska.put("10_20", niebieskie);
-//                lotniska.put("50_90", czerwone);
-                
                 
                 Lotnisko brzysko = new Lotnisko(550, 20, "Brzyskorzystewko", 3, TypPortu.CYWILNY);
                 Lotnisko koty = new Lotnisko(550, 360, "Koty", 5, TypPortu.CYWILNY);
