@@ -157,6 +157,27 @@ public abstract class Pojazd implements Runnable {
 //        Image gpojazd;
             while(true)
             {
+                if(odleglosc>0){
+                    
+                    Platform.runLater(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    getObrazek().setX(-30);
+                                    getObrazek().setY(-30);
+                                }
+                    });
+                    
+                    for(int i=0; i<5; i++){
+                            try {
+                                    this.przemiescSie();
+                                } catch (InterruptedException ex) {
+                                    Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
+                        }
+                }
+                
                 
                 while (this.getOdleglosc()>20)
                 {
@@ -187,6 +208,8 @@ public abstract class Pojazd implements Runnable {
                     this.najblizszyCel.stopujPojazd(this);
                     zwolnijPole();
                     
+                   
+                    
                     while (this.getOdleglosc()>0){
 //                        zwolnijPole();
                     
@@ -208,15 +231,25 @@ public abstract class Pojazd implements Runnable {
                             });
                         //}
                     }
-                    int sen;                    
+                    int sen;
+                    
                     if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
                     {
                         System.out.println("        " + this.trasa.get(0).getNazwa());
                         ((Pasazerski)this).przesiadkaPasazera((Pasazerski)this.trasa.get(0));
                         sen = 1500 +(int)Math.random() * 3500;
+                        
+                        Platform.runLater(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    getObrazek().setX(-30);
+                                    getObrazek().setY(-30);
+                                }
+                            });
                     }
                     else{
-                        sen = 300;
+                        sen = 150;
                     }
                     
                     try {
@@ -309,7 +342,7 @@ public abstract class Pojazd implements Runnable {
                 }
             }
             if(czy){
-                Thread.sleep(30);
+                Thread.sleep(50);
                 System.out.println("NIE MOZNA!");
             }
             

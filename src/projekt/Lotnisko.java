@@ -3,6 +3,8 @@ package projekt;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by bartosz on 19.10.15.
@@ -20,6 +22,7 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
     private TypPortu rodzaj;
     private List<Podrozny> odwiedzajacy;
     private List<Samolot> zajetePrzez;
+    private boolean aktywne;
 
     /**
      * Tworzy lotnisko.
@@ -36,6 +39,7 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
         this.rodzaj = rodzaj;
         this.odwiedzajacy = new LinkedList<>();
         this.zajetePrzez = new ArrayList<>();
+        this.aktywne = false;
     }
 
 
@@ -102,23 +106,52 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
     
     @Override
     public void stopujPojazd(Pojazd samolot){
-        synchronized(this.zajetePrzez){
-            if(this.zajetePrzez.size()<this.pojemnosc){
-                this.zajetePrzez.add((Samolot)samolot);
-//                System.out.println("\n\n\n\n" + this.zajetePrzez.size());
-//                return true;
-                
-            }                
-        }
+        System.out.println("COS EWIDENTNIE NIE DZIAŁA. NAPRAW TO!");
+        while(!zajetePrzez.contains(samolot)){
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Lotnisko.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            synchronized(this){
+                System.out.println("CHCE DODAC SAMOLOT");
+                if (this.zajetePrzez.size()<this.pojemnosc && !aktywne){
+                    System.out.println("DODAJE SAMOLOT");
+                    this.zajetePrzez.add((Samolot)samolot);
+                    aktywne = true;
+                }
+            }
+            
+            
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Lotnisko.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    aktywne = false;
+                }
+            });
+            t.setDaemon(true);
+            t.start();
+            }
+            
+       
+//        try {
+//                Thread.sleep(200);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(Lotnisko.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+        
 //        return false; 
     }
     
     @Override
     public void startujPojazd(Pojazd samolot){
-        synchronized(this.zajetePrzez){
+        synchronized(this){
             this.zajetePrzez.remove((Samolot)samolot);
-//            this.zajetosc--;
-            System.out.println(this.zajetePrzez.size());
         }         
     }
     
@@ -168,4 +201,5 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
         }
         return false;
     }
+    
 }
