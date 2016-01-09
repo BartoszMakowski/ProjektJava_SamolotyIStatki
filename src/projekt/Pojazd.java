@@ -21,6 +21,8 @@ public abstract class Pojazd implements Runnable {
     private javafx.scene.image.ImageView obrazek;
     private int modyfikatorX;
     private int modyfikatorY;
+    private int deltaX;
+    private int deltaY;
 
     public Pojazd(Polozenie polozenie, int predkosc, List<Lokalizacja> trasa) {
         this.polozenie = new Polozenie(polozenie.getX(),polozenie.getY());
@@ -28,7 +30,7 @@ public abstract class Pojazd implements Runnable {
         this.trasa = trasa;
         this.id = ostatnieId++;
         this.kierunek = Kierunek.ZADEN;
-//        this.zmienCel(trasa.listIterator().next());
+        //        this.zmienCel(trasa.listIterator().next());
     }
 
     public Pojazd(Polozenie polozenie, int predkosc, Lokalizacja najblizszyCel, List<Lokalizacja> trasa){
@@ -96,24 +98,33 @@ public abstract class Pojazd implements Runnable {
         System.out.println("ODLEGŁOŚĆ: " + this.odleglosc);
     }
 
-    public void przemiescSie() {
+    public void przemiescSie() throws InterruptedException {
+        
         switch (this.getKierunek())
         {
             case LEWO:
-                this.polozenie.setX(this.polozenie.getX()-1);
+                deltaX=-1;
+                deltaY=0;
                 break;
             case PRAWO:
-                this.polozenie.setX(this.polozenie.getX()+1);
+                deltaX=1;
+                deltaY=0;
                 break;
             case DOL:
-                this.polozenie.setY(this.polozenie.getY()+1);
+                deltaY=1;
+                deltaX=0;
                 break;
             case GORA:
-                this.polozenie.setY(this.polozenie.getY()-1);
+                deltaY=-1;
+                deltaX=0;
                 break;
             default:
                 break;
         }
+        
+        this.polozenie.setY(this.polozenie.getY()+deltaY);
+        this.polozenie.setX(this.polozenie.getX()+deltaX);
+        
         this.odleglosc--;
         try {                    
             Thread.sleep(50-this.predkosc);
@@ -147,7 +158,12 @@ public abstract class Pojazd implements Runnable {
                 
                 while (this.getOdleglosc()>15)
                 {
-                    this.przemiescSie();
+ 
+                    try {
+                        this.przemiescSie();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     Platform.runLater(new Runnable() {
 
                         @Override
@@ -165,11 +181,15 @@ public abstract class Pojazd implements Runnable {
                 }      
                 
 //                if( this.polozenie.equals( this.najblizszyCel.getPolozenie() ) ){
-//                    this.najblizszyCel.stopujPojazd(this);
+                    this.najblizszyCel.stopujPojazd(this);
                     
                     while (this.getOdleglosc()>0)
                     {
-                    this.przemiescSie();
+                    try {
+                        this.przemiescSie();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     Platform.runLater(new Runnable() {
 
                         @Override
@@ -197,8 +217,8 @@ public abstract class Pojazd implements Runnable {
                     }
                     else{
                         System.out.println("Dotarłem do: " + this.najblizszyCel.getNazwa() + ".\nKONIEC TRASY.");
-                        this.trasa = new LinkedList<>(Projekt.trasy.get(this.polozenie.getX() +"_" + this.polozenie.getY())
-                                .get((int)Math.random() * Projekt.trasy.
+                        this.trasa = new LinkedList<>(Swiat.trasy.get(this.polozenie.getX() +"_" + this.polozenie.getY())
+                                .get((int)Math.random() * Swiat.trasy.
                                         get(this.polozenie.getX() + "_" + this.polozenie.getY()).size()));
 //                        this.trasa.add(0, null);
 //                        this.setTrasa(
@@ -211,7 +231,7 @@ public abstract class Pojazd implements Runnable {
                         ((Pasazerski)this.trasa.get(0)).przesiadkaPasazera((Pasazerski)this);
                     }
                     
-//                    this.najblizszyCel.startujPojazd(this);
+                    this.trasa.get(0).startujPojazd(this);
                     this.trasa.remove(0);
              //   }
              
