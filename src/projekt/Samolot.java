@@ -16,9 +16,9 @@ public abstract class Samolot extends Pojazd {
     public Samolot(Polozenie polozenie, int predkosc, Lotnisko najblizszyCel, List<Lokalizacja> trasa) {
         super(polozenie, predkosc, najblizszyCel, trasa);
         this.usterka = false;
-        int i = (int) (Math.random() * Projekt.trasy.get("" + polozenie.getX() + "_" + polozenie.getY()).size());
+        int i = (int) (Math.random() * Swiat.trasy.get("" + polozenie.getX() + "_" + polozenie.getY()).size());
         List<Lokalizacja> mojaTrasa = new LinkedList<>();
-        mojaTrasa.addAll(Projekt.trasy.get("" + polozenie.getX() + "_" + polozenie.getY()).get(i));
+        mojaTrasa.addAll(Swiat.trasy.get("" + polozenie.getX() + "_" + polozenie.getY()).get(i));
         this.setTrasa(mojaTrasa);
     }
 
