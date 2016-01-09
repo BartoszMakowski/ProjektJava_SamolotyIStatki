@@ -277,8 +277,8 @@ public abstract class Pojazd implements Runnable {
         boolean czy = true;
 //        synchronized(Swiat.getSamoloty()){
             for(int i=1; i<15; i++){
-                if(Swiat.getSamoloty().containsKey(( polozenie.getX() + i*deltaX)+"_" + (polozenie.getY()+ i * deltaY))){
-                    System.out.println(( polozenie.getX() + i*deltaX)+"_" + (polozenie.getY()+ i * deltaY));
+                if(Swiat.getSamoloty().containsKey(( polozenie.getX() + modyfikatorX + i*deltaX)+"_" + (polozenie.getY()+ modyfikatorY + i * deltaY))){
+                    System.out.println(( polozenie.getX() +  i*deltaX)+"_" + (polozenie.getY()+ i * deltaY));
                     czy = false;
                     break;
                 }
@@ -288,13 +288,13 @@ public abstract class Pojazd implements Runnable {
     }
     
     private void zajmijPole(){
-        Swiat.getSamoloty().put((polozenie.getX() + deltaX ) + "_" + (polozenie.getY() + deltaY), (Samolot) this);
+        Swiat.getSamoloty().put((polozenie.getX() + modyfikatorX + deltaX ) + "_" + (polozenie.getY() + modyfikatorY + deltaY), (Samolot) this);
 //        System.out.println((polozenie.getX() + deltaX) + "_" + (polozenie.getY() + deltaY));
         
     }
     
     private void zwolnijPole(){
-        Swiat.getSamoloty().remove((polozenie.getX()) + "_" + polozenie.getY());        
+        Swiat.getSamoloty().remove((polozenie.getX() + modyfikatorX) + "_" + (polozenie.getY() + modyfikatorY));        
     }
     
     private boolean czyMozna() throws InterruptedException{
