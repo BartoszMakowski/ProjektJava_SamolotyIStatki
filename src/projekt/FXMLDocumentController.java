@@ -280,7 +280,7 @@ public class FXMLDocumentController implements Initializable {
         coWyswietlane = "skrzyzowanie";
         FXMLDocumentController.this.czyPojazd = false;
         FXMLDocumentController.this.wyswietlanaLokalizacja = 
-                Projekt.lokalizacje.get(
+                Swiat.lokalizacje.get(
                         (int)((Circle)event.getSource()).centerXProperty().get() + "_" 
                                 + (int)((Circle)event.getSource()).centerYProperty().get());
         System.out.println(FXMLDocumentController.this.wyswietlanaLokalizacja.getNazwa());
@@ -315,7 +315,7 @@ public class FXMLDocumentController implements Initializable {
         });
         FXMLDocumentController.this.czyPojazd = false;
         FXMLDocumentController.this.wyswietlanaLokalizacja = 
-                Projekt.lokalizacje.get(
+                Swiat.lokalizacje.get(
                         (int)((Circle)event.getSource()).centerXProperty().get() + "_" 
                                 + (int)((Circle)event.getSource()).centerYProperty().get());
         System.out.println(FXMLDocumentController.this.wyswietlanaLokalizacja.getNazwa());
@@ -350,7 +350,7 @@ public class FXMLDocumentController implements Initializable {
         });
         FXMLDocumentController.this.czyPojazd = false;
         FXMLDocumentController.this.wyswietlanaLokalizacja = 
-                Projekt.lokalizacje.get(
+                Swiat.lokalizacje.get(
                         (int)((Circle)event.getSource()).centerXProperty().get() + "_" 
                                 + (int)((Circle)event.getSource()).centerYProperty().get());
         System.out.println(FXMLDocumentController.this.wyswietlanaLokalizacja.getNazwa());
