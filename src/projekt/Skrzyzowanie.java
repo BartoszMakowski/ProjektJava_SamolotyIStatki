@@ -46,6 +46,7 @@ public class Skrzyzowanie extends Lokalizacja {
         synchronized(this){
             this.zajetePrzez = null;
         }
+        
     }
 
 }

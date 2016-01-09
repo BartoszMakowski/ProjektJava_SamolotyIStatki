@@ -93,14 +93,8 @@ public abstract class Pojazd implements Runnable {
                 this.modyfikatorY = 0;
                 break;
         }
-        
-        this.odleglosc = this.trasa.get(0).jakDojechac( this.najblizszyCel ).getOdleglosc();
-        System.out.println("ODLEGŁOŚĆ: " + this.odleglosc);
-    }
-
-    public void przemiescSie() throws InterruptedException {
-        
-        switch (this.getKierunek())
+         
+               switch (this.getKierunek())
         {
             case LEWO:
                 deltaX=-1;
@@ -122,6 +116,14 @@ public abstract class Pojazd implements Runnable {
                 break;
         }
         
+        this.odleglosc = this.trasa.get(0).jakDojechac( this.najblizszyCel ).getOdleglosc();
+        System.out.println("ODLEGŁOŚĆ: " + this.odleglosc);
+    }
+
+    public void przemiescSie() throws InterruptedException {
+//        czyMozna();
+        
+         
         this.polozenie.setY(this.polozenie.getY()+deltaY);
         this.polozenie.setX(this.polozenie.getX()+deltaX);
         
@@ -156,14 +158,20 @@ public abstract class Pojazd implements Runnable {
             while(true)
             {
                 
-                while (this.getOdleglosc()>15)
+                while (this.getOdleglosc()>20)
                 {
- 
+//                    try {
+//                        czyMozna();
+//                    } catch (InterruptedException ex) {
+//                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
                     try {
+                        czyMozna();
                         this.przemiescSie();
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
                     }
+//                    zwolnijPole();
                     Platform.runLater(new Runnable() {
 
                         @Override
@@ -173,41 +181,46 @@ public abstract class Pojazd implements Runnable {
                         }
                     });
                     
-//                    try {                    
-//                        Thread.sleep(100);
-//                    } catch (InterruptedException ex) {
-//                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
                 }      
                 
 //                if( this.polozenie.equals( this.najblizszyCel.getPolozenie() ) ){
                     this.najblizszyCel.stopujPojazd(this);
+                    zwolnijPole();
                     
-                    while (this.getOdleglosc()>0)
-                    {
-                    try {
-                        this.przemiescSie();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    Platform.runLater(new Runnable() {
+                    while (this.getOdleglosc()>0){
+//                        zwolnijPole();
+                    
+//                        if (sprawdzPole()){
+                            
+                            System.out.println("WOLNE");
+                            try {
+                                this.przemiescSie();
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            Platform.runLater(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            getObrazek().setX(getPolozenie().getX()-8 + modyfikatorX);
-                            getObrazek().setY(getPolozenie().getY()-8 + modyfikatorY);
-                        }
-                    });
+                                @Override
+                                public void run() {
+                                    getObrazek().setX(getPolozenie().getX()-8 + modyfikatorX);
+                                    getObrazek().setY(getPolozenie().getY()-8 + modyfikatorY);
+                                }
+                            });
+                        //}
                     }
-                    
+                    int sen;                    
                     if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
                     {
                         System.out.println("        " + this.trasa.get(0).getNazwa());
                         ((Pasazerski)this).przesiadkaPasazera((Pasazerski)this.trasa.get(0));
+                        sen = 1500 +(int)Math.random() * 3500;
+                    }
+                    else{
+                        sen = 300;
                     }
                     
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(sen);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -224,6 +237,7 @@ public abstract class Pojazd implements Runnable {
 //                        this.setTrasa(
                           this.zmienCel(this.trasa.get(1));
                     }
+                    zwolnijPole();
                     
                     System.out.println("PASAŻEROWIE, WSIADAJCIE!");
                     if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
@@ -233,11 +247,9 @@ public abstract class Pojazd implements Runnable {
                     
                     this.trasa.get(0).startujPojazd(this);
                     this.trasa.remove(0);
-             //   }
-             
+             //   }            
                                        
-            }
-        
+            }        
     }
 
     /**
@@ -259,5 +271,49 @@ public abstract class Pojazd implements Runnable {
      */
     public void setObrazek(javafx.scene.image.ImageView obrazek) {
         this.obrazek = obrazek;
+    }
+    
+    private boolean sprawdzPole(){
+        boolean czy = true;
+//        synchronized(Swiat.getSamoloty()){
+            for(int i=1; i<15; i++){
+                if(Swiat.getSamoloty().containsKey(( polozenie.getX() + i*deltaX)+"_" + (polozenie.getY()+ i * deltaY))){
+                    System.out.println(( polozenie.getX() + i*deltaX)+"_" + (polozenie.getY()+ i * deltaY));
+                    czy = false;
+                    break;
+                }
+            }
+//        }
+        return czy;
+    }
+    
+    private void zajmijPole(){
+        Swiat.getSamoloty().put((polozenie.getX() + deltaX ) + "_" + (polozenie.getY() + deltaY), (Samolot) this);
+//        System.out.println((polozenie.getX() + deltaX) + "_" + (polozenie.getY() + deltaY));
+        
+    }
+    
+    private void zwolnijPole(){
+        Swiat.getSamoloty().remove((polozenie.getX()) + "_" + polozenie.getY());        
+    }
+    
+    private boolean czyMozna() throws InterruptedException{
+        boolean czy = true;
+        while (czy){
+            
+            synchronized(Swiat.getSamoloty()){
+                if(sprawdzPole()){
+                    zajmijPole();
+                    zwolnijPole();
+                    czy = false;
+                }
+            }
+            if(czy){
+                Thread.sleep(30);
+                System.out.println("NIE MOZNA!");
+            }
+            
+        }
+        return true;
     }
 }
