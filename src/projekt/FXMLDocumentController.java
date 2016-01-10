@@ -8,6 +8,8 @@ package projekt;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -441,31 +443,54 @@ public class FXMLDocumentController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLPasazer.fxml"));
         Parent root = (Parent)loader.load();
         FXMLPasazerController controller = (FXMLPasazerController)loader.getController();
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
         
-        
+        Thread pasInfo = new Thread(){
+            @Override
+            public void run(){
+                        while (true){
+                            try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
             
             Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 
                 controller.getpImie().setText(p.getImie());
-            controller.getpNazwisko().setText(p.getNazwisko());
-            controller.getpPesel().setText("" + p.getPesel());
-            controller.getpDom().setText(p.getDom().getNazwa());
+                controller.getpNazwisko().setText(p.getNazwisko());
+                controller.getpPesel().setText("" + p.getPesel());
+                controller.getpDom().setText(p.getDom().getNazwa());
+
+                
+                    ObservableList<String> olw =  FXCollections.observableArrayList();
+
+                    for (Lokalizacja l  : p.getPlan()){
+                        olw.add(l.getNazwa());
+                    }
+                        controller.getpTrasa().setItems(olw);
+                        
         
-             ObservableList<String> olw =  FXCollections.observableArrayList();
-            for (Lokalizacja l  : p.getPlan()){
-                olw.add(l.getNazwa());
-            }
-                controller.getpTrasa().setItems(olw);
+                    
+                
             }
         });
         
         
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
+        
+        }
+                
+            }
+        };
+        pasInfo.setDaemon(true);
+        pasInfo.start();
+        
+
 //        stage.
     }
 
