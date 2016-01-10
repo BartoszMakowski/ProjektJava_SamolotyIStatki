@@ -23,6 +23,7 @@ public class Podrozny implements Runnable{
     private RodzajPodrozy rodzajPodrozy;
     private Object gdzieAktualnie;
     private boolean odpoczywa;
+    private static int bazaPesel = 1;
 
     public Podrozny(String imie, String nazwisko, long pesel, Lokalizacja dom) {
         this.imie = imie;
@@ -34,7 +35,8 @@ public class Podrozny implements Runnable{
     public Podrozny(Lokalizacja dom){
         this.imie=imiona[(int) (Math.random() * (imiona.length -1))];
         this.nazwisko=nazwiska[(int) (Math.random() * (nazwiska.length -1))];
-        this.pesel = (long) (50000000000L + Math.random()*65011000000L) % 100000000000L;
+//        this.pesel = (long) (50000000000L + Math.random()*65011000000L) % 100000000000L;
+        this.pesel = bazaPesel++;
         this.dom = dom;
         this.odpoczywa = false;
         this.rodzajPodrozy = Math.random() > 0.5 ? RodzajPodrozy.PRYWATNA : RodzajPodrozy.SLUZBOWA; 
@@ -42,7 +44,8 @@ public class Podrozny implements Runnable{
 
         
         losujPlan(dom);
-        
+        Swiat.getPasazerowie().put("" + pesel, this); 
+       
  
         System.out.println(this.plan);
         
@@ -181,6 +184,11 @@ public class Podrozny implements Runnable{
      */
     public void setOdpoczywa(boolean odpoczywa) {
         this.odpoczywa = odpoczywa;
+    }
+    
+    @Override
+    public String toString(){
+        return(""+pesel);
     }
 
 }
