@@ -103,10 +103,26 @@
                               </RadialGradient>
                            </fill>
                         </Circle>
-                        <Text layoutX="235.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Powidz" />
+                        <Text layoutX="196.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Powidz" />
                         <Text layoutX="15.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Alcatraz" />
                         <Text layoutX="235.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pasy Krótkie" />
                         <Text layoutX="445.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Murzynno" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="115.0" y="145.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="315.0" y="145.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="430.0" y="355.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="145.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="355.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#259412" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="20.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#259412" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="140.0" y="455.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="140.0" y="355.0" />
+                        <Text layoutX="234.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Powidz - Przystań" />
+                        <Text layoutX="141.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chmielniki" />
+                        <Text layoutX="93.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borówno" />
+                        <Text layoutX="315.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pieczyska" />
+                        <Text layoutX="432.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Samociążek" />
+                        <Text layoutX="267.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SM1" />
+                        <Text layoutX="267.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SM3" />
+                        <Text layoutX="135.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SM2" />
                      </children>
                   </AnchorPane>
                </children></AnchorPane>
@@ -119,9 +135,9 @@
                         <Image url="@img/Samolot.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="lNazwa" alignment="CENTER" layoutX="26.0" layoutY="198.0" prefHeight="16.0" prefWidth="149.0" text="aaa" textAlignment="CENTER" textFill="#f50606">
+                  <Label fx:id="lNazwa" alignment="CENTER" layoutX="10.0" layoutY="194.0" prefHeight="21.0" prefWidth="180.0" text="aaa" textAlignment="CENTER" textFill="#f50606">
                      <font>
-                        <Font name="System Bold" size="10.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
                   <Label fx:id="lInfoLG" layoutX="21.0" layoutY="228.0" prefWidth="50.0" text="X:">
@@ -130,7 +146,7 @@
                      </font>
                   </Label>
                   <Label fx:id="lInfoLGW" layoutX="70.0" layoutY="229.0" prefWidth="30.0" text="lX" />
-                  <Label fx:id="lNaglowek" alignment="CENTER" layoutX="10.0" layoutY="283.0" prefWidth="180.0" text="Kolejny cel:" textAlignment="CENTER">
+                  <Label fx:id="lNaglowek" alignment="CENTER" layoutX="10.0" layoutY="283.0" prefWidth="180.0" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
