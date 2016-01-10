@@ -5,6 +5,7 @@
  */
 package projekt;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -13,7 +14,10 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -22,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 /**
  *
@@ -36,18 +41,10 @@ public class FXMLDocumentController implements Initializable {
     private String coWyswietlane;
     
     @FXML
-    private Button bStart;
-    @FXML
     private Label lNazwa;
     private Label lY;
     private Label lX;
-    @FXML
-    private Label lCel;
     private Label LId;
-    @FXML
-    private SplitPane sp;
-    @FXML
-    private ImageView iv;
     @FXML
     private AnchorPane ap;
     @FXML
@@ -60,10 +57,6 @@ public class FXMLDocumentController implements Initializable {
     private Button bTrasaZawartosc;
     @FXML
     private Button bUsunDodaj;
-    @FXML
-    private Button bZmien;
-    @FXML
-    private Button bAwaria;
     @FXML
     private Label lInfoPGW;
     @FXML
@@ -78,6 +71,7 @@ public class FXMLDocumentController implements Initializable {
     private Label lInfoLD;
     
     
+    
     @FXML
     private ListView<String> lvTrasa;
     
@@ -86,13 +80,25 @@ public class FXMLDocumentController implements Initializable {
     private boolean czyPojazd;
     private boolean czyPasazerowie;
     @FXML
+    private SplitPane sp;
+    @FXML
+    private ImageView iv;
+    @FXML
     private Circle s3;
+    @FXML
+    private Button bStart;
+    @FXML
+    private Label lCel;
+    @FXML
+    private Button bZmien;
+    @FXML
+    private Button bAwaria;
     
     
-    public void moveSp(int x, int y){
-        sp1.setLayoutX(x*4);
-        sp1.setLayoutY(y*4);
-    }
+//    public void moveSp(int x, int y){
+//        sp1.setLayoutX(x*4);
+//        sp1.setLayoutY(y*4);
+//    }
 
     
     @FXML
@@ -131,15 +137,15 @@ public class FXMLDocumentController implements Initializable {
                                 lInfoLD.setText("V:");
                                 lInfoLDW.setText("" + FXMLDocumentController.this.wyswietlanyPojazd.getPredkosc());
 
-                                lInfoPD.setText("D:");
-                                lInfoPDW.setText("" + FXMLDocumentController.this.wyswietlanyPojazd.getOdleglosc());
+                                lInfoPD.setText("F:");
+                                lInfoPDW.setText("" + wyswietlanyPojazd.getPaliwo());
 
                                 ObservableList<String> olw = FXCollections.observableArrayList();
     //                                    lvTrasa.getItems().clear();
                                 if(czyPasazerowie){
                                     if (((SamolotPasazerski)FXMLDocumentController.this.wyswietlanyPojazd).getPasazerowie().size() > 0)
                                         for (Podrozny p  : ((SamolotPasazerski)FXMLDocumentController.this.wyswietlanyPojazd).getPasazerowie()){
-                                            olw.add(p.getImie() + " " + p.getNazwisko());
+                                            olw.add("" + p.getPesel());
                                         }
                                 }
                                 else{
@@ -202,9 +208,6 @@ public class FXMLDocumentController implements Initializable {
 
 
                         }
-//                                lvTrasa.setItems(olw);
-
-
                         }                    
                     
 
@@ -225,20 +228,37 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void dodajSP(){
-        final SamolotPasazerski nowySP = new SamolotPasazerski((Lotnisko)wyswietlanaLokalizacja);
+        SamolotPasazerski nowySP = new SamolotPasazerski((Lotnisko)wyswietlanaLokalizacja);
         Thread nowySPWatek = new Thread(nowySP);
-        final ImageView ikonaSP = nowySP.getObrazek();
+        ImageView ikonaSP = nowySP.getObrazek();
         this.ap.getChildren().add(ikonaSP);
         ikonaSP.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event) {
-                FXMLDocumentController.this.czyPojazd = true;
+                czyPojazd = true;
                 bTrasaZawartosc.setDisable(false);
                 System.out.println("kliknieto" + event.getSource());
                 coWyswietlane = "pojazdCywilny";
                 lNazwa.setText(nowySP.toString());
                 lNaglowek.setText("Trasa:");
-                FXMLDocumentController.this.wyswietlanyPojazd = nowySP;
+                wyswietlanyPojazd = nowySP;
+                
+                bUsunDodaj.setText("Usuń samolot");                
+                bUsunDodaj.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        nowySP.usun();
+                        ap.getChildren().remove(ikonaSP);
+                        coWyswietlane = "nic";
+                    }
+                });
+                
+                bZmien.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        nowySP.zmienTrase();
+                    }
+                });
             }
             
         });
@@ -247,25 +267,35 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
-        @FXML
     private void dodajSW(){
-        final SamolotWojskowy nowySW = new SamolotWojskowy((Lotnisko)wyswietlanaLokalizacja);
+        SamolotWojskowy nowySW = new SamolotWojskowy((Lotnisko)wyswietlanaLokalizacja);
         Thread nowySWWatek = new Thread(nowySW);
-        final ImageView ikonaSW = nowySW.getObrazek();
-        this.ap.getChildren().add(ikonaSW);
+        ImageView ikonaSW = nowySW.getObrazek();
+        ap.getChildren().add(ikonaSW);
         ikonaSW.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event) {
-                FXMLDocumentController.this.czyPojazd = true;
+                czyPojazd = true;
                 bTrasaZawartosc.setDisable(false);
                 System.out.println("kliknieto" + event.getSource());
                 coWyswietlane = "pojazdCywilny";
                 lNazwa.setText(nowySW.toString());
                 lNaglowek.setText("Trasa:");
-                FXMLDocumentController.this.wyswietlanyPojazd = nowySW;
+                wyswietlanyPojazd = nowySW;
             }
             
+            
         });
+        
+        bUsunDodaj.setText("Usuń samolot");
+        bUsunDodaj.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        nowySW.usun();
+                        ap.getChildren().remove(ikonaSW);
+                        coWyswietlane = "nic";
+                    }
+                });
         nowySWWatek.setDaemon(true);
         nowySWWatek.start();
         
@@ -307,6 +337,7 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("kliknieto " + (int)((Circle)event.getSource()).centerXProperty().get());
         coWyswietlane = "lotniskoCywilne";
         bTrasaZawartosc.setDisable(false);
+        bUsunDodaj.setText("Dodaj samolot");
         bUsunDodaj.setOnMouseClicked(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
@@ -325,6 +356,7 @@ public class FXMLDocumentController implements Initializable {
         lInfoLGW.setText("" + wyswietlanaLokalizacja.getPolozenie().getX());                 
         lInfoPG.setText("Y:");
         lInfoPGW.setText("" + wyswietlanaLokalizacja.getPolozenie().getY());
+        czyPasazerowie = false;
         lNaglowek.setText("Drogowskazy:");
         
         ObservableList<String> olw = FXCollections.observableArrayList();
@@ -336,7 +368,7 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
-        @FXML
+    @FXML
     private void lotniskoWojskoweInfo(MouseEvent event) {
         System.out.println("kliknieto " + event.getSource());
         System.out.println("kliknieto " + (int)((Circle)event.getSource()).centerXProperty().get());
@@ -360,6 +392,7 @@ public class FXMLDocumentController implements Initializable {
         lInfoLGW.setText("" + wyswietlanaLokalizacja.getPolozenie().getX());                 
         lInfoPG.setText("Y:");
         lInfoPGW.setText("" + wyswietlanaLokalizacja.getPolozenie().getY());
+        czyPasazerowie = false;
         lNaglowek.setText("Drogowskazy:");
         
         ObservableList<String> olw = FXCollections.observableArrayList();
@@ -396,8 +429,51 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+
+    @FXML
+    private void pasazerInfo(MouseEvent event) throws IOException {
+//        Loader loader = FXMLLoader.load(getClass().getResource("FXMLPasazer.fxml"));
+//        Parent root = FXMLLoader.load(getClass().getResource("FXMLPasazer.fxml"));
+        Podrozny p = Swiat.getPasazerowie().get(lvTrasa.getSelectionModel().getSelectedItem());
+
+//        FXMLPasazerController.pPesel.setText("NULL");
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLPasazer.fxml"));
+        Parent root = (Parent)loader.load();
+        FXMLPasazerController controller = (FXMLPasazerController)loader.getController();
+        
+        
+            
+            Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                
+                controller.getpImie().setText(p.getImie());
+            controller.getpNazwisko().setText(p.getNazwisko());
+            controller.getpPesel().setText("" + p.getPesel());
+            controller.getpDom().setText(p.getDom().getNazwa());
+        
+             ObservableList<String> olw =  FXCollections.observableArrayList();
+            for (Lokalizacja l  : p.getPlan()){
+                olw.add(l.getNazwa());
+            }
+                controller.getpTrasa().setItems(olw);
+            }
+        });
+        
+        
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+//        stage.
+    }
+
     @FXML
     private void lokInfo(MouseEvent event) {
     }
+    
+    
+    
     
 }
