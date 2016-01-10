@@ -43,7 +43,7 @@
       </Label>
       <Label fx:id="pImie" layoutX="239.0" layoutY="41.0" prefHeight="15.0" prefWidth="122.0" text="Jan" textFill="RED" underline="true" />
       <Label fx:id="pNazwisko" layoutX="286.0" layoutY="82.0" prefHeight="15.0" prefWidth="122.0" text="Kowalski" textFill="RED" underline="true" />
-      <Label fx:id="pDom" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="273.0" layoutY="162.0" prefHeight="15.0" prefWidth="99.0" text="TAK" textAlignment="RIGHT" textFill="RED" underline="true" />
+      <Label fx:id="pDom" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="250.0" layoutY="162.0" prefHeight="15.0" prefWidth="122.0" text="TAK" textAlignment="RIGHT" textFill="RED" underline="true" />
       <Label fx:id="pPesel" layoutX="245.0" layoutY="124.0" prefHeight="15.0" prefWidth="122.0" text="Kowalski" textFill="RED" underline="true" />
    </children>
 </AnchorPane>
