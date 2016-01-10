@@ -25,6 +25,7 @@ public class Skrzyzowanie extends Lokalizacja {
     @Override
     public void stopujPojazd(Pojazd p){
         System.out.println("WTF");
+        
         while(!p.equals(this.zajetePrzez)){
             System.out.println("WSZEDŁEM DO WHILE'a");
             synchronized(this){
@@ -38,6 +39,11 @@ public class Skrzyzowanie extends Lokalizacja {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Skrzyzowanie.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        try {
+            Thread.sleep(25);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Skrzyzowanie.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
