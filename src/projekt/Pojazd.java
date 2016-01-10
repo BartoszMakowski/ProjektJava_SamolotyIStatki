@@ -13,6 +13,7 @@ public abstract class Pojazd implements Runnable {
     private Polozenie polozenie;
     private int predkosc;
     private int odleglosc;
+    private int paliwo;
     private static int ostatnieId;
     private int id;
     private Lokalizacja najblizszyCel;
@@ -23,6 +24,7 @@ public abstract class Pojazd implements Runnable {
     private int modyfikatorY;
     private int deltaX;
     private int deltaY;
+    private boolean dzialaj;
 
     public Pojazd(Polozenie polozenie, int predkosc, List<Lokalizacja> trasa) {
         this.polozenie = new Polozenie(polozenie.getX(),polozenie.getY());
@@ -30,12 +32,14 @@ public abstract class Pojazd implements Runnable {
         this.trasa = trasa;
         this.id = ostatnieId++;
         this.kierunek = Kierunek.ZADEN;
+        this.dzialaj = true;
         //        this.zmienCel(trasa.listIterator().next());
     }
 
     public Pojazd(Polozenie polozenie, int predkosc, Lokalizacja najblizszyCel, List<Lokalizacja> trasa){
         this(polozenie, predkosc, trasa);
         this.najblizszyCel = najblizszyCel;
+        this.paliwo = 999;
     }
 
     public int getPredkosc() {
@@ -67,7 +71,15 @@ public abstract class Pojazd implements Runnable {
 //        this.kierunek = Kierunek.LEWO;
     }
 
-    public void usun(){}
+    public void usun(){
+          
+//        Thread.currentThread().interrupt();
+        zwolnijPole(); 
+        dzialaj = false;
+        
+//        this.setObrazek(null);
+               
+    }
     
     private void zmienCel(Lokalizacja lok){
         this.najblizszyCel = lok;
@@ -126,6 +138,7 @@ public abstract class Pojazd implements Runnable {
          
         this.polozenie.setY(this.polozenie.getY()+deltaY);
         this.polozenie.setX(this.polozenie.getX()+deltaX);
+        paliwo -= 2;
         
         this.odleglosc--;
         try {                    
@@ -155,10 +168,10 @@ public abstract class Pojazd implements Runnable {
     
     public void run(){
 //        Image gpojazd;
-            while(true)
+            while(dzialaj)
             {
                 if(odleglosc>0){
-                    
+                                        
                     Platform.runLater(new Runnable() {
 
                                 @Override
@@ -252,6 +265,10 @@ public abstract class Pojazd implements Runnable {
                         sen = 150;
                     }
                     
+                    if (this.trasa.get(0) instanceof Lotnisko){
+                paliwo = 999;
+                            }
+                    
                     try {
                         Thread.sleep(sen);
                     } catch (InterruptedException ex) {
@@ -263,12 +280,8 @@ public abstract class Pojazd implements Runnable {
                     }
                     else{
                         System.out.println("Dotarłem do: " + this.najblizszyCel.getNazwa() + ".\nKONIEC TRASY.");
-                        this.trasa = new LinkedList<>(Swiat.trasy.get(this.polozenie.getX() +"_" + this.polozenie.getY())
-                                .get((int)Math.random() * Swiat.trasy.
-                                        get(this.polozenie.getX() + "_" + this.polozenie.getY()).size()));
-//                        this.trasa.add(0, null);
-//                        this.setTrasa(
-                          this.zmienCel(this.trasa.get(1));
+                        losujTrase(polozenie);
+                        this.zmienCel(this.trasa.get(1));
                     }
                     zwolnijPole();
                     
@@ -348,5 +361,32 @@ public abstract class Pojazd implements Runnable {
             
         }
         return true;
+    }
+
+    /**
+     * @return the paliwo
+     */
+    public int getPaliwo() {
+        return paliwo;
+    }
+    
+    private void losujTrase(Polozenie p){
+        this.trasa = new LinkedList<>(Swiat.trasy.get(p.getX() +"_" + p.getY())
+                                .get((int)Math.random() * Swiat.trasy.
+                                        get(p.getX() + "_" + p.getY()).size()));
+    }
+    
+    public void zmienTrase(){
+        LinkedList<Lokalizacja> trasaStartowa = new LinkedList<>();
+        for(Lokalizacja l : trasa){
+            if (!(l instanceof Skrzyzowanie)){
+                losujTrase(l.getPolozenie());
+                break;
+            }            
+            else{
+                trasaStartowa.add(l);
+            }
+        }
+        trasa.addAll(0, trasaStartowa);
     }
 }

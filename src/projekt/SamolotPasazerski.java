@@ -161,5 +161,12 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
         return false;
     }
     
+    @Override
+    public void usun(){
+        this.pasazerowie = new LinkedList<>();
+        super.usun();
+        
+    }
+    
     
 }
