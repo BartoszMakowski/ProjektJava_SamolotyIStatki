@@ -22,6 +22,7 @@ import static javafx.application.Application.launch;
 public class Swiat extends Application {
     public static HashMap<String, Lotnisko> lotniskaCywilne;
     public static HashMap<String, Lotnisko> lotniskaWojskowe;
+    private static HashMap<String, Podrozny> pasazerowie;
     public static HashMap<String, Lokalizacja> lokalizacje;
     public static HashMap<String, Skrzyzowanie> skrzyzowania;
     public static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> trasy;
@@ -45,6 +46,13 @@ public class Swiat extends Application {
         return samoloty;
     }
 
+    /**
+     * @return the pasazerowie
+     */
+    public static HashMap<String, Podrozny> getPasazerowie() {
+        return pasazerowie;
+    }
+
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -63,6 +71,7 @@ public class Swiat extends Application {
                 lotniskaWojskowe = new HashMap<String, Lotnisko>();
                 lokalizacje = new HashMap<String, Lokalizacja>();
                 skrzyzowania = new HashMap<String, Skrzyzowanie>();
+                pasazerowie = new HashMap<String, Podrozny>();
                 samoloty = new HashMap<String, Samolot>();
                 trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
                 
