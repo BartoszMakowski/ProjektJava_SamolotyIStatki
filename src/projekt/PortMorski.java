@@ -2,18 +2,22 @@ package projekt;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by bartosz on 19.10.15.
  */
-public class PortMorski extends Lokalizacja {
+public class PortMorski extends Lokalizacja implements Pasazerski{
     private List<Podrozny> odwiedzajacy;
     private List<Wycieczkowiec> zajetyPrzez;
+    private int pojemnosc;
+    private boolean aktywny;
 
     public PortMorski(int x, int y, String nazwa) {
         super(x, y, nazwa);
-        this.odwiedzajacy = null;
-        this.zajetyPrzez = null;
+        this.odwiedzajacy = new LinkedList<>();
+        this.zajetyPrzez = new LinkedList<>();
     }
 
     public List<Wycieczkowiec> getZajetyPrzez() {
@@ -30,5 +34,74 @@ public class PortMorski extends Lokalizacja {
 
     public void setOdwiedzajacy(List<Podrozny> odwiedzajacy) {
         this.odwiedzajacy = odwiedzajacy;
+    }
+    
+    @Override
+    public void stopujPojazd(Pojazd wycieczkowiec){
+        while(!zajetyPrzez.contains(wycieczkowiec)){
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Lotnisko.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            synchronized(this){
+                System.out.println("CHCE DODAC STATEK");
+                if (this.zajetyPrzez.size()<this.pojemnosc && !aktywny){
+                    System.out.println("DODAJE STATEK");
+                    this.zajetyPrzez.add((Wycieczkowiec)wycieczkowiec);
+                    aktywny = true;
+                }
+            }
+            
+            
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Lotnisko.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    aktywny = false;
+                }
+            });
+            t.setDaemon(true);
+            t.start();
+            }
+}
+
+    @Override
+    public void przesiadkaPasazera(Pasazerski dokad) {
+        LinkedList<Podrozny> doUsuniecia = new LinkedList<>();
+        for (Podrozny pasazer : this.odwiedzajacy){
+            if (!pasazer.isOdpoczywa()){
+//                System.out.println("NIE ODPOCZYWAM");
+                synchronized(dokad){
+                    if ( (pasazer.czyWsiasc(dokad)) && (dokad.czyJestMiejsce()) ) {
+                        doUsuniecia.add(pasazer);
+                        dokad.dodajPasazera(pasazer);                       
+                    }
+                }
+            }
+        }
+        
+        for (Podrozny p : doUsuniecia){
+            this.usunPasazera(p);
+        }
+    }
+
+    @Override
+    public void dodajPasazera(Podrozny pasazer) {
+        odwiedzajacy.add(pasazer);
+    }
+
+    @Override
+    public void usunPasazera(Podrozny pasazer) {
+        odwiedzajacy.remove(pasazer);
+    }
+
+    @Override
+    public boolean czyJestMiejsce() {
+        return true;
     }
 }
