@@ -8,13 +8,12 @@ import javafx.scene.image.ImageView;
  * Created by bartosz on 19.10.15.
  */
 public class SamolotPasazerski extends Samolot implements Pasazerski{
-    private int zajeteMiejsca;
-    private int miejsca;
+    private final int miejsca;
     private List <Podrozny> pasazerowie;
     
     public SamolotPasazerski(Lotnisko lokalizacja){
         super(lokalizacja.getPolozenie(), (int) (5 + Math.random() * 25), lokalizacja, null);
-        this.miejsca = 2 + (int) (Math.random()+8);
+        this.miejsca = 2 + (int) (Math.random()*8);
         this.pasazerowie = new LinkedList<>();
         System.out.println("WSZYSTKO OK");
         
@@ -94,21 +93,10 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
         return miejsca;
     }
 
-    public int getZajeteMiejsca() {
-        return zajeteMiejsca;
-    }
-
     public List<Podrozny> getPasazerowie() {
         return pasazerowie;
     }
 
-    /**
-     * @return the obrazek
-     */
-//    @Override
-//    public javafx.scene.image.ImageView getObrazek() {
-//        return getObrazek();
-//    }
 
     @Override
     public String toString() {
@@ -124,17 +112,10 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
                 if (p.czyWysiasc(dokad)){
                     doUsuniecia.add(p);
                     dokad.dodajPasazera(p);
-//                    p.getPlan().remove(0);
                 }
             }
-//            try {
-//                p.getPlan().remove(0);
                 System.out.println("NIECH ODPOCZNIE");
                 p.setOdpoczywa(true);
-//                p.odpocznij();
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(SamolotPasazerski.class.getName()).log(Level.SEVERE, null, ex);
-//            }
         }
         for(Podrozny p : doUsuniecia){
             this.usunPasazera(p);
