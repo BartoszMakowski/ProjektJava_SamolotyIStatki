@@ -14,7 +14,7 @@ public abstract class Pojazd implements Runnable {
     private int predkosc;
     private int odleglosc;
     private int paliwo;
-    private static int ostatnieId;
+    private static int ostatnieId=1;
     private int id;
     private Lokalizacja najblizszyCel;
     private List <Lokalizacja> trasa;
@@ -166,6 +166,100 @@ public abstract class Pojazd implements Runnable {
         this.kierunek = kierunek;
     }
     
+    
+
+    /**
+     * @return the odleglosc
+     */
+    public int getOdleglosc() {
+        return odleglosc;
+    }
+
+    /**
+     * @return the obrazek
+     */
+    public javafx.scene.image.ImageView getObrazek() {
+        return obrazek;
+    }
+
+    /**
+     * @param obrazek the obrazek to set
+     */
+    public void setObrazek(javafx.scene.image.ImageView obrazek) {
+        this.obrazek = obrazek;
+    }
+    
+    private boolean sprawdzPole(){
+        boolean czy = true;
+//        synchronized(Swiat.getSamoloty()){
+            for(int i=1; i<15; i++){
+                if(Swiat.getSamoloty().containsKey(( polozenie.getX() + modyfikatorX + i*deltaX)+"_" + (polozenie.getY()+ modyfikatorY + i * deltaY))){
+                    System.out.println(( polozenie.getX() +  i*deltaX)+"_" + (polozenie.getY()+ i * deltaY));
+                    czy = false;
+                    break;
+                }
+            }
+//        }
+        return czy;
+    }
+    
+    private void zajmijPole(){
+        Swiat.getSamoloty().put((polozenie.getX() + modyfikatorX + deltaX ) + "_" + (polozenie.getY() + modyfikatorY + deltaY), (Samolot) this);
+//        System.out.println((polozenie.getX() + deltaX) + "_" + (polozenie.getY() + deltaY));
+        
+    }
+    
+    private void zwolnijPole(){
+        Swiat.getSamoloty().remove((polozenie.getX() + modyfikatorX) + "_" + (polozenie.getY() + modyfikatorY));        
+    }
+    
+    private boolean czyMozna() throws InterruptedException{
+        boolean czy = true;
+        while (czy){
+            
+            synchronized(Swiat.getSamoloty()){
+                if(sprawdzPole()){
+                    zajmijPole();
+                    zwolnijPole();
+                    czy = false;
+                }
+            }
+            if(czy){
+                Thread.sleep(50);
+                System.out.println("NIE MOZNA!");
+            }
+            
+        }
+        return true;
+    }
+
+    /**
+     * @return the paliwo
+     */
+    public int getPaliwo() {
+        return paliwo;
+    }
+    
+    protected void losujTrase(Polozenie p){
+        this.trasa = new LinkedList<>(Swiat.trasy.get(p.getX() +"_" + p.getY())
+                                .get((int)Math.random() * Swiat.trasy.
+                                        get(p.getX() + "_" + p.getY()).size()));
+    }
+    
+    public void zmienTrase(){
+        LinkedList<Lokalizacja> trasaStartowa = new LinkedList<>();
+        for(Lokalizacja l : trasa){
+            if (!(l instanceof Skrzyzowanie)){
+                losujTrase(l.getPolozenie());
+                break;
+            }            
+            else{
+                trasaStartowa.add(l);
+            }
+        }
+        trasa.addAll(0, trasaStartowa);
+    }
+    
     public void run(){
 //        Image gpojazd;
             while(dzialaj)
@@ -297,96 +391,5 @@ public abstract class Pojazd implements Runnable {
                                        
             }        
     }
-
-    /**
-     * @return the odleglosc
-     */
-    public int getOdleglosc() {
-        return odleglosc;
-    }
-
-    /**
-     * @return the obrazek
-     */
-    public javafx.scene.image.ImageView getObrazek() {
-        return obrazek;
-    }
-
-    /**
-     * @param obrazek the obrazek to set
-     */
-    public void setObrazek(javafx.scene.image.ImageView obrazek) {
-        this.obrazek = obrazek;
-    }
     
-    private boolean sprawdzPole(){
-        boolean czy = true;
-//        synchronized(Swiat.getSamoloty()){
-            for(int i=1; i<15; i++){
-                if(Swiat.getSamoloty().containsKey(( polozenie.getX() + modyfikatorX + i*deltaX)+"_" + (polozenie.getY()+ modyfikatorY + i * deltaY))){
-                    System.out.println(( polozenie.getX() +  i*deltaX)+"_" + (polozenie.getY()+ i * deltaY));
-                    czy = false;
-                    break;
-                }
-            }
-//        }
-        return czy;
-    }
-    
-    private void zajmijPole(){
-        Swiat.getSamoloty().put((polozenie.getX() + modyfikatorX + deltaX ) + "_" + (polozenie.getY() + modyfikatorY + deltaY), (Samolot) this);
-//        System.out.println((polozenie.getX() + deltaX) + "_" + (polozenie.getY() + deltaY));
-        
-    }
-    
-    private void zwolnijPole(){
-        Swiat.getSamoloty().remove((polozenie.getX() + modyfikatorX) + "_" + (polozenie.getY() + modyfikatorY));        
-    }
-    
-    private boolean czyMozna() throws InterruptedException{
-        boolean czy = true;
-        while (czy){
-            
-            synchronized(Swiat.getSamoloty()){
-                if(sprawdzPole()){
-                    zajmijPole();
-                    zwolnijPole();
-                    czy = false;
-                }
-            }
-            if(czy){
-                Thread.sleep(50);
-                System.out.println("NIE MOZNA!");
-            }
-            
-        }
-        return true;
-    }
-
-    /**
-     * @return the paliwo
-     */
-    public int getPaliwo() {
-        return paliwo;
-    }
-    
-    private void losujTrase(Polozenie p){
-        this.trasa = new LinkedList<>(Swiat.trasy.get(p.getX() +"_" + p.getY())
-                                .get((int)Math.random() * Swiat.trasy.
-                                        get(p.getX() + "_" + p.getY()).size()));
-    }
-    
-    public void zmienTrase(){
-        LinkedList<Lokalizacja> trasaStartowa = new LinkedList<>();
-        for(Lokalizacja l : trasa){
-            if (!(l instanceof Skrzyzowanie)){
-                losujTrase(l.getPolozenie());
-                break;
-            }            
-            else{
-                trasaStartowa.add(l);
-            }
-        }
-        trasa.addAll(0, trasaStartowa);
-    }
 }
