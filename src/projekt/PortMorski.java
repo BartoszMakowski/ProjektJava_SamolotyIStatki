@@ -18,6 +18,8 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
         super(x, y, nazwa);
         this.odwiedzajacy = new LinkedList<>();
         this.zajetyPrzez = new LinkedList<>();
+        this.aktywny = false;
+        this.pojemnosc = 5;
     }
 
     public List<Wycieczkowiec> getZajetyPrzez() {
