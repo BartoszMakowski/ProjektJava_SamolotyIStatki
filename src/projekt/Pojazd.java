@@ -267,135 +267,17 @@ public abstract class Pojazd implements Runnable {
         trasa.addAll(0, trasaStartowa);
     }
     
+    @Override
     public void run(){
 //        Image gpojazd;
-            while(dzialaj)
+            while(isDzialaj())
             {
-                if(odleglosc>0){
-                                        
-                    Platform.runLater(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    getObrazek().setX(-30);
-                                    getObrazek().setY(-30);
-                                }
-                    });
-                    
-                    for(int i=0; i<5; i++){
-                            try {
-                                    this.przemiescSie();
-                                } catch (InterruptedException ex) {
-                                    Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-
-                        }
-                }
-                
-                
-                while (this.getOdleglosc()>20)
-                {
-//                    try {
-//                        czyMozna();
-//                    } catch (InterruptedException ex) {
-//                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-                    try {
-                        czyMozna();
-                        this.przemiescSie();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-//                    zwolnijPole();
-                    Platform.runLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            getObrazek().setX(getPolozenie().getX()-8 + getModyfikatorX());
-                            getObrazek().setY(getPolozenie().getY()-8 + getModyfikatorY());
-                        }
-                    });
-                    
-                }      
-                
-//                if( this.polozenie.equals( this.najblizszyCel.getPolozenie() ) ){
-                    this.najblizszyCel.stopujPojazd(this);
-                    zwolnijPole();
-                    
-                   
-                    
-                    while (this.getOdleglosc()>0){
-//                        zwolnijPole();
-                    
-//                        if (sprawdzPole()){
-                            
-                            System.out.println("WOLNE");
-                            try {
-                                this.przemiescSie();
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            Platform.runLater(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    getObrazek().setX(getPolozenie().getX()-8 + getModyfikatorX());
-                                    getObrazek().setY(getPolozenie().getY()-8 + getModyfikatorY());
-                                }
-                            });
-                        //}
-                    }
-                    int sen;
-                    
-                    if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
-                    {
-                        System.out.println("        " + this.trasa.get(0).getNazwa());
-                        ((Pasazerski)this).przesiadkaPasazera((Pasazerski)this.trasa.get(0));
-                        sen = 1500 +(int)Math.random() * 3500;
-                        
-                        Platform.runLater(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    getObrazek().setX(-30);
-                                    getObrazek().setY(-30);
-                                }
-                            });
-                    }
-                    else{
-                        sen = 150;
-                    }
-                    
-                    if (this.trasa.get(0) instanceof Lotnisko){
-                paliwo = 999;
-                            }
-                    
-                    try {
-                        Thread.sleep(sen);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                    if(this.trasa.size()> 1){            
-                        this.zmienCel(this.trasa.get(1));
-                    }
-                    else{
-                        System.out.println("Dotarłem do: " + this.najblizszyCel.getNazwa() + ".\nKONIEC TRASY.");
-                        losujTrase(polozenie);
-                        this.zmienCel(this.trasa.get(1));
-                    }
-                    zwolnijPole();
-                    
-                    System.out.println("PASAŻEROWIE, WSIADAJCIE!");
-                    if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
-                    {
-                        ((Pasazerski)this.trasa.get(0)).przesiadkaPasazera((Pasazerski)this);
-                    }
-                    
-                    this.trasa.get(0).startujPojazd(this);
-                    this.trasa.remove(0);
-             //   }            
-                                       
+                ruszaniePojazdu();
+                przemieszczaniePojazdu();
+                this.najblizszyCel.stopujPojazd(this);
+                zwolnijPole();
+                konczenieTrasyPojazdu();
+                obslugaNaMiejscu();                                                       
             }        
     }
 
@@ -425,6 +307,126 @@ public abstract class Pojazd implements Runnable {
      */
     public int getDeltaY() {
         return deltaY;
+    }
+    
+    public void ruszaniePojazdu(){
+        if(odleglosc>0){
+                                        
+            Platform.runLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            getObrazek().setX(-30);
+                            getObrazek().setY(-30);
+                        }
+            });
+
+            for(int i=0; i<5; i++){
+                    try {
+                            this.przemiescSie();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                }
+        }
+    }
+    
+    public void przemieszczaniePojazdu(){
+        while (this.getOdleglosc()>20){
+            try {
+                czyMozna();
+                this.przemiescSie();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    //                    zwolnijPole();
+            Platform.runLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    getObrazek().setX(getPolozenie().getX()-8 + getModyfikatorX());
+                    getObrazek().setY(getPolozenie().getY()-8 + getModyfikatorY());
+                }
+            });
+
+        }  
+    }
+    
+    public void konczenieTrasyPojazdu(){
+        while (this.getOdleglosc()>0){
+        System.out.println("WOLNE");
+        try {
+            this.przemiescSie();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                getObrazek().setX(getPolozenie().getX()-8 + getModyfikatorX());
+                getObrazek().setY(getPolozenie().getY()-8 + getModyfikatorY());
+            }
+        });
+}
+    }
+    
+    public void obslugaNaMiejscu(){
+        int sen;
+        if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski)){
+            System.out.println("        " + this.trasa.get(0).getNazwa());
+            ((Pasazerski)this).przesiadkaPasazera((Pasazerski)this.trasa.get(0));
+            sen = 1500 +(int)Math.random() * 3500;
+
+            Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        getObrazek().setX(-30);
+                        getObrazek().setY(-30);
+                    }
+                });
+        }
+        else{
+            sen = 150;
+        }
+        
+        if (this.trasa.get(0) instanceof Lotnisko){
+            paliwo = 999;
+        }
+                    
+        try {
+            Thread.sleep(sen);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if(this.trasa.size()> 1){            
+            this.zmienCel(this.trasa.get(1));
+        }
+        else{
+            System.out.println("Dotarłem do: " + this.najblizszyCel.getNazwa() + ".\nKONIEC TRASY.");
+            losujTrase(polozenie);
+            this.zmienCel(this.trasa.get(1));
+        }
+        zwolnijPole();
+
+        System.out.println("PASAŻEROWIE, WSIADAJCIE!");
+        if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski))
+        {
+            ((Pasazerski)this.trasa.get(0)).przesiadkaPasazera((Pasazerski)this);
+        }
+
+        this.trasa.get(0).startujPojazd(this);
+        this.trasa.remove(0);
+    }
+
+    /**
+     * @return the dzialaj
+     */
+    public boolean isDzialaj() {
+        return dzialaj;
     }
     
 }
