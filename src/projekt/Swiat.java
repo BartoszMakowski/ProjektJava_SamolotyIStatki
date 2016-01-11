@@ -20,15 +20,16 @@ import static javafx.application.Application.launch;
  * @author bartosz
  */
 public class Swiat extends Application {
-    public static HashMap<String, Lotnisko> lotniskaCywilne;
-    public static HashMap<String, Lotnisko> lotniskaWojskowe;
+    private static HashMap<String, Lotnisko> lotniskaCywilne;
+    private static HashMap<String, Lotnisko> lotniskaWojskowe;
+    private static HashMap<String, PortMorski> portyMorskie;
     private static HashMap<String, Podrozny> pasazerowie;
     public static HashMap<String, Lokalizacja> lokalizacje;
     public static HashMap<String, Skrzyzowanie> skrzyzowania;
     public static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> trasy;
     public static HashMap<String, LinkedList<Lokalizacja>> rozklady;
     private static HashMap<String, Samolot> samoloty;
-    public static SamolotPasazerski sp;
+//    public static SamolotPasazerski sp;
     
 //    public static LinkedList<Lokalizacj> ptrasa;
 
@@ -53,6 +54,13 @@ public class Swiat extends Application {
         return pasazerowie;
     }
 
+    /**
+     * @return the portyMorskie
+     */
+    public static HashMap<String, PortMorski> getPortyMorskie() {
+        return portyMorskie;
+    }
+
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -69,11 +77,14 @@ public class Swiat extends Application {
             public void run(){
                 lotniskaCywilne = new HashMap<String, Lotnisko>();
                 lotniskaWojskowe = new HashMap<String, Lotnisko>();
+                portyMorskie = new HashMap<String, PortMorski>();
                 lokalizacje = new HashMap<String, Lokalizacja>();
                 skrzyzowania = new HashMap<String, Skrzyzowanie>();
                 pasazerowie = new HashMap<String, Podrozny>();
                 samoloty = new HashMap<String, Samolot>();
                 trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
+                
+//                TWORZENIE LOTNISK CYWILNYCH
                 
                 Lotnisko brzysko = new Lotnisko(550, 20, "Brzyskorzystewko", 3, TypPortu.CYWILNY);
                 Lotnisko koty = new Lotnisko(550, 360, "Koty", 5, TypPortu.CYWILNY);
@@ -89,6 +100,8 @@ public class Swiat extends Application {
                 lotniskaCywilne.put("365_550", leszcze);
                 lotniskaCywilne.put("90_550", zlawies);
                 
+//                TWORZENIE LOTNISK WOJSKOWYCH
+                
                 Lotnisko alcatraz = new Lotnisko(30, 320, "Alcatraz", 1, TypPortu.WOJSKOWY);
                 Lotnisko powidz = new Lotnisko(250, 20, "Powidz", 3, TypPortu.WOJSKOWY);
                 Lotnisko murzynno = new Lotnisko(460, 400, "Murzynno", 2, TypPortu.WOJSKOWY);
@@ -99,6 +112,26 @@ public class Swiat extends Application {
                 lotniskaWojskowe.put("460_400", murzynno);
                 lotniskaWojskowe.put("250_460", pasy);
                 
+//                TWORZENIE PORTÓW MORSKICH
+                
+                PortMorski borowno = new PortMorski(115, 145, "Borówno");
+                PortMorski pieczyska = new PortMorski(315, 145, "Pieczyska");
+                PortMorski powidzPrzystan = new PortMorski(275, 20, "Powidz - Przystań");
+                PortMorski samo = new PortMorski(430, 355, "Samociążek");
+                PortMorski chmielniki = new PortMorski(140, 455, "Chmielniki");
+                                
+                getPortyMorskie().put("115_145", borowno);
+                getPortyMorskie().put("315_145", pieczyska);
+                getPortyMorskie().put("275_20", powidzPrzystan);
+                getPortyMorskie().put("430_355", samo);
+                getPortyMorskie().put("140_455", chmielniki);
+                
+//                TWORZENIE SKRZYŻOWAŃ MORSKICH
+                
+                Skrzyzowanie sm1 = new Skrzyzowanie(275, 145, "SM1");
+                skrzyzowania.put("275_145", sm1);
+                
+//                TWORZENIE SKRZYŻOWAŃ POWIETRZNYCH
                 
                 Skrzyzowanie s1 = new Skrzyzowanie(365, 20, "S1");
                 skrzyzowania.put("365_20", s1);
@@ -223,6 +256,13 @@ public class Swiat extends Application {
                 s14.dodajDrogowskaz(new Drogowskaz(s14, leszcze));
                 s14.dodajDrogowskaz(new Drogowskaz(s14, samokleski));
                 
+//                TWORZENIE DROGOWSKAZÓW MORSKICH
+
+                int n = powidzPrzystan.dodajDrogowskaz(new Drogowskaz(powidzPrzystan, sm1));
+                System.out.println("NNNNNNNNNNNNNNNN: " + n);
+                sm1.dodajDrogowskaz(new Drogowskaz(sm1, borowno));
+                
+                
 //                niebieskie.dodajDrogowskaz(new Drogowskaz(40, s1, Kierunek.PRAWO));
 //                s1.dodajDrogowskaz(new Drogowskaz(70, czerwone, Kierunek.DOL));
 //                s1.dodajDrogowskaz(new Drogowskaz(40, niebieskie, Kierunek.LEWO));
@@ -230,6 +270,7 @@ public class Swiat extends Application {
                 
                 lokalizacje.putAll(lotniskaCywilne);
                 lokalizacje.putAll(lotniskaWojskowe);
+                lokalizacje.putAll(getPortyMorskie());
                 lokalizacje.putAll(skrzyzowania);
 
                 System.out.println("Utworzone lokalizacje: ");
@@ -255,6 +296,8 @@ public class Swiat extends Application {
                 ArrayList<LinkedList<Lokalizacja>> tr550_360 = new ArrayList<>();
                 ArrayList<LinkedList<Lokalizacja>> tr365_550 = new ArrayList<>();
                 ArrayList<LinkedList<Lokalizacja>> tr90_550 = new ArrayList<>();
+                
+                ArrayList<LinkedList<Lokalizacja>> tr275_20 = new ArrayList<>();
                 
                 trasa = new LinkedList<>();
                 trasa.add(brzysko);
@@ -347,6 +390,18 @@ public class Swiat extends Application {
                 trasy.put("550_360", tr550_360);
                 trasy.put("90_550", tr90_550);
                 
+                
+                trasa = new LinkedList<>();
+                trasa.add(powidzPrzystan);
+                trasa.add(sm1);
+                trasa.add(borowno);
+                tr275_20.add(trasa);
+                
+                trasy.put("275_20", tr275_20);
+                
+                
+                
+                
                 ArrayList<LinkedList<Lokalizacja>> tr250_20 = new ArrayList<>();
                 
                 trasa = new LinkedList<>();
@@ -356,27 +411,14 @@ public class Swiat extends Application {
                 trasa.add(alcatraz);
                 tr250_20.add(trasa);
                 
-                trasy.put("250_20", tr250_20);
-
-
-//                sp = new SamolotPasazerski(new Polozenie(10, 0), 1, niebieskie, trasa, Kierunek.DOL);
-//                while(true){
-//                    FXMLDocumentController.se
-//                    stage.show();
-//                    try {
-//                        Thread.sleep(50);
-//                    } catch (InterruptedException ex) {
-//                        Logger.getLogger(Projekt.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-                
-                
+                trasy.put("250_20", tr250_20);       
                 
             }
         };
         
         renderer.setDaemon(true);
         renderer.start();
+       
     }
 
     /**
@@ -384,6 +426,7 @@ public class Swiat extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+        
     }
    
     
