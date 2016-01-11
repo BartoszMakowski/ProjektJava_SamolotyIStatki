@@ -33,6 +33,7 @@ public abstract class Pojazd implements Runnable {
         this.id = ostatnieId++;
         this.kierunek = Kierunek.ZADEN;
         this.dzialaj = true;
+        losujTrase(polozenie);
         //        this.zmienCel(trasa.listIterator().next());
     }
 
@@ -84,6 +85,8 @@ public abstract class Pojazd implements Runnable {
     private void zmienCel(Lokalizacja lok){
         this.najblizszyCel = lok;
         System.out.println( this.toString() +  ": Ustalono nowy cel: " + this.najblizszyCel.getNazwa() + this.najblizszyCel.getPolozenie() );
+        System.out.println("ZEROWY INDEKS TRASY: " + this.trasa.get(0).getNazwa());
+        System.out.println("NAJBLIŻSZY CEL: " + this.najblizszyCel.getNazwa());
         this.setKierunek(this.trasa.get(0).jakDojechac( this.najblizszyCel ).getKierunek());
         
          switch (this.getKierunek())
@@ -91,18 +94,22 @@ public abstract class Pojazd implements Runnable {
             case LEWO:
                 this.modyfikatorX = 0;
                 this.modyfikatorY = -5;
+                this.getObrazek().setRotate(225);
                 break;
             case PRAWO:
                 this.modyfikatorX = 0;
                 this.modyfikatorY = 5;
+                this.getObrazek().setRotate(45);
                 break;
             case DOL:
                 this.modyfikatorX = -5;
                 this.modyfikatorY = 0;
+                this.getObrazek().setRotate(135);
                 break;
             case GORA:
                 this.modyfikatorX = 5;
                 this.modyfikatorY = 0;
+                this.getObrazek().setRotate(315);
                 break;
         }
          
@@ -136,8 +143,8 @@ public abstract class Pojazd implements Runnable {
 //        czyMozna();
         
          
-        this.polozenie.setY(this.polozenie.getY()+deltaY);
-        this.polozenie.setX(this.polozenie.getX()+deltaX);
+        this.polozenie.setY(this.polozenie.getY()+getDeltaY());
+        this.polozenie.setX(this.polozenie.getX()+getDeltaX());
         paliwo -= 2;
         
         this.odleglosc--;
@@ -192,9 +199,9 @@ public abstract class Pojazd implements Runnable {
     private boolean sprawdzPole(){
         boolean czy = true;
 //        synchronized(Swiat.getSamoloty()){
-            for(int i=1; i<15; i++){
-                if(Swiat.getSamoloty().containsKey(( polozenie.getX() + modyfikatorX + i*deltaX)+"_" + (polozenie.getY()+ modyfikatorY + i * deltaY))){
-                    System.out.println(( polozenie.getX() +  i*deltaX)+"_" + (polozenie.getY()+ i * deltaY));
+            for(int i=1; i<20; i++){
+                if(Swiat.getSamoloty().containsKey(( polozenie.getX() + getModyfikatorX() + i*getDeltaX())+"_" + (polozenie.getY()+ getModyfikatorY() + i * getDeltaY()))){
+                    System.out.println(( polozenie.getX() +  i*getDeltaX())+"_" + (polozenie.getY()+ i * getDeltaY()));
                     czy = false;
                     break;
                 }
@@ -204,13 +211,13 @@ public abstract class Pojazd implements Runnable {
     }
     
     private void zajmijPole(){
-        Swiat.getSamoloty().put((polozenie.getX() + modyfikatorX + deltaX ) + "_" + (polozenie.getY() + modyfikatorY + deltaY), (Samolot) this);
+        Swiat.getSamoloty().put((polozenie.getX() + getModyfikatorX() + getDeltaX() ) + "_" + (polozenie.getY() + getModyfikatorY() + getDeltaY()), (Samolot) this);
 //        System.out.println((polozenie.getX() + deltaX) + "_" + (polozenie.getY() + deltaY));
         
     }
     
     private void zwolnijPole(){
-        Swiat.getSamoloty().remove((polozenie.getX() + modyfikatorX) + "_" + (polozenie.getY() + modyfikatorY));        
+        Swiat.getSamoloty().remove((polozenie.getX() + getModyfikatorX()) + "_" + (polozenie.getY() + getModyfikatorY()));        
     }
     
     private boolean czyMozna() throws InterruptedException{
@@ -304,8 +311,8 @@ public abstract class Pojazd implements Runnable {
 
                         @Override
                         public void run() {
-                            getObrazek().setX(getPolozenie().getX()-8 + modyfikatorX);
-                            getObrazek().setY(getPolozenie().getY()-8 + modyfikatorY);
+                            getObrazek().setX(getPolozenie().getX()-8 + getModyfikatorX());
+                            getObrazek().setY(getPolozenie().getY()-8 + getModyfikatorY());
                         }
                     });
                     
@@ -332,8 +339,8 @@ public abstract class Pojazd implements Runnable {
 
                                 @Override
                                 public void run() {
-                                    getObrazek().setX(getPolozenie().getX()-8 + modyfikatorX);
-                                    getObrazek().setY(getPolozenie().getY()-8 + modyfikatorY);
+                                    getObrazek().setX(getPolozenie().getX()-8 + getModyfikatorX());
+                                    getObrazek().setY(getPolozenie().getY()-8 + getModyfikatorY());
                                 }
                             });
                         //}
@@ -390,6 +397,34 @@ public abstract class Pojazd implements Runnable {
              //   }            
                                        
             }        
+    }
+
+    /**
+     * @return the modyfikatorX
+     */
+    public int getModyfikatorX() {
+        return modyfikatorX;
+    }
+
+    /**
+     * @return the modyfikatorY
+     */
+    public int getModyfikatorY() {
+        return modyfikatorY;
+    }
+
+    /**
+     * @return the deltaX
+     */
+    public int getDeltaX() {
+        return deltaX;
+    }
+
+    /**
+     * @return the deltaY
+     */
+    public int getDeltaY() {
+        return deltaY;
     }
     
 }
