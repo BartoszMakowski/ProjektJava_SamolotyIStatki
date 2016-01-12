@@ -28,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -105,16 +106,14 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     public void startC() throws InterruptedException {
+        
 //        for (int i = 0; i < 10; i++)
             Thread move = new Thread(){
                 @Override
                 public void run(){
                     
-//                    Thread sam = new Thread(Projekt.sp);
-//                    sam.setDaemon(true);
-//                    sam.start();
-//                    sp2 = Projekt.sp.getObrazek();
-//                    sp.getChildren().add(sp2);
+                    
+
                     while(true){
                         try {
 //                            if(Projekt.sp.getTrasa().size()>0){
@@ -183,6 +182,12 @@ public class FXMLDocumentController implements Initializable {
 
                             case "lotniskoCywilne":
                             {
+                                lInfoLD.setText("Max:");
+                                lInfoLDW.setText("" + ((Lotnisko)wyswietlanaLokalizacja).getPojemnosc());
+
+                                lInfoPD.setText("Aktualnie:");
+                                lInfoPDW.setText("" + ((Lotnisko)wyswietlanaLokalizacja).getZajetePrzez().size());
+                                
                                 ObservableList<String> olw = FXCollections.observableArrayList();
                                 if(czyPasazerowie){
                                     if (((Lotnisko)wyswietlanaLokalizacja).getOdwiedzajacy().size() > 0)
@@ -203,8 +208,38 @@ public class FXMLDocumentController implements Initializable {
                             lvTrasa.setItems(olw);
                             }
                             break;
+                            
                             case "lotniskoWojskowe":{
                                 
+                            }
+                            break;
+                            
+                            case "portMorski":
+                            {
+                                lInfoLD.setText("Max:");
+                                lInfoLDW.setText("" + ((PortMorski)wyswietlanaLokalizacja).getPojemnosc());
+
+                                lInfoPD.setText("Aktualnie:");
+                                lInfoPDW.setText("" + ((PortMorski)wyswietlanaLokalizacja).getZajetyPrzez().size());
+                                
+                                ObservableList<String> olw = FXCollections.observableArrayList();
+                                if(czyPasazerowie){
+                                    if (((PortMorski)wyswietlanaLokalizacja).getOdwiedzajacy().size() > 0)
+                                        for (Podrozny p  : ((PortMorski)wyswietlanaLokalizacja).getOdwiedzajacy()){
+                                            olw.add(p.getImie() + " " + p.getNazwisko());
+                                        }
+                                    else
+                                        olw.clear();
+                            }
+                            else{
+                                if (wyswietlanaLokalizacja.getOdleglosci().size() > 0)
+                                    for (Drogowskaz d  : wyswietlanaLokalizacja.getOdleglosci()){
+                                        olw.add(d.getDokad().getNazwa() + "   " + d.getKierunek() + "   " + d.getOdleglosc() );
+                                    }
+//                                        lvTrasa.setItems(olw);
+//                                        lvTrasa.setItems(null);
+                            }
+                            lvTrasa.setItems(olw);
                             }
                             break;
 
@@ -225,7 +260,17 @@ public class FXMLDocumentController implements Initializable {
     
 
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            // TODO
+            coWyswietlane = "nic";
+            
+            startC();
+            
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }    
 
     @FXML
@@ -300,6 +345,40 @@ public class FXMLDocumentController implements Initializable {
                 });
         nowySWWatek.setDaemon(true);
         nowySWWatek.start();
+        
+    }
+    
+    private void dodajWycieczkowiec(){
+        Wycieczkowiec nowyWyc = new Wycieczkowiec((PortMorski)wyswietlanaLokalizacja);
+        Thread nowyWycWatek = new Thread(nowyWyc);
+        ImageView ikonaSW = nowyWyc.getObrazek();
+        ap.getChildren().add(ikonaSW);
+//        ikonaSW.setOnMouseClicked(new EventHandler<MouseEvent>(){
+//            @Override
+//            public void handle(MouseEvent event) {
+//                czyPojazd = true;
+//                bTrasaZawartosc.setDisable(false);
+//                System.out.println("kliknieto" + event.getSource());
+//                coWyswietlane = "pojazdCywilny";
+//                lNazwa.setText(nowySW.toString());
+//                lNaglowek.setText("Trasa:");
+//                wyswietlanyPojazd = nowySW;
+//            }
+//            
+//            
+//        });
+//        
+//        bUsunDodaj.setText("Usuń samolot");
+//        bUsunDodaj.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                    @Override
+//                    public void handle(MouseEvent event) {
+//                        nowySW.usun();
+//                        ap.getChildren().remove(ikonaSW);
+//                        coWyswietlane = "nic";
+//                    }
+//                });
+        nowyWycWatek.setDaemon(true);
+        nowyWycWatek.start();
         
     }
     
@@ -498,6 +577,28 @@ public class FXMLDocumentController implements Initializable {
     private void lokInfo(MouseEvent event) {
     }
     
+    @FXML
+    private void portInfo(MouseEvent event) {
+        coWyswietlane = "portMorski";
+        
+        wyswietlanaLokalizacja = 
+                Swiat.lokalizacje.get(
+                        (int)((Rectangle)event.getSource()).getX() + "_" 
+                                + (int)((Rectangle)event.getSource()).getY());
+        System.out.println(FXMLDocumentController.this.wyswietlanaLokalizacja.getNazwa());
+        
+        lNazwa.setText(wyswietlanaLokalizacja.getNazwa());
+        
+        bUsunDodaj.setText("Dodaj wycieczkowiec");
+        bUsunDodaj.setOnMouseClicked(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                dodajWycieczkowiec();
+            }
+        });
+        
+        
+    }
     
     
     
