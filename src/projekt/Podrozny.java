@@ -1,7 +1,10 @@
 package projekt;
 
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +42,8 @@ public class Podrozny implements Runnable{
         this.pesel = bazaPesel++;
         this.dom = dom;
         this.odpoczywa = false;
-        this.rodzajPodrozy = Math.random() > 0.5 ? RodzajPodrozy.PRYWATNA : RodzajPodrozy.SLUZBOWA; 
+        this.rodzajPodrozy = Math.random() > 0.5 ? RodzajPodrozy.PRYWATNA : RodzajPodrozy.SLUZBOWA;
+        znajdzTrase(dom, Swiat.getLokalizacje().get("90_550"));
         
 
         
@@ -47,7 +51,7 @@ public class Podrozny implements Runnable{
         Swiat.getPasazerowie().put("" + pesel, this); 
        
  
-        System.out.println(this.plan);
+//        System.out.println(this.plan);
         
     }
 
@@ -90,7 +94,65 @@ public class Podrozny implements Runnable{
             }
         }
         this.plan = plan;
-        this.plan.remove(0);
+        this.plan.remove(0);       
+    }
+    
+    private void znajdzTrase(Lokalizacja skad, Lokalizacja dokad){
+        HashMap<String, Lokalizacja> punkty = new HashMap<>();
+        HashMap<String, Lokalizacja> poprzednik = new HashMap<>();
+        HashMap<String, Integer> odleglosc = new HashMap<>();
+        Lokalizacja l;
+        
+        punkty.putAll(Swiat.getLokalizacje());
+//        for (String s : Swiat.getLotniskaWojskowe().keySet()){
+//            punkty.remove(s);
+//        }
+        
+        for (String s : punkty.keySet()){
+            odleglosc.put(s, 99999);
+        }
+//        System.out.println(odleglosc);
+        
+        PriorityQueue<String> kolejka = new PriorityQueue<String>(punkty.keySet().size(), new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if ( odleglosc.get(o1) < odleglosc.get(o2) ){
+                    return -1;
+                }
+                else if ( odleglosc.get(o1) > odleglosc.get(o2) ){
+                    return 1;
+                }
+                return 0;                           
+            }
+        });
+               
+        
+                
+        odleglosc.replace(skad.getPolozenie().getX() + "_" + skad.getPolozenie().getY(), 0);
+        
+        kolejka.addAll(punkty.keySet());
+        while (kolejka.peek() != null){
+            l = punkty.get(kolejka.poll());
+            int odlegloscTutaj = odleglosc.get(l.getPolozenie().getX() + "_" + l.getPolozenie().getY());
+//            System.out.println(odlegloscTutaj);
+            
+//            System.out.println(l.getOdleglosci().size());
+            for (Drogowskaz d : l.getOdleglosci()){
+                if(odleglosc.get(d.getDokad().getPolozenie().getX() + "_" + d.getDokad().getPolozenie().getY()) >
+                         odlegloscTutaj + d.getOdleglosc()){
+                    System.out.println("ZAMIANA!");
+                    odleglosc.replace(d.getDokad().getPolozenie().getX() + "_" + d.getDokad().getPolozenie().getY(),
+                            odlegloscTutaj + d.getOdleglosc());
+                    kolejka.add(d.getDokad().getPolozenie().getX() + "_" + d.getDokad().getPolozenie().getY());
+                    poprzednik.put(d.getDokad().getPolozenie().getX() + "_" + d.getDokad().getPolozenie().getY(), l);
+//                    System.out.println(poprzednik.get(d.getDokad().getPolozenie().getX() + "_" + d.getDokad().getPolozenie().getY()).getNazwa());
+                }
+            }
+            
+        }
+        System.out.println(poprzednik.get("90_550").getNazwa());
+        
+        
         
     }
 
