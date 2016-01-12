@@ -57,18 +57,11 @@ public abstract class Lokalizacja {
      * @return drogowskaz wskazujacy na docelowa lokalizacje
      */
     public Drogowskaz jakDojechac( Lokalizacja lokalizacja ){
-//        Drogowskaz c = null;
-//        System.out.println( );
-//        System.out.println( "Jestem w lokalizacji: " + this.getNazwa() +
-//                ". Chce przemiescic sie do: " + lokalizacja.getNazwa() +
-//                ".\n Dostepne drogowskazy: " + this.odleglosci.size());
+
         for(Drogowskaz d: this.odleglosci){
-//            System.out.println(d.getDokad().getNazwa());
             if ( d.getDokad().getPolozenie().equals(lokalizacja.getPolozenie()) ){
-//                System.out.println("ZNALAZŁEM DROGOWSKAZ !");;
                 return d;
             }
-//            System.out.println("\n\n");
         }
         return null;
     }
