@@ -33,61 +33,7 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
         getObrazek().yProperty().set(this.getPolozenie().getY());
         getObrazek().setId("" + this.getId());
     }
-    
-//    public SamolotPasazerski(Polozenie polozenie, Lotnisko najblizszyCel, List<Lokalizacja> trasa){
-//        super(polozenie, (int) (5 + Math.random() * 25), najblizszyCel, trasa);
-//        this.miejsca = 2 + (int) (Math.random()+8);
-//        this.pasazerowie = new LinkedList<>();
-//        for (int i=0; i<this.miejsca/2; i++){
-//            Podrozny p = new Podrozny(najblizszyCel);
-//            this.pasazerowie.add(p);
-//            Thread t = new Thread(p);
-//            t.setDaemon(true);
-//            t.start();
-//        }
-//        
-//        this.obrazek = new ImageView(getClass().getResource("img/Samolot.png").toExternalForm());
-//        this.obrazek.fitHeightProperty().set(25);
-//        this.obrazek.fitWidthProperty().set(25);
-////        this.obrazek.xProperty().set(this.getPolozenie().getX()*4);
-////        this.obrazek.yProperty().set(this.getPolozenie().getY()*4);
-//        this.obrazek.setId("" + this.getId());
-//
-//        
-//    }
-//    
-//    
-//
-//    public SamolotPasazerski(Polozenie polozenie, int predkosc, Lotnisko najblizszyCel, List<Lokalizacja> trasa) {
-//        super(polozenie, predkosc, najblizszyCel, trasa);
-//        this.obrazek = new ImageView(getClass().getResource("img/Samolot.png").toExternalForm());
-//        this.obrazek.fitHeightProperty().set(15);
-//        this.obrazek.fitWidthProperty().set(15 + this.getId());
-//        this.obrazek.xProperty().set(this.getPolozenie().getX()*4);
-//        this.obrazek.yProperty().set(this.getPolozenie().getY()*4);
-//        this.obrazek.setId("" + this.getId());
-////        this.obrazek.setOnMouseClicked(new EventHandler<MouseEvent>(){
-////            @Override
-////            public void handle(MouseEvent event) {
-////                System.out.println("mouse click detected! ");
-////                
-//////                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-////            }
-////            
-////        });
-//    }
-    
-//    public SamolotPasazerski(Polozenie polozenie, Lotnisko najblizszyCel, List<Lokalizacja> trasa, Kierunek kierunek){
-//        this(polozenie,najblizszyCel,trasa);
-//        this.setKierunek(kierunek);
-//    }
-//      
-//    public SamolotPasazerski(Polozenie polozenie, int predkosc, Lotnisko najblizszyCel, List<Lokalizacja> trasa, Kierunek kierunek){
-//        this(polozenie,predkosc,najblizszyCel,trasa);
-//        this.setKierunek(kierunek);
-//    }
-
-    public void zmienPasazerow(){}
+  
 
     public int getMiejsca() {
         return miejsca;
@@ -148,6 +94,6 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
         super.usun();
         
     }
-    
-    
+   
+       
 }
