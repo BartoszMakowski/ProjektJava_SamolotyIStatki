@@ -28,9 +28,25 @@ Skrzyżowania:
 460, 460 - S11
 550, 460 - S12
 250, 550 - S13
+
 460, 550 - S14
 
-Połączenia
+Porty cywilne:
+115, 145 - Borówno
+315, 145 - Pieczyska
+430, 355 - Samociążek
+
+Porty wojskowe:
+
+275, 20 - Powidz - Przystań
+140, 455 - Chmielniki
+
+Skrzyżowania Morskie:
+275, 145 - SM1
+140, 455 - SM2
+275, 355 - SM3
+
+Połączenia:
 
 Brzyskorzystewko - S1 - Kity - S8 - S10 - Leszcze
 Brzyskorzystewko - S4 - Kity
