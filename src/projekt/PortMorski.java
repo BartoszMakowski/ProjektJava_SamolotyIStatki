@@ -48,7 +48,7 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
             }
             synchronized(this){
                 System.out.println("CHCE DODAC STATEK");
-                if (this.zajetyPrzez.size()<this.pojemnosc && !aktywny){
+                if (this.zajetyPrzez.size()<this.getPojemnosc() && !aktywny){
                     System.out.println("DODAJE STATEK");
                     this.zajetyPrzez.add((Wycieczkowiec)wycieczkowiec);
                     aktywny = true;
@@ -105,5 +105,12 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
     @Override
     public boolean czyJestMiejsce() {
         return true;
+    }
+
+    /**
+     * @return the pojemnosc
+     */
+    public int getPojemnosc() {
+        return pojemnosc;
     }
 }
