@@ -48,7 +48,7 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
             }
             synchronized(this){
                 System.out.println("CHCE DODAC STATEK");
-                if (this.zajetyPrzez.size()<this.getPojemnosc() && !aktywny){
+                if (zajetyPrzez.size()<getPojemnosc() && !aktywny){
                     System.out.println("DODAJE STATEK");
                     this.zajetyPrzez.add((Wycieczkowiec)wycieczkowiec);
                     aktywny = true;
@@ -112,5 +112,15 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
      */
     public int getPojemnosc() {
         return pojemnosc;
+    }
+    
+    /**
+     *
+     * @param statek
+     */
+    public void startujPojazd(Pojazd statek){
+        synchronized(this){
+            zajetyPrzez.remove(statek);
+        }         
     }
 }
