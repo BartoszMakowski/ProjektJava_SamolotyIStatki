@@ -29,6 +29,7 @@ public class Swiat extends Application {
     public static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> trasy;
     public static HashMap<String, LinkedList<Lokalizacja>> rozklady;
     private static HashMap<String, Samolot> samoloty;
+    private static HashMap<String, Statek> statki;
 //    public static SamolotPasazerski sp;
     
 //    public static LinkedList<Lokalizacj> ptrasa;
@@ -61,6 +62,13 @@ public class Swiat extends Application {
         return portyMorskie;
     }
 
+    /**
+     * @return the statki
+     */
+    public static HashMap<String, Statek> getStatki() {
+        return statki;
+    }
+
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -82,6 +90,7 @@ public class Swiat extends Application {
                 skrzyzowania = new HashMap<String, Skrzyzowanie>();
                 pasazerowie = new HashMap<String, Podrozny>();
                 samoloty = new HashMap<String, Samolot>();
+                statki = new HashMap<String, Statek>();
                 trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
                 
 //                TWORZENIE LOTNISK CYWILNYCH
@@ -270,7 +279,7 @@ public class Swiat extends Application {
                 
                 lokalizacje.putAll(lotniskaCywilne);
                 lokalizacje.putAll(lotniskaWojskowe);
-                lokalizacje.putAll(getPortyMorskie());
+                lokalizacje.putAll(portyMorskie);
                 lokalizacje.putAll(skrzyzowania);
 
                 System.out.println("Utworzone lokalizacje: ");
