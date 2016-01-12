@@ -165,4 +165,11 @@ public class Wycieczkowiec extends Statek implements Pasazerski{
             obslugaNaMiejscu();                                                       
         }        
     }
+    
+    @Override
+    public void usun(){
+        this.pasazerowie = new LinkedList<>();
+        super.usun();
+        
+    }
 }
