@@ -126,8 +126,8 @@ public class FXMLDocumentController implements Initializable {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        switch(FXMLDocumentController.this.coWyswietlane){
-                            case "pojazdCywilny":{
+                        switch(coWyswietlane){
+                            case "samolotPasazerski":{
 
                                 lInfoLG.setText("X:");                
                                 lInfoLGW.setText(""  + wyswietlanyPojazd.getPolozenie().getX());
@@ -146,7 +146,7 @@ public class FXMLDocumentController implements Initializable {
                                 if(czyPasazerowie){
                                     if (((SamolotPasazerski)FXMLDocumentController.this.wyswietlanyPojazd).getPasazerowie().size() > 0)
                                         for (Podrozny p  : ((SamolotPasazerski)FXMLDocumentController.this.wyswietlanyPojazd).getPasazerowie()){
-                                            olw.add("" + p.getPesel());
+                                            olw.add("" + p.getPesel() + ". " + p.getImie() + " " + p.getNazwisko());
                                         }
                                 }
                                 else{
@@ -158,6 +158,39 @@ public class FXMLDocumentController implements Initializable {
                                 lvTrasa.setItems(olw);
                             }
                             break;
+                            
+                            case "wycieczkowiec":{
+
+                                lInfoLG.setText("X:");                
+                                lInfoLGW.setText(""  + wyswietlanyPojazd.getPolozenie().getX());
+                //                        setText("" + nowySP.getPolozenie().getX());
+                                lInfoPG.setText("Y:");
+                                lInfoPGW.setText(""  + wyswietlanyPojazd.getPolozenie().getY());
+
+                                lInfoLD.setText("V:");
+                                lInfoLDW.setText("" + wyswietlanyPojazd.getPredkosc());
+
+                                lInfoPD.setText("F:");
+                                lInfoPDW.setText("" + wyswietlanyPojazd.getPaliwo());
+
+                                ObservableList<String> olw = FXCollections.observableArrayList();
+    //                                    lvTrasa.getItems().clear();
+                                if(czyPasazerowie){
+                                    if (((Wycieczkowiec)wyswietlanyPojazd).getPasazerowie().size() > 0)
+                                        for (Podrozny p  : ((Wycieczkowiec)wyswietlanyPojazd).getPasazerowie()){
+                                            olw.add("" + p.getPesel() + ". " + p.getImie() + " " + p.getNazwisko());
+                                        }
+                                }
+                                else{
+                                    if (wyswietlanyPojazd.getTrasa().size() > 0)
+                                        for (Lokalizacja l  : FXMLDocumentController.this.wyswietlanyPojazd.getTrasa()){
+                                            olw.add(l.getNazwa());
+                                        }
+                                }
+                                lvTrasa.setItems(olw);
+                            }
+                            break;
+
 
                             case "skrzyzowanie":{
 //                                    lInfoLG.setText("X:");                
@@ -192,7 +225,7 @@ public class FXMLDocumentController implements Initializable {
                                 if(czyPasazerowie){
                                     if (((Lotnisko)wyswietlanaLokalizacja).getOdwiedzajacy().size() > 0)
                                         for (Podrozny p  : ((Lotnisko)wyswietlanaLokalizacja).getOdwiedzajacy()){
-                                            olw.add(p.getImie() + " " + p.getNazwisko());
+                                            olw.add("" + p.getPesel() + ". " + p.getImie() + " " + p.getNazwisko());
                                         }
                                     else
                                         olw.clear();
@@ -226,7 +259,7 @@ public class FXMLDocumentController implements Initializable {
                                 if(czyPasazerowie){
                                     if (((PortMorski)wyswietlanaLokalizacja).getOdwiedzajacy().size() > 0)
                                         for (Podrozny p  : ((PortMorski)wyswietlanaLokalizacja).getOdwiedzajacy()){
-                                            olw.add(p.getImie() + " " + p.getNazwisko());
+                                            olw.add("" + p.getPesel() + ". " + p.getImie() + " " + p.getNazwisko());
                                         }
                                     else
                                         olw.clear();
@@ -285,7 +318,7 @@ public class FXMLDocumentController implements Initializable {
                 czyPojazd = true;
                 bTrasaZawartosc.setDisable(false);
                 System.out.println("kliknieto" + event.getSource());
-                coWyswietlane = "pojazdCywilny";
+                coWyswietlane = "samolotPasazerski";
                 lNazwa.setText(nowySP.toString());
                 lNaglowek.setText("Trasa:");
                 wyswietlanyPojazd = nowySP;
@@ -351,32 +384,34 @@ public class FXMLDocumentController implements Initializable {
     private void dodajWycieczkowiec(){
         Wycieczkowiec nowyWyc = new Wycieczkowiec((PortMorski)wyswietlanaLokalizacja);
         Thread nowyWycWatek = new Thread(nowyWyc);
-        ImageView ikonaSW = nowyWyc.getObrazek();
-        ap.getChildren().add(ikonaSW);
-//        ikonaSW.setOnMouseClicked(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                czyPojazd = true;
-//                bTrasaZawartosc.setDisable(false);
-//                System.out.println("kliknieto" + event.getSource());
-//                coWyswietlane = "pojazdCywilny";
-//                lNazwa.setText(nowySW.toString());
-//                lNaglowek.setText("Trasa:");
-//                wyswietlanyPojazd = nowySW;
-//            }
-//            
-//            
-//        });
-//        
-//        bUsunDodaj.setText("Usuń samolot");
-//        bUsunDodaj.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//                    @Override
-//                    public void handle(MouseEvent event) {
-//                        nowySW.usun();
-//                        ap.getChildren().remove(ikonaSW);
-//                        coWyswietlane = "nic";
-//                    }
-//                });
+        ImageView ikonaWyc = nowyWyc.getObrazek();
+        ap.getChildren().add(ikonaWyc);
+        ikonaWyc.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                czyPojazd = true;
+                bTrasaZawartosc.setDisable(false);
+                System.out.println("kliknieto" + event.getSource());
+                coWyswietlane = "wycieczkowiec";
+                lNazwa.setText(nowyWyc.toString());
+                lNaglowek.setText("Trasa:");
+                wyswietlanyPojazd = nowyWyc;
+                
+                bUsunDodaj.setText("Usuń statek");
+                bUsunDodaj.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        nowyWyc.usun();
+                        ap.getChildren().remove(ikonaWyc);
+                        coWyswietlane = "nic";
+                    }
+                });
+            }
+            
+            
+        });
+        
+        
         nowyWycWatek.setDaemon(true);
         nowyWycWatek.start();
         
@@ -425,12 +460,12 @@ public class FXMLDocumentController implements Initializable {
                 dodajSP();
             }
         });
-        FXMLDocumentController.this.czyPojazd = false;
-        FXMLDocumentController.this.wyswietlanaLokalizacja = 
+        czyPojazd = false;
+        wyswietlanaLokalizacja = 
                 Swiat.lokalizacje.get(
                         (int)((Circle)event.getSource()).centerXProperty().get() + "_" 
                                 + (int)((Circle)event.getSource()).centerYProperty().get());
-        System.out.println(FXMLDocumentController.this.wyswietlanaLokalizacja.getNazwa());
+        System.out.println(wyswietlanaLokalizacja.getNazwa());
         
         lNazwa.setText(wyswietlanaLokalizacja.getNazwa());
         lInfoLG.setText("X:");
@@ -490,9 +525,20 @@ public class FXMLDocumentController implements Initializable {
         czyPasazerowie = !czyPasazerowie;
         if (czyPasazerowie){
                     lNaglowek.setText("Pasażerowie:");
+                    lvTrasa.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            try {
+                                pasazerInfo(event);
+                            } catch (IOException ex) {
+                                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
         }
         else
         {
+            lvTrasa.setOnMouseClicked(null);
             switch(coWyswietlane){
                 case "pojazdCywilny":
                     lNaglowek.setText("Trasa:");
@@ -515,7 +561,7 @@ public class FXMLDocumentController implements Initializable {
     private void pasazerInfo(MouseEvent event) throws IOException {
 //        Loader loader = FXMLLoader.load(getClass().getResource("FXMLPasazer.fxml"));
 //        Parent root = FXMLLoader.load(getClass().getResource("FXMLPasazer.fxml"));
-        Podrozny p = Swiat.getPasazerowie().get(lvTrasa.getSelectionModel().getSelectedItem());
+        Podrozny p = Swiat.getPasazerowie().get(lvTrasa.getSelectionModel().getSelectedItem().substring(0, 1));
 
 //        FXMLPasazerController.pPesel.setText("NULL");
         
