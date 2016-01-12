@@ -21,7 +21,7 @@ public abstract class Samolot extends Pojazd {
         this.usterka = true;
     }
     
-        private boolean sprawdzPole(){
+    private boolean sprawdzPole(){
         boolean czy = true;
 //        synchronized(Swiat.getSamoloty()){
             for(int i=1; i<15; i++){
@@ -42,6 +42,7 @@ public abstract class Samolot extends Pojazd {
     }
     
     private void zwolnijPole(){
+        System.out.println("JEDNAK JEST LEPIEJ");
         Swiat.getSamoloty().remove((getPolozenie().getX() + getModyfikatorX()) + "_" + (getPolozenie().getY() + getModyfikatorY()));        
     }
     
@@ -65,4 +66,18 @@ public abstract class Samolot extends Pojazd {
         return true;
     }
     
+    @Override
+    public void run(){
+//        Image gpojazd;
+            while(isDzialaj())
+            {
+                ruszaniePojazdu();
+                przemieszczaniePojazdu();
+                this.getNajblizszyCel().stopujPojazd(this);
+                zwolnijPole();
+                konczenieTrasyPojazdu();
+                obslugaNaMiejscu();                                                       
+            }        
+    }
 }
+    
