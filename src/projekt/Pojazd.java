@@ -82,7 +82,7 @@ public abstract class Pojazd implements Runnable {
                
     }
     
-    private void zmienCel(Lokalizacja lok){
+    public void zmienCel(Lokalizacja lok){
         this.najblizszyCel = lok;
         System.out.println( this.toString() +  ": Ustalono nowy cel: " + this.najblizszyCel.getNazwa() + this.najblizszyCel.getPolozenie() );
         System.out.println("ZEROWY INDEKS TRASY: " + this.trasa.get(0).getNazwa());
@@ -427,6 +427,10 @@ public abstract class Pojazd implements Runnable {
      */
     public boolean isDzialaj() {
         return dzialaj;
+    }
+    
+    public void tankuj(){
+        paliwo = 999;
     }
     
 }
