@@ -154,8 +154,8 @@
                   <Label fx:id="lCel" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="16.0" layoutY="304.0" prefHeight="55.0" prefWidth="130.0" textAlignment="CENTER" wrapText="true" />
                   <Button fx:id="bUsunDodaj" layoutX="11.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#dodajSP" prefWidth="180.0" text="Dodaj samolot" />
                   <Button fx:id="bTrasaZawartosc" layoutX="11.0" layoutY="494.0" mnemonicParsing="false" onAction="#zmienCzyPasazerowie" prefWidth="180.0" text="Zmień wyświetlaną listę" />
-                  <Button fx:id="bZmien" layoutX="11.0" layoutY="527.0" mnemonicParsing="false" onAction="#dodajSP" prefWidth="180.0" text="Zmień trasę" />
-                  <Button fx:id="bAwaria" layoutX="12.0" layoutY="559.0" mnemonicParsing="false" onAction="#dodajSP" prefWidth="180.0" text="Button" />
+                  <Button fx:id="bZmien" layoutX="11.0" layoutY="527.0" mnemonicParsing="false" prefWidth="180.0" text="Zmień trasę" />
+                  <Button fx:id="bAwaria" layoutX="12.0" layoutY="559.0" mnemonicParsing="false" prefWidth="180.0" text="Button" />
                   <ListView fx:id="lvTrasa" layoutX="10.0" layoutY="304.0" onMouseClicked="#pasazerInfo" prefHeight="150.0" prefWidth="180.0" />
                   <Label fx:id="lInfoPGW" layoutX="149.0" layoutY="229.0" prefWidth="30.0" text="lX" />
                   <Label fx:id="lInfoPG" layoutX="100.0" layoutY="228.0" prefWidth="50.0" text="X:">
