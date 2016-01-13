@@ -90,17 +90,15 @@ public class Podrozny implements Runnable{
     }
 
     private void losujPlan(Lokalizacja start){
-        int i = (int) (Math.random() * Swiat.getTrasy().get("" + start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).size());
-        System.out.println("Wylosowano trasę: " + i);
-        List<Lokalizacja> plan = new LinkedList<>();
-        
-        for (Lokalizacja l : Swiat.getTrasy().get( start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).get(i)){
-            if (l instanceof Pasazerski){
-                plan.add(l);
-            }
+        Lokalizacja dokad = start;
+        while(dokad == start){
+            int i = (int) (Math.random() * Swiat.getMiasta().size());
+            dokad = Swiat.getMiasta().get(i);
+            System.out.println("Wylosowano trasę: " + i);
         }
-        this.plan = plan;
-        this.plan.remove(0);       
+        
+        this.plan = znajdzTrase(start, dokad);
+//        this.plan.remove(0);       
     }
     
     private LinkedList<Lokalizacja> znajdzTrase(Lokalizacja skad, Lokalizacja dokad){
