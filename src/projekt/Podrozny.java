@@ -43,11 +43,17 @@ public class Podrozny implements Runnable{
         this.dom = dom;
         this.odpoczywa = false;
         this.rodzajPodrozy = Math.random() > 0.5 ? RodzajPodrozy.PRYWATNA : RodzajPodrozy.SLUZBOWA;
-        znajdzTrase(dom, Swiat.getLokalizacje().get("90_550"));
+//        System.out.println(znajdzTrase(dom, Swiat.getLokalizacje().get("90_550")));
         
+        Lokalizacja cel = Swiat.getMiasta().get((int)(Swiat.getMiasta().size() * Math.random()));
+        System.out.println( this + ": MOIM CELEM JEST: " + cel.getNazwa());
 
+        this.plan = znajdzTrase(dom, cel);
+        Lokalizacja cel2 = Swiat.getMiasta().get((int)(Swiat.getMiasta().size() * Math.random()));
+        this.plan.addAll(znajdzTrase(cel, cel2));
+        this.plan.addAll(znajdzTrase(cel2, dom));
         
-        losujPlan(dom);
+//        losujPlan(dom);
         Swiat.getPasazerowie().put("" + pesel, this); 
        
  
@@ -84,11 +90,11 @@ public class Podrozny implements Runnable{
     }
 
     private void losujPlan(Lokalizacja start){
-        int i = (int) (Math.random() * Swiat.trasy.get("" + start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).size());
+        int i = (int) (Math.random() * Swiat.getTrasy().get("" + start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).size());
         System.out.println("Wylosowano trasę: " + i);
         List<Lokalizacja> plan = new LinkedList<>();
         
-        for (Lokalizacja l : Swiat.trasy.get( start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).get(i)){
+        for (Lokalizacja l : Swiat.getTrasy().get( start.getPolozenie().getX() + "_" + start.getPolozenie().getY()).get(i)){
             if (l instanceof Pasazerski){
                 plan.add(l);
             }
@@ -97,7 +103,8 @@ public class Podrozny implements Runnable{
         this.plan.remove(0);       
     }
     
-    private void znajdzTrase(Lokalizacja skad, Lokalizacja dokad){
+    private LinkedList<Lokalizacja> znajdzTrase(Lokalizacja skad, Lokalizacja dokad){
+        LinkedList<Lokalizacja> znalezionaTrasa = new LinkedList<>();
         HashMap<String, Lokalizacja> punkty = new HashMap<>();
         HashMap<String, Lokalizacja> poprzednik = new HashMap<>();
         HashMap<String, Integer> odleglosc = new HashMap<>();
@@ -140,7 +147,7 @@ public class Podrozny implements Runnable{
             for (Drogowskaz d : l.getOdleglosci()){
                 if(odleglosc.get(d.getDokad().getPolozenie().getX() + "_" + d.getDokad().getPolozenie().getY()) >
                          odlegloscTutaj + d.getOdleglosc()){
-                    System.out.println("ZAMIANA!");
+//                    System.out.println("ZAMIANA!");
                     odleglosc.replace(d.getDokad().getPolozenie().getX() + "_" + d.getDokad().getPolozenie().getY(),
                             odlegloscTutaj + d.getOdleglosc());
                     kolejka.add(d.getDokad().getPolozenie().getX() + "_" + d.getDokad().getPolozenie().getY());
@@ -150,10 +157,19 @@ public class Podrozny implements Runnable{
             }
             
         }
-        System.out.println(poprzednik.get("90_550").getNazwa());
+//        System.out.println(poprzednik.get("90_550").getNazwa());
         
+        l = dokad;
+        while(l != skad){
+            if (l instanceof Pasazerski){
+                znalezionaTrasa.addFirst(l);
+            }
+            System.out.println(l);
+            l = poprzednik.get(l.getPolozenie().getX() + "_" + l.getPolozenie().getY());
+        }
+//        znalezionaTrasa.addFirst(l);
         
-        
+        return znalezionaTrasa;       
     }
 
     public Object getGdzieAktualnie() {
