@@ -39,8 +39,9 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
     }
     
     @Override
-    public void stopujPojazd(Pojazd wycieczkowiec){
-        while(!zajetyPrzez.contains(wycieczkowiec)){
+    public void stopujPojazd(Pojazd statek){
+        if (statek instanceof Lotniskowiec) return;
+        while(!zajetyPrzez.contains(statek)){
             try {
                 Thread.sleep(30);
             } catch (InterruptedException ex) {
@@ -50,7 +51,7 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
                 System.out.println("CHCE DODAC STATEK");
                 if (zajetyPrzez.size()<getPojemnosc() && !aktywny){
                     System.out.println("DODAJE STATEK");
-                    this.zajetyPrzez.add((Wycieczkowiec)wycieczkowiec);
+                    this.zajetyPrzez.add((Wycieczkowiec)statek);
                     aktywny = true;
                 }
             }
@@ -94,6 +95,7 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
 
     @Override
     public void dodajPasazera(Podrozny pasazer) {
+        pasazer.getPlan().remove(0);
         odwiedzajacy.add(pasazer);
     }
 
