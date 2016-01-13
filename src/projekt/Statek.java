@@ -35,7 +35,7 @@ public abstract class Statek extends Pojazd {
     }
     
     public void zwolnijPole(){
-        System.out.println("JEDNAK JEST LEPIEJ");
+//        System.out.println("JEDNAK JEST LEPIEJ");
         Swiat.getStatki().remove((getPolozenie().getX() + getModyfikatorX()) + "_" + (getPolozenie().getY() + getModyfikatorY()));        
     }
     
@@ -52,7 +52,7 @@ public abstract class Statek extends Pojazd {
             }
             if(czy){
                 Thread.sleep(50);
-                System.out.println("NIE MOZNA!");
+//                System.out.println("NIE MOZNA!");
             }
             
         }
@@ -79,6 +79,12 @@ public abstract class Statek extends Pojazd {
             });
 
         }  
+    }
+    
+    @Override
+    public void tankuj(){
+        tankuj(5000);
+        
     }
     
 
