@@ -40,7 +40,7 @@ public class Swiat extends Application {
      * @return the lotniska
      */
     public static HashMap<String, Lotnisko> getLotniska() {
-        return lotniskaCywilne;
+        return getLotniskaCywilne();
     }
 
     /**
@@ -99,6 +99,20 @@ public class Swiat extends Application {
         return trasy;
     }
 
+    /**
+     * @return the miasta
+     */
+    public static ArrayList<Lokalizacja> getMiasta() {
+        return miasta;
+    }
+
+    /**
+     * @return the lotniskaCywilne
+     */
+    public static HashMap<String, Lotnisko> getLotniskaCywilne() {
+        return lotniskaCywilne;
+    }
+
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -122,6 +136,7 @@ public class Swiat extends Application {
                 samoloty = new HashMap<String, Samolot>();
                 statki = new HashMap<String, Statek>();
                 trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
+                miasta = new ArrayList<>();
                 
 //                TWORZENIE LOTNISK CYWILNYCH
                 
@@ -132,12 +147,12 @@ public class Swiat extends Application {
                 Lotnisko leszcze = new Lotnisko(365, 550, "Leszcze", 1, TypPortu.CYWILNY);
                 Lotnisko zlawies = new Lotnisko(90, 550, "Zławieś Wielka", 3, TypPortu.CYWILNY);
                 
-                lotniskaCywilne.put("550_20", brzysko);
-                lotniskaCywilne.put("365_200", kity);
-                lotniskaCywilne.put("550_550", samokleski);
-                lotniskaCywilne.put("550_360", koty);
-                lotniskaCywilne.put("365_550", leszcze);
-                lotniskaCywilne.put("90_550", zlawies);
+                getLotniskaCywilne().put("550_20", brzysko);
+                getLotniskaCywilne().put("365_200", kity);
+                getLotniskaCywilne().put("550_550", samokleski);
+                getLotniskaCywilne().put("550_360", koty);
+                getLotniskaCywilne().put("365_550", leszcze);
+                getLotniskaCywilne().put("90_550", zlawies);
                 
 //                TWORZENIE LOTNISK WOJSKOWYCH
                 
@@ -170,6 +185,11 @@ public class Swiat extends Application {
                 Skrzyzowanie sm1 = new Skrzyzowanie(275, 145, "SM1");
                 getSkrzyzowania().put("275_145", sm1);
                 
+                Skrzyzowanie sm2 = new Skrzyzowanie(140, 355, "SM2");
+                getSkrzyzowania().put("140_355", sm2);
+                                
+                Skrzyzowanie sm3 = new Skrzyzowanie(275, 355, "SM3");
+                getSkrzyzowania().put("275_355", sm3);
 //                TWORZENIE SKRZYŻOWAŃ POWIETRZNYCH
                 
                 Skrzyzowanie s1 = new Skrzyzowanie(365, 20, "S1");
@@ -297,9 +317,28 @@ public class Swiat extends Application {
                 
 //                TWORZENIE DROGOWSKAZÓW MORSKICH
 
-                int n = powidzPrzystan.dodajDrogowskaz(new Drogowskaz(powidzPrzystan, sm1));
-                System.out.println("NNNNNNNNNNNNNNNN: " + n);
+                powidzPrzystan.dodajDrogowskaz(new Drogowskaz(powidzPrzystan, sm1));                
+                borowno.dodajDrogowskaz(new Drogowskaz(borowno, sm1));                
+                pieczyska.dodajDrogowskaz(new Drogowskaz(pieczyska, sm1));                
+                chmielniki.dodajDrogowskaz(new Drogowskaz(chmielniki, sm2));
+                samo.dodajDrogowskaz(new Drogowskaz(samo, sm3));
+                
                 sm1.dodajDrogowskaz(new Drogowskaz(sm1, borowno));
+                sm1.dodajDrogowskaz(new Drogowskaz(sm1, powidzPrzystan));
+                sm1.dodajDrogowskaz(new Drogowskaz(sm1, pieczyska));
+                sm1.dodajDrogowskaz(new Drogowskaz(sm1, sm3));
+                
+                sm2.dodajDrogowskaz(new Drogowskaz(sm2, chmielniki));
+                sm2.dodajDrogowskaz(new Drogowskaz(sm2, sm3));
+                
+                sm3.dodajDrogowskaz(new Drogowskaz(sm3, sm2));
+                sm3.dodajDrogowskaz(new Drogowskaz(sm3, sm1));
+                sm3.dodajDrogowskaz(new Drogowskaz(sm3, samo)); 
+                
+//                TYMCZASOWE ROZWIĄZANIE:
+
+                pieczyska.dodajDrogowskaz(new Drogowskaz(pieczyska,kity));
+                kity.dodajDrogowskaz(new Drogowskaz(kity,pieczyska));
                 
                 
 //                niebieskie.dodajDrogowskaz(new Drogowskaz(40, s1, Kierunek.PRAWO));
@@ -307,12 +346,12 @@ public class Swiat extends Application {
 //                s1.dodajDrogowskaz(new Drogowskaz(40, niebieskie, Kierunek.LEWO));
 //                czerwone.dodajDrogowskaz(new Drogowskaz(70, s1, Kierunek.GORA));
                 
-                getLokalizacje().putAll(lotniskaCywilne);
+                getLokalizacje().putAll(getLotniskaCywilne());
                 getLokalizacje().putAll(getLotniskaWojskowe());
                 getLokalizacje().putAll(portyMorskie);
                 getLokalizacje().putAll(getSkrzyzowania());
-//                miasta.addAll( lotniskaCywilne);
-//                miasta.addAll((Collection<? extends Lokalizacja>) portyMorskie);
+                getMiasta().addAll(getLotniskaCywilne().values());
+                getMiasta().addAll(portyMorskie.values());
 
                 System.out.println("Utworzone lokalizacje: ");
                 for (Lokalizacja l : getLotniska().values()){
@@ -438,8 +477,7 @@ public class Swiat extends Application {
                 trasa.add(borowno);
                 tr275_20.add(trasa);
                 
-                getTrasy().put("275_20", tr275_20);
-                
+                getTrasy().put("275_20", tr275_20);      
                 
                 
                 
