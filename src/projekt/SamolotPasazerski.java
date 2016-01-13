@@ -159,6 +159,9 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
 //        System.out.println(poprzednik.get("90_550").getNazwa());
         
         l = listaLotnisk.get((int)(listaLotnisk.size()*Math.random()));
+        while(l.equals(skad)){
+            l = listaLotnisk.get((int)(listaLotnisk.size()*Math.random()));
+        }
 
         while(l != skad){
             znalezionaTrasa.addFirst(l);
@@ -167,6 +170,7 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
         }
         znalezionaTrasa.addFirst(l);
         
+        getTrasa().clear();
         getTrasa().addAll(znalezionaTrasa);
                      
     }
