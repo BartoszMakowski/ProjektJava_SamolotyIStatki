@@ -33,7 +33,7 @@ public abstract class Pojazd implements Runnable {
         this.id = ostatnieId++;
         this.kierunek = Kierunek.ZADEN;
         this.dzialaj = true;
-        losujTrase(polozenie);
+//        losujTrase(polozenie);
         //        this.zmienCel(trasa.listIterator().next());
     }
 
@@ -41,6 +41,8 @@ public abstract class Pojazd implements Runnable {
         this(polozenie, predkosc, trasa);
         this.najblizszyCel = najblizszyCel;
         this.paliwo = 999;
+        this.trasa = new LinkedList<>();
+        znajdzTrase(najblizszyCel);
     }
 
     public int getPredkosc() {
@@ -75,7 +77,11 @@ public abstract class Pojazd implements Runnable {
     public void usun(){
           
 //        Thread.currentThread().interrupt();
-        zwolnijPole(); 
+        getObrazek().setX(-100);
+        System.out.println("TERAZ USUNĘ");
+        synchronized(Swiat.getSamoloty()){
+            zwolnijPole(); 
+        }        
         dzialaj = false;
         
 //        this.setObrazek(null);
@@ -93,21 +99,21 @@ public abstract class Pojazd implements Runnable {
         {
             case LEWO:
                 this.modyfikatorX = 0;
-                this.modyfikatorY = -5;
+                this.modyfikatorY = -8;
                 this.getObrazek().setRotate(225);
                 break;
             case PRAWO:
                 this.modyfikatorX = 0;
-                this.modyfikatorY = 5;
+                this.modyfikatorY = 8;
                 this.getObrazek().setRotate(45);
                 break;
             case DOL:
-                this.modyfikatorX = -5;
+                this.modyfikatorX = -8;
                 this.modyfikatorY = 0;
                 this.getObrazek().setRotate(135);
                 break;
             case GORA:
-                this.modyfikatorX = 5;
+                this.modyfikatorX = 8;
                 this.modyfikatorY = 0;
                 this.getObrazek().setRotate(315);
                 break;
@@ -140,8 +146,10 @@ public abstract class Pojazd implements Runnable {
     }
 
     public void przemiescSie() throws InterruptedException {
-//        czyMozna();
-        
+//        if (!dzialaj){
+//            System.out.println("TERAZ WYJDĘ");
+//            return;
+//        }
          
         this.polozenie.setY(this.polozenie.getY()+getDeltaY());
         this.polozenie.setX(this.polozenie.getX()+getDeltaX());
@@ -248,9 +256,14 @@ public abstract class Pojazd implements Runnable {
     }
     
     protected void losujTrase(Polozenie p){
-        this.trasa = new LinkedList<>(Swiat.trasy.get(p.getX() +"_" + p.getY())
-                                .get((int)Math.random() * Swiat.trasy.
-                                        get(p.getX() + "_" + p.getY()).size()));
+        int i = Swiat.getTrasy().get(p.getX() + "_" + p.getY()).size();
+        this.trasa = new LinkedList<>(Swiat.getTrasy().get(p.getX() +"_" + p.getY())
+                                .get((int)(Math.random() * i)));
+        System.out.println("MOŻLIWOŚCI: "+ i);
+//        if(this instanceof SamolotPasazerski){
+            trasa.removeAll(trasa);
+            znajdzTrase(Swiat.getLokalizacje().get(p.getX() + "_" + p.getY()));
+//        }
     }
     
     public void zmienTrase(){
@@ -265,19 +278,20 @@ public abstract class Pojazd implements Runnable {
             }
         }
         trasa.addAll(0, trasaStartowa);
+                
     }
     
     @Override
     public void run(){
 //        Image gpojazd;
             while(isDzialaj())
-            {
+            {                
                 ruszaniePojazdu();
                 przemieszczaniePojazdu();
                 this.najblizszyCel.stopujPojazd(this);
                 zwolnijPole();
                 konczenieTrasyPojazdu();
-                obslugaNaMiejscu();                                                       
+                obslugaNaMiejscu(); 
             }        
     }
 
@@ -372,6 +386,8 @@ public abstract class Pojazd implements Runnable {
 }
     }
     
+    public void znajdzTrase(Lokalizacja skad){}
+    
     public void obslugaNaMiejscu(){
         int sen;
         if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski)){
@@ -407,7 +423,10 @@ public abstract class Pojazd implements Runnable {
         }
         else{
             System.out.println("Dotarłem do: " + this.najblizszyCel.getNazwa() + ".\nKONIEC TRASY.");
-            losujTrase(polozenie);
+            while(trasa.size() <2){
+                znajdzTrase(najblizszyCel);
+            }            
+            System.out.println(trasa.get(1).getNazwa());
             this.zmienCel(this.trasa.get(1));
         }
         zwolnijPole();
