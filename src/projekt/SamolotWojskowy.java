@@ -34,10 +34,71 @@ public class SamolotWojskowy extends Samolot {
         getObrazek().yProperty().set(this.getPolozenie().getY());
         getObrazek().setId("" + this.getId());
     }
+    
+    public SamolotWojskowy(Polozenie polozenie){
+        super(polozenie, (int) (5 + Math.random() * 25));
+        this.uzbrojenie = Uzbrojenie.A;        
+        System.out.println("WSZYSTKO OK");
+        
+        
+        setObrazek(new ImageView(getClass().getResource("img/SamolotWojskowy4.png").toExternalForm()));
+        getObrazek().fitHeightProperty().set(25);
+        getObrazek().fitWidthProperty().set(25);
+        getObrazek().xProperty().set(-30);
+        getObrazek().yProperty().set(-30);
+        getObrazek().setId("" + this.getId());
+    }
 
     public Uzbrojenie getUzbrojenie() {
         return uzbrojenie;
     }
+    
+    @Override
+    public boolean sprawdzPole(){
+        System.out.println("JEDNAK JEST DOBRZE");
+        boolean czy = true;
+//        synchronized(Swiat.getSamoloty()){
+            for(int i=1; i<20; i++){
+                for(int j=-10; j<11; j++){
+                    if(getDeltaX() != 0){
+                        if(Swiat.getSamoloty().containsKey(( getPolozenie().getX() + getModyfikatorX() + i*getDeltaX())+"_" + (getPolozenie().getY()+ getModyfikatorY() + j))){
+//                            System.out.println(( getPolozenie().getX() +  i*getDeltaX())+"_" + (getPolozenie().getY()+ i * getDeltaY()));
+                            czy = false;
+                            break;
+                        }
+                    }
+                    else{
+                        if(Swiat.getSamoloty().containsKey(( getPolozenie().getX() + getModyfikatorX() + j)+"_" + (getPolozenie().getY()+ getModyfikatorY() + i*getDeltaY()))){
+//                            System.out.println(( getPolozenie().getX() +  i*getDeltaX())+"_" + (getPolozenie().getY()+ i * getDeltaY()));
+                            czy = false;
+                            break;
+                        }
+                    }
+                }
+            }
+//        }
+        return czy;
+    }
+    
+    private void startuj(){
+        Skrzyzowanie s1= new Skrzyzowanie(getPolozenie().getX(), getPolozenie().getY(), "S-TEMP-1");
+        Skrzyzowanie s2= new Skrzyzowanie(30, getPolozenie().getY(), "S-TEMP-2");
+        s1.dodajDrogowskaz(new Drogowskaz(s1, s2));
+        s2.dodajDrogowskaz(new Drogowskaz(s2, Swiat.getLotniskaWojskowe().get("30_320")));
+        LinkedList<Lokalizacja> nowaTrasa = new LinkedList<>();
+        nowaTrasa.add(s1);
+        nowaTrasa.add(s2);
+        nowaTrasa.add(Swiat.getLotniskaWojskowe().get("30_320"));
+        setTrasa(nowaTrasa);
+    }
+    
+//    private void wlaczDoTrasy(){
+//        setKierunek(Kierunek.LEWO);
+//        while(getPolozenie().getX() < 30){
+//            
+//        }
+//        
+//    }
     
     @Override
     public void znajdzTrase(Lokalizacja skad){
@@ -119,6 +180,7 @@ public class SamolotWojskowy extends Samolot {
     @Override
     public void run(){
 //        Image gpojazd;
+            startuj();
             while(isDzialaj())
             {
                 ruszaniePojazdu();
