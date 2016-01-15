@@ -128,9 +128,8 @@
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button fx:id="bStart" layoutX="10.0" layoutY="158.0" mnemonicParsing="false" onMouseClicked="#startC" prefWidth="180.0" text="Start" />
                   <Label layoutX="20.0" layoutY="132.0" prefHeight="15.0" prefWidth="120.0" text="Samoloty i Statki" textAlignment="CENTER" />
-                  <ImageView fitHeight="175.0" fitWidth="170.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="175.0" fitWidth="170.0" layoutX="15.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/Samolot.png" />
                      </image>
@@ -140,12 +139,12 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lInfoLG" layoutX="21.0" layoutY="228.0" prefWidth="50.0" text="X:">
+                  <Label fx:id="lInfoLG" layoutX="21.0" layoutY="228.0" prefHeight="16.0" prefWidth="30.0" text="X:">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lInfoLGW" layoutX="70.0" layoutY="229.0" prefWidth="30.0" text="lX" />
+                  <Label fx:id="lInfoLGW" layoutX="58.0" layoutY="229.0" prefWidth="30.0" text="lX" />
                   <Label fx:id="lNaglowek" alignment="CENTER" layoutX="10.0" layoutY="283.0" prefWidth="180.0" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="13.0" />
@@ -155,10 +154,10 @@
                   <Button fx:id="bUsunDodaj" layoutX="11.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#dodajSP" prefWidth="180.0" text="Dodaj samolot" />
                   <Button fx:id="bTrasaZawartosc" layoutX="11.0" layoutY="494.0" mnemonicParsing="false" onAction="#zmienCzyPasazerowie" prefWidth="180.0" text="Zmień wyświetlaną listę" />
                   <Button fx:id="bZmien" layoutX="11.0" layoutY="527.0" mnemonicParsing="false" prefWidth="180.0" text="Zmień trasę" />
-                  <Button fx:id="bAwaria" layoutX="12.0" layoutY="559.0" mnemonicParsing="false" prefWidth="180.0" text="Button" />
+                  <Button fx:id="bAwaria" layoutX="12.0" layoutY="559.0" mnemonicParsing="false" prefWidth="180.0" text="Zgłoś awarię" />
                   <ListView fx:id="lvTrasa" layoutX="10.0" layoutY="304.0" onMouseClicked="#pasazerInfo" prefHeight="150.0" prefWidth="180.0" />
-                  <Label fx:id="lInfoPGW" layoutX="149.0" layoutY="229.0" prefWidth="30.0" text="lX" />
-                  <Label fx:id="lInfoPG" layoutX="100.0" layoutY="228.0" prefWidth="50.0" text="X:">
+                  <Label fx:id="lInfoPGW" layoutX="149.0" layoutY="229.0" prefHeight="15.0" prefWidth="45.0" text="lX" />
+                  <Label fx:id="lInfoPG" layoutX="100.0" layoutY="228.0" prefHeight="16.0" prefWidth="30.0" text="X:">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -168,13 +167,19 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lInfoPDW" layoutX="149.0" layoutY="245.0" prefWidth="30.0" text="lX" />
-                  <Label fx:id="lInfoLDW" layoutX="70.0" layoutY="245.0" prefWidth="30.0" text="lX" />
-                  <Label fx:id="lInfoLD" layoutX="21.0" layoutY="244.0" prefWidth="50.0" text="X:">
+                  <Label fx:id="lInfoPDW" layoutX="149.0" layoutY="245.0" prefHeight="15.0" prefWidth="45.0" text="lX" />
+                  <Label fx:id="lInfoLDW" layoutX="58.0" layoutY="245.0" prefWidth="30.0" text="lX" />
+                  <Label fx:id="lInfoLD" layoutX="21.0" layoutY="244.0" prefHeight="16.0" prefWidth="30.0" text="X:">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
+                  <Label layoutX="42.0" layoutY="6.0" prefHeight="16.0" prefWidth="120.0" text="Czas symulacji:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lCzasSym" layoutX="40.0" layoutY="22.0" prefHeight="15.0" prefWidth="120.0" />
                </children>
             </AnchorPane>
         </items>
