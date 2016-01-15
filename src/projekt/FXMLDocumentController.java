@@ -38,10 +38,11 @@ import javafx.stage.Stage;
 public class FXMLDocumentController implements Initializable {
     
     private Label label;
-    private ImageView sp1;
-    private ImageView sp2;
-    private SamolotPasazerski sampas;
+//    private ImageView sp1;
+//    private ImageView sp2;
+//    private SamolotPasazerski sampas;
     private String coWyswietlane;
+    private double czasSymulacji;
     
     @FXML
     private Label lNazwa;
@@ -89,13 +90,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Circle s3;
     @FXML
-    private Button bStart;
-    @FXML
     private Label lCel;
     @FXML
     private Button bZmien;
     @FXML
     private Button bAwaria;
+    @FXML
+    private Label lCzasSym;
     
     
 //    public void moveSp(int x, int y){
@@ -104,7 +105,6 @@ public class FXMLDocumentController implements Initializable {
 //    }
 
     
-    @FXML
     public void startC() throws InterruptedException {
         
 //        for (int i = 0; i < 10; i++)
@@ -117,13 +117,16 @@ public class FXMLDocumentController implements Initializable {
                     while(true){
                         try {
                                 Thread.sleep(30);
-//                            }
+                                czasSymulacji += 0.03;
+                                //                            }
                         } catch (InterruptedException ex) {      
                             }
                 
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                        
+                        lCzasSym.setText( (double)Math.round(czasSymulacji * 10 )/10 + "s");
                         switch(coWyswietlane){
                             case "samolotPasazerski":{
 
@@ -153,6 +156,34 @@ public class FXMLDocumentController implements Initializable {
                                             olw.add(l.getNazwa());
                                         }
                                 }
+                                lvTrasa.setItems(olw);
+                            }
+                            break;
+                            
+                            case "samolotWojskowy":{
+
+                                lInfoLG.setText("X:");                
+                                lInfoLGW.setText(""  + wyswietlanyPojazd.getPolozenie().getX());
+                //                        setText("" + nowySP.getPolozenie().getX());
+                                lInfoPG.setText("Y:");
+                                lInfoPGW.setText(""  + wyswietlanyPojazd.getPolozenie().getY());
+
+                                lInfoLD.setText("V:");
+                                lInfoLDW.setText("" + FXMLDocumentController.this.wyswietlanyPojazd.getPredkosc());
+
+                                lInfoPD.setText("F:");
+                                lInfoPDW.setText("" + wyswietlanyPojazd.getPaliwo());
+
+                                ObservableList<String> olw = FXCollections.observableArrayList();
+    //                                    lvTrasa.getItems().clear();
+                                
+                                
+                                if (FXMLDocumentController.this.wyswietlanyPojazd.getTrasa().size() > 0){
+                                    for (Lokalizacja l  : FXMLDocumentController.this.wyswietlanyPojazd.getTrasa()){
+                                        olw.add(l.getNazwa());
+                                    }
+                                }
+                                
                                 lvTrasa.setItems(olw);
                             }
                             break;
@@ -326,6 +357,7 @@ public class FXMLDocumentController implements Initializable {
         try {
             // TODO
             coWyswietlane = "nic";
+            czasSymulacji = 0;
             
             startC();
             
@@ -378,7 +410,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     private void dodajSW(){
-        SamolotWojskowy nowySW = new SamolotWojskowy((Lotnisko)wyswietlanaLokalizacja);
+        SamolotWojskowy nowySW = new SamolotWojskowy(wyswietlanyPojazd.getPolozenie());
         Thread nowySWWatek = new Thread(nowySW);
         ImageView ikonaSW = nowySW.getObrazek();
         ap.getChildren().add(ikonaSW);
@@ -388,7 +420,7 @@ public class FXMLDocumentController implements Initializable {
                 czyPojazd = true;
                 bTrasaZawartosc.setDisable(false);
                 System.out.println("kliknieto" + event.getSource());
-                coWyswietlane = "pojazdCywilny";
+                coWyswietlane = "samolotWojskowy";
                 lNazwa.setText(nowySW.toString());
                 lNaglowek.setText("Trasa:");
                 wyswietlanyPojazd = nowySW;
@@ -470,6 +502,14 @@ public class FXMLDocumentController implements Initializable {
                         nowyLot.usun();
                         ap.getChildren().remove(ikonaLot);
                         coWyswietlane = "nic";
+                    }
+                });
+                
+                bAwaria.setText("Dodaj lotniskowiec");
+                bAwaria.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        dodajSW();
                     }
                 });
             }
