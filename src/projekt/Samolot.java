@@ -16,14 +16,21 @@ public abstract class Samolot extends Pojazd {
         this.usterka = false;
 //        losujTrase(polozenie);
     }
+    
+    public Samolot(Polozenie polozenie, int predkosc) {
+        super(polozenie, predkosc);
+        this.usterka = false;
+//        losujTrase(polozenie);
+    }
 
     public void zglosUsterke(){
-        this.usterka = true;
+        this.setUsterka(true);
     }
     
-    private boolean sprawdzPole(){
+    @Override
+    public boolean sprawdzPole(){
         boolean czy = true;
-//        synchronized(Swiat.getSamoloty()){
+//        synchronized(Swiat.getSamoloty()){;
             for(int i=1; i<15; i++){
                 if(Swiat.getSamoloty().containsKey(( getPolozenie().getX() + getModyfikatorX() + i*getDeltaX())+"_" + (getPolozenie().getY()+ getModyfikatorY() + i * getDeltaY()))){
                     System.out.println(( getPolozenie().getX() +  i*getDeltaX())+"_" + (getPolozenie().getY()+ i * getDeltaY()));
@@ -41,12 +48,13 @@ public abstract class Samolot extends Pojazd {
         
     }
     
-    private void zwolnijPole(){
-        System.out.println("JEDNAK JEST LEPIEJ");
+    public void zwolnijPole(){
+//        System.out.println("JEDNAK JEST LEPIEJ");
         Swiat.getSamoloty().remove((getPolozenie().getX() + getModyfikatorX()) + "_" + (getPolozenie().getY() + getModyfikatorY()));        
     }
     
-    private boolean czyMozna() throws InterruptedException{
+    @Override
+    public boolean czyMozna() throws InterruptedException{
         boolean czy = true;
         while (czy){
             
@@ -78,6 +86,27 @@ public abstract class Samolot extends Pojazd {
                 konczenieTrasyPojazdu();
                 obslugaNaMiejscu();                                                       
             }        
+    }
+
+    /**
+     * @return the liczebnoscPersonelu
+     */
+    public int getLiczebnoscPersonelu() {
+        return liczebnoscPersonelu;
+    }
+
+    /**
+     * @return the usterka
+     */
+    public boolean isUsterka() {
+        return usterka;
+    }
+
+    /**
+     * @param usterka the usterka to set
+     */
+    public void setUsterka(boolean usterka) {
+        this.usterka = usterka;
     }
 }
     
