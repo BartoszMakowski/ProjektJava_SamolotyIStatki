@@ -22,6 +22,14 @@ public class Lotniskowiec extends Statek {
         
     public Lotniskowiec(PortMorski lokalizacja){
         super(lokalizacja.getPolozenie(), (int) (3 + Math.random() * 10), lokalizacja, null);
+        int i = (int)(Math.random() * 5);
+        switch(i){
+            case 0: uzbrojenie = Uzbrojenie.A; break;
+            case 1: uzbrojenie = Uzbrojenie.B; break;
+            case 2: uzbrojenie = Uzbrojenie.C; break;
+            case 3: uzbrojenie = Uzbrojenie.D; break;
+            case 4: uzbrojenie = Uzbrojenie.E; break;            
+        }
         
         setObrazek(new ImageView(getClass().getResource("img/Lotniskowiec1.png").toExternalForm()));
         getObrazek().fitHeightProperty().set(25);
@@ -159,4 +167,10 @@ public class Lotniskowiec extends Statek {
     getTrasa().get(0).startujPojazd(this);
     getTrasa().remove(0);
     }
+
+    @Override
+    public String toString() {
+        return "Lotniskowiec " + getId();
+    }
+       
 }
