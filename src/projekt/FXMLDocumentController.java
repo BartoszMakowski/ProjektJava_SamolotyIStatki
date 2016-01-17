@@ -468,10 +468,19 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void skrzyzowanieInfo(MouseEvent event) {
         coWyswietlane = "skrzyzowanie";
-        wyswietlanaLokalizacja = 
+        if(event.getSource() instanceof Circle){
+            wyswietlanaLokalizacja = 
+                    Swiat.getLokalizacje().get(
+                            (int)((Circle)event.getSource()).centerXProperty().get() + "_" 
+                                    + (int)((Circle)event.getSource()).centerYProperty().get());
+        }
+        else{
+            wyswietlanaLokalizacja = 
                 Swiat.getLokalizacje().get(
-                        (int)((Circle)event.getSource()).centerXProperty().get() + "_" 
-                                + (int)((Circle)event.getSource()).centerYProperty().get());
+                        (int)((Rectangle)event.getSource()).getX() + "_" 
+                                + (int)((Rectangle)event.getSource()).getY());
+            
+        }
         wyswietlLokalizacje();
         bTrasaZawartosc.setDisable(true);
 
