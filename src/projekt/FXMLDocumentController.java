@@ -338,7 +338,7 @@ public class FXMLDocumentController implements Initializable {
         try {
             coWyswietlane = "nic";
             czasSymulacji = 0;
-            utwor = new Media(getClass().getResource("audio/Czolg.mp3").toString());
+            utwor = new Media(getClass().getResource("audio/Czolg2.mp3").toString());
             mediaPlayer = new MediaPlayer(utwor);
             Platform.runLater(new Runnable() {
                 @Override
@@ -689,7 +689,7 @@ public class FXMLDocumentController implements Initializable {
         mediaPlayer.stop();
         switch(coWyswietlane){
             case "czolg":{
-                utwor = new Media(getClass().getResource("audio/Czolg.mp3").toString());
+                utwor = new Media(getClass().getResource("audio/Czolg2.mp3").toString());
                 break;
             }
             case "samolotWojskowy":
@@ -699,13 +699,13 @@ public class FXMLDocumentController implements Initializable {
 //            }
             case "samolotPasazerski":
             {
-                utwor = new Media(getClass().getResource("audio/Samolot.mp3").toString());
+                utwor = new Media(getClass().getResource("audio/Samolot2.mp3").toString());
                 break;
             }
             case "lotniskowiec":
             case "wycieczkowiec":
             {
-                utwor = new Media(getClass().getResource("audio/Statek.mp3").toString());
+                utwor = new Media(getClass().getResource("audio/Statek2.mp3").toString());
                 break;
             }
         }
