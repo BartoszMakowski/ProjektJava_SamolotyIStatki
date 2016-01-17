@@ -10,11 +10,16 @@ import javafx.scene.image.ImageView;
 
 /**
  * Created by bartosz on 19.10.15.
+ * Implementuje samolot pasażerski.
  */
 public class SamolotPasazerski extends Samolot implements Pasazerski{
     private final int miejsca;
     private List <Podrozny> pasazerowie;
     
+    /**
+     * Tworzy samolot pasażerski
+     * @param lokalizacja lokalizacja startowa
+     */
     public SamolotPasazerski(Lotnisko lokalizacja){
         super(lokalizacja.getPolozenie(), (int) (5 + Math.random() * 25), lokalizacja, null);
         this.miejsca = 2 + (int) (Math.random()*8);
@@ -33,16 +38,22 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
         setObrazek(new ImageView(getClass().getResource("img/Samolot2.png").toExternalForm()));
         getObrazek().fitHeightProperty().set(25);
         getObrazek().fitWidthProperty().set(25);
-        getObrazek().xProperty().set(this.getPolozenie().getX());
-        getObrazek().yProperty().set(this.getPolozenie().getY());
+        getObrazek().xProperty().set(-100);
+        getObrazek().yProperty().set(-100);
         getObrazek().setId("" + this.getId());
     }
   
-
+    /**
+     * Zwraca liczbę miejsc w samolocie.
+     * @return liczba miejsc w samolocie
+     */
     public int getMiejsca() {
         return miejsca;
     }
-
+    /**
+     * Zwraca listę pasażerów w samolocie.
+     * @return lista pasażerów w samolocie
+     */
     public List<Podrozny> getPasazerowie() {
         return pasazerowie;
     }
@@ -64,7 +75,7 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
                     dokad.dodajPasazera(p);
                 }
             }
-                System.out.println("NIECH ODPOCZNIE");
+//                System.out.println("NIECH ODPOCZNIE");
                 p.setOdpoczywa(true);
         }
         for(Podrozny p : doUsuniecia){
@@ -95,10 +106,11 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
     @Override
     public void usun(){
         this.pasazerowie = new LinkedList<>();
-        super.usun();
+        super.usun();        
         
     }
     
+    @Override
     public void znajdzTrase(Lokalizacja skad){
         LinkedList<Lokalizacja> znalezionaTrasa = new LinkedList<>();
         HashMap<String, Lokalizacja> punkty = new HashMap<>();
@@ -110,9 +122,6 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
         listaLotnisk.addAll(Swiat.getLotniskaCywilne().values());
                
         punkty.putAll(Swiat.getLokalizacje());
-//        for (String s : Swiat.getLotniskaWojskowe().keySet()){
-//            punkty.remove(s);
-//        }
         
         for (String s : punkty.keySet()){
             odleglosc.put(s, 99999);
@@ -157,11 +166,25 @@ public class SamolotPasazerski extends Samolot implements Pasazerski{
             
         }
 //        System.out.println(poprzednik.get("90_550").getNazwa());
-        
         l = listaLotnisk.get((int)(listaLotnisk.size()*Math.random()));
-        while(l.equals(skad)){
-            l = listaLotnisk.get((int)(listaLotnisk.size()*Math.random()));
+        if(isUsterka()){
+            System.out.println("WARIANT Z USTERKĄ");
+            int min = 9999;
+            String tmp;
+            for(Lokalizacja lotnisko : listaLotnisk){
+                tmp = lotnisko.getPolozenie().getX() + "_" + lotnisko.getPolozenie().getY();
+                if(odleglosc.get(tmp) < min){
+                    l = lotnisko;
+                    min = odleglosc.get(tmp);
+                }                
+            }           
         }
+        else{            
+            while(l.equals(skad)){
+                l = listaLotnisk.get((int)(listaLotnisk.size()*Math.random()));
+            }
+        }
+        setUsterka(false);
 
         while(l != skad){
             znalezionaTrasa.addFirst(l);
