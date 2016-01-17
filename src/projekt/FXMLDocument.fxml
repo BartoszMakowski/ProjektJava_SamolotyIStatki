@@ -110,11 +110,11 @@
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="12.0" onMouseClicked="#portInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="115.0" y="145.0" />
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="12.0" onMouseClicked="#portInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="315.0" y="145.0" />
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="12.0" onMouseClicked="#portInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="430.0" y="355.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="145.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="355.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#259412" height="12.0" onMouseClicked="#portInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="20.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#259412" height="12.0" onMouseClicked="#portInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="140.0" y="455.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" stroke="BLACK" strokeType="INSIDE" width="12.0" x="140.0" y="355.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" onMouseClicked="#skrzyzowanieInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="145.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" onMouseClicked="#skrzyzowanieInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="355.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="12.0" onMouseClicked="#portInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="275.0" y="20.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="12.0" onMouseClicked="#portInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="140.0" y="455.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21a1ff" height="12.0" onMouseClicked="#skrzyzowanieInfo" stroke="BLACK" strokeType="INSIDE" width="12.0" x="140.0" y="355.0" />
                         <Text layoutX="234.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Powidz - Przystań" />
                         <Text layoutX="141.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chmielniki" />
                         <Text layoutX="93.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borówno" />
@@ -131,7 +131,7 @@
                   <Label layoutX="20.0" layoutY="132.0" prefHeight="15.0" prefWidth="120.0" text="Samoloty i Statki" textAlignment="CENTER" />
                   <ImageView fitHeight="175.0" fitWidth="170.0" layoutX="15.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@img/Samolot.png" />
+                        <Image url="@img/Logo.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="lNazwa" alignment="CENTER" layoutX="10.0" layoutY="194.0" prefHeight="21.0" prefWidth="180.0" text="aaa" textAlignment="CENTER" textFill="#f50606">
@@ -139,12 +139,15 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lInfoLG" layoutX="21.0" layoutY="228.0" prefHeight="16.0" prefWidth="30.0" text="X:">
+                  <Label fx:id="lInfoLG" alignment="CENTER_RIGHT" layoutX="6.0" layoutY="228.0" prefHeight="16.0" prefWidth="45.0" text="X:">
                      <font>
-                        <Font name="System Bold" size="13.0" />
+                        <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lInfoLGW" layoutX="58.0" layoutY="229.0" prefWidth="30.0" text="lX" />
+                  <Label fx:id="lInfoLGW" layoutX="58.0" layoutY="229.0" prefHeight="14.0" prefWidth="45.0" text="lX">
+                     <font>
+                        <Font size="11.0" />
+                     </font></Label>
                   <Label fx:id="lNaglowek" alignment="CENTER" layoutX="10.0" layoutY="283.0" prefWidth="180.0" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="13.0" />
@@ -156,22 +159,31 @@
                   <Button fx:id="bZmien" layoutX="11.0" layoutY="527.0" mnemonicParsing="false" prefWidth="180.0" text="Zmień trasę" />
                   <Button fx:id="bAwaria" layoutX="12.0" layoutY="559.0" mnemonicParsing="false" prefWidth="180.0" text="Zgłoś awarię" />
                   <ListView fx:id="lvTrasa" layoutX="10.0" layoutY="304.0" onMouseClicked="#pasazerInfo" prefHeight="150.0" prefWidth="180.0" />
-                  <Label fx:id="lInfoPGW" layoutX="149.0" layoutY="229.0" prefHeight="15.0" prefWidth="45.0" text="lX" />
-                  <Label fx:id="lInfoPG" layoutX="100.0" layoutY="228.0" prefHeight="16.0" prefWidth="30.0" text="X:">
+                  <Label fx:id="lInfoPGW" layoutX="140.0" layoutY="228.0" prefHeight="15.0" prefWidth="45.0" text="lX">
                      <font>
-                        <Font name="System Bold" size="13.0" />
+                        <Font size="11.0" />
+                     </font></Label>
+                  <Label fx:id="lInfoPG" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="228.0" prefHeight="16.0" prefWidth="45.0" text="X:" textAlignment="RIGHT">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lInfoPD" layoutX="100.0" layoutY="244.0" prefWidth="50.0" text="X:">
+                  <Label fx:id="lInfoPD" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="244.0" prefHeight="16.0" prefWidth="45.0" text="X:">
                      <font>
-                        <Font name="System Bold" size="13.0" />
+                        <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lInfoPDW" layoutX="149.0" layoutY="245.0" prefHeight="15.0" prefWidth="45.0" text="lX" />
-                  <Label fx:id="lInfoLDW" layoutX="58.0" layoutY="245.0" prefWidth="30.0" text="lX" />
-                  <Label fx:id="lInfoLD" layoutX="21.0" layoutY="244.0" prefHeight="16.0" prefWidth="30.0" text="X:">
+                  <Label fx:id="lInfoPDW" layoutX="140.0" layoutY="244.0" prefHeight="15.0" prefWidth="45.0" text="lX">
                      <font>
-                        <Font name="System Bold" size="13.0" />
+                        <Font size="11.0" />
+                     </font></Label>
+                  <Label fx:id="lInfoLDW" layoutX="58.0" layoutY="245.0" prefHeight="14.0" prefWidth="45.0" text="lX">
+                     <font>
+                        <Font size="11.0" />
+                     </font></Label>
+                  <Label fx:id="lInfoLD" alignment="CENTER_RIGHT" layoutX="6.0" layoutY="244.0" prefHeight="16.0" prefWidth="45.0" text="X:">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
                   <Label layoutX="42.0" layoutY="6.0" prefHeight="16.0" prefWidth="120.0" text="Czas symulacji:">
@@ -179,7 +191,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lCzasSym" layoutX="40.0" layoutY="22.0" prefHeight="15.0" prefWidth="120.0" />
+                  <Label fx:id="lCzasSym" alignment="CENTER" layoutX="40.0" layoutY="22.0" prefHeight="15.0" prefWidth="120.0" textAlignment="CENTER" />
                </children>
             </AnchorPane>
         </items>

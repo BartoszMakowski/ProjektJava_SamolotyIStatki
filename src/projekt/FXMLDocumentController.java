@@ -7,7 +7,6 @@ package projekt;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,20 +32,15 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 /**
  *
  * @author bartosz
+ * Klasa - kontroler
  */
 public class FXMLDocumentController implements Initializable {
     
     private Label label;
-//    private ImageView sp1;
-//    private ImageView sp2;
-//    private SamolotPasazerski sampas;
     private String coWyswietlane;
     private double czasSymulacji;
     private MediaPlayer mediaPlayer;
@@ -107,7 +101,7 @@ public class FXMLDocumentController implements Initializable {
     private Label lCzasSym;
    
     
-    public void startC() throws InterruptedException {
+    private void startC() throws InterruptedException {
         
 //        for (int i = 0; i < 10; i++)
             Thread move = new Thread(){
@@ -324,23 +318,24 @@ public class FXMLDocumentController implements Initializable {
                                 lvTrasa.setItems(olw);
                             }
                         }
-                        }                    
-                    
+                    } 
 
-                });
-            
+                });            
             }
-    }
-                    };
+        }
+        };
             
-            move.setDaemon(true);
-            move.start();
-                    }
+        move.setDaemon(true);
+        move.start();
+    }
     
-
+    /**
+     * Wykonuje czynności startowe.
+     * @param url
+     * @param rb 
+     */
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            // TODO
             coWyswietlane = "nic";
             czasSymulacji = 0;
             utwor = new Media(getClass().getResource("audio/Czolg.mp3").toString());
@@ -351,11 +346,7 @@ public class FXMLDocumentController implements Initializable {
                     CzyscGUI();
                 }
             });
-            //            mediaPlayer = new MediaPlayer(null);
-            
-//            Thread.sleep(2000);
-                                   
-            
+
             startC();
             
         } catch (InterruptedException ex) {
@@ -376,7 +367,8 @@ public class FXMLDocumentController implements Initializable {
             public void handle(MouseEvent event) {
                 coWyswietlane = "samolotPasazerski";
                 wyswietlSamolot(nowySP, ikonaSP);                
-                bTrasaZawartosc.setDisable(false);                
+                bTrasaZawartosc.setDisable(false);
+                bAwaria.setText("Zgłoś awarię");
 //              System.out.println("kliknieto" + event.getSource());                                               
             }
             
@@ -683,7 +675,7 @@ public class FXMLDocumentController implements Initializable {
         nowyCWatek.start();
     }
     
-    public synchronized void grajMuzyke() {      
+    private synchronized void grajMuzyke() {      
                
         mediaPlayer.stop();
         switch(coWyswietlane){

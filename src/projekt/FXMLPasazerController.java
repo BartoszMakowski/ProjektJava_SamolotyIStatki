@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
  * FXML Controller class
  *
  * @author bartosz
+ * Klasa - kontroler panelu "PasażerInfo©"
  */
 public class FXMLPasazerController implements Initializable {
 
@@ -31,79 +32,88 @@ public class FXMLPasazerController implements Initializable {
     private  Label pPesel;
 
     /**
-     * Initializes the controller class.
+     * Inicjalizuje klasę kontrolera.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         
     }    
 
     /**
-     * @return the pTrasa
+     * Zwraca listview z trasą.
+     * @return listview z trasą
      */
     public ListView<String> getpTrasa() {
         return pTrasa;
     }
 
     /**
-     * @param pTrasa the pTrasa to set
+     * Ustawia listview z trasą.
+     * @param pTrasa nowy listview
      */
     public void setpTrasa(ListView<String> pTrasa) {
         this.pTrasa = pTrasa;
     }
 
     /**
-     * @return the pImie
+     * Zwraca label na imię pasażera.
+     * @return the pImie label na imię pasażera
      */
     public Label getpImie() {
         return pImie;
     }
 
     /**
-     * @param pImie the pImie to set
+     * Ustawia label z imieniem pasażera.
+     * @param pImie nowy label
      */
     public void setpImie(Label pImie) {
         this.pImie = pImie;
     }
 
     /**
-     * @return the pNazwisko
+     * Zwraca label na nazwisko pasażera.
+     * @return the pNazwisko label na nazwisko pasażera
      */
     public Label getpNazwisko() {
         return pNazwisko;
     }
 
     /**
-     * @param pNazwisko the pNazwisko to set
+     * Ustawia label na nazwisko pasażera.
+     * @param pNazwisko nowy label
      */
     public void setpNazwisko(Label pNazwisko) {
         this.pNazwisko = pNazwisko;
     }
 
     /**
-     * @return the pDom
+     * Zwraca label na lokalizację domową pasażera.
+     * @return the pDom label na lokalizację domową pasażera
      */
     public Label getpDom() {
         return pDom;
     }
 
     /**
-     * @param pDom the pDom to set
+     * Ustawia label na lokalizację domową pasażera.
+     * @param pDom nowy label
      */
     public void setpDom(Label pDom) {
         this.pDom = pDom;
     }
 
     /**
-     * @return the pPesel
+     * Zwraca label na PESEL pasażera.
+     * @return label na PESEL pasażera
      */
     public Label getpPesel() {
         return pPesel;
     }
 
     /**
-     * @param pPesel the pPesel to set
+     * Ustawia label na PESEL pasażera.
+     * @param pPesel nowy label
      */
     public void setpPesel(Label pPesel) {
         this.pPesel = pPesel;
