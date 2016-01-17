@@ -10,16 +10,28 @@ import javafx.scene.image.ImageView;
 
 /**
  * Created by bartosz on 19.10.15.
+ * Implementuje lotniskowiec.
  */
 public class Lotniskowiec extends Statek {
     private Uzbrojenie uzbrojenie;
-
+    
+    /**
+     * Tworzy lotniskowiec.
+     * @param lokalizacja położenie startowe
+     * @param predkosc prędkość pojazdu
+     * @param najblizszyCel najbliższy cel
+     * @param trasa trasa
+     * @param uzbrojenie rodzaj uzbrojenia
+     */
     public Lotniskowiec(Polozenie lokalizacja, int predkosc, PortMorski najblizszyCel, List<Lokalizacja> trasa, Uzbrojenie uzbrojenie) {
         super(lokalizacja, predkosc, najblizszyCel, trasa);
         this.uzbrojenie = uzbrojenie;
     }
     
-        
+    /**
+     * Tworzy lotniskowiec
+     * @param lokalizacja port morski, który produkuje ten lotniskowiec
+     */    
     public Lotniskowiec(PortMorski lokalizacja){
         super(lokalizacja.getPolozenie(), (int) (3 + Math.random() * 10), lokalizacja, null);
         int i = (int)(Math.random() * 5);
@@ -47,11 +59,18 @@ public class Lotniskowiec extends Statek {
 //        SamolotWojskowy samolot = new SamolotWojskowy();
 //        return samolot;
 //    }
-
+    /**
+     * Zwraca rodzaj uzbrojenia.
+     * @return rodzaj uzbrojenia
+     */
     public Uzbrojenie getUzbrojenie() {
         return uzbrojenie;
     }
     
+    /**
+     * Ustala trasę z podanej lokalizacji do losowej lokalizacji morskiej.
+     * @param skad lokalizacja startowa
+     */
     @Override
     public void znajdzTrase(Lokalizacja skad){
         LinkedList<Lokalizacja> znalezionaTrasa = new LinkedList<>();
@@ -145,6 +164,9 @@ public class Lotniskowiec extends Statek {
             }        
     }
     
+    /**
+     * Implementuje czynności wykonywane w lokalizacjach morskich.
+     */
     @Override
     public void obslugaNaMiejscu(){
 
@@ -171,6 +193,12 @@ public class Lotniskowiec extends Statek {
     @Override
     public String toString() {
         return "Lotniskowiec " + getId();
+    }
+    
+    @Override
+    public void usun(){
+        super.usun();
+        zwolnijPole();
     }
        
 }

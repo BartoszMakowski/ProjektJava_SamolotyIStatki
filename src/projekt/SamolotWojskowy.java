@@ -10,21 +10,36 @@ import javafx.scene.image.ImageView;
 
 /**
  * Created by bartosz on 19.10.15.
+ * enum z typami uzbrojenia
  */
 enum Uzbrojenie{
     A,B,C,D,E};
 
+/**
+ * Implementuje samolot wojskowy.
+ * @author bartosz
+ */
 public class SamolotWojskowy extends Samolot {
     private Uzbrojenie uzbrojenie;
 
+    /**
+     * Tworzy samolot wojskowy.
+     * @param lokalizacja położenie startowe
+     * @param predkosc prędkość
+     * @param najblizszyCel najbliższy cel
+     * @param trasa trasa
+     */
     public SamolotWojskowy(Polozenie lokalizacja, int predkosc, Lotnisko najblizszyCel, List<Lokalizacja> trasa) {
         super(lokalizacja, predkosc, najblizszyCel, trasa);
     }
     
+    /**
+     * Tworzy samolot wojskowy.
+     * @param lokalizacja lokalizacja startowa
+     */
     public SamolotWojskowy(Lotnisko lokalizacja){
         super(lokalizacja.getPolozenie(), (int) (5 + Math.random() * 25), lokalizacja, null);
-        this.uzbrojenie = Uzbrojenie.A;        
-        System.out.println("WSZYSTKO OK");
+//        System.out.println("WSZYSTKO OK");
         
         
         setObrazek(new ImageView(getClass().getResource("img/SamolotWojskowy4.png").toExternalForm()));
@@ -35,10 +50,15 @@ public class SamolotWojskowy extends Samolot {
         getObrazek().setId("" + this.getId());
     }
     
-    public SamolotWojskowy(Polozenie polozenie){
+    /**
+     * Tworzy samolot wojskowy
+     * @param polozenie położenie startowe
+     * @param uzbrojenie rodzaj uzbrojenia
+     */
+    public SamolotWojskowy(Polozenie polozenie, Uzbrojenie uzbrojenie){
         super(polozenie, (int) (5 + Math.random() * 25));
-        this.uzbrojenie = Uzbrojenie.A;        
-        System.out.println("WSZYSTKO OK");
+        this.uzbrojenie = uzbrojenie;        
+//        System.out.println("WSZYSTKO OK");
         
         
         setObrazek(new ImageView(getClass().getResource("img/SamolotWojskowy4.png").toExternalForm()));
@@ -48,14 +68,26 @@ public class SamolotWojskowy extends Samolot {
         getObrazek().yProperty().set(-30);
         getObrazek().setId("" + this.getId());
     }
-
+    
+    /**
+     * Tworzy samolot wojskowy.
+     * @param l lotniskowiec produkujący samolot
+     */
+    public SamolotWojskowy(Lotniskowiec l){
+         this(l.getPolozenie(), l.getUzbrojenie());
+    }
+    
+    /**
+     * Zwraca rodzaj uzbrojenia.
+     * @return rodzaj uzbrojenia
+     */
     public Uzbrojenie getUzbrojenie() {
         return uzbrojenie;
     }
     
     @Override
     public boolean sprawdzPole(){
-        System.out.println("JEDNAK JEST DOBRZE");
+//        System.out.println("JEDNAK JEST DOBRZE");
         boolean czy = true;
 //        synchronized(Swiat.getSamoloty()){
             for(int i=1; i<20; i++){
@@ -77,9 +109,14 @@ public class SamolotWojskowy extends Samolot {
                 }
             }
 //        }
-        return czy;
+
+//        System.out.println(toString() + ": jestem blokowany w pozycji " + getPolozenie().getX() + "  " + getPolozenie().getY() );
+        return czy;        
     }
     
+    /**
+     * Tworzy i ustala tymczasową trasę, która umożliwia włączenie się do ruchu powietrznego.
+     */
     private void startuj(){
         Skrzyzowanie s1= new Skrzyzowanie(getPolozenie().getX(), getPolozenie().getY(), "S-TEMP-1");
         Skrzyzowanie s2= new Skrzyzowanie(30, getPolozenie().getY(), "S-TEMP-2");
@@ -91,14 +128,7 @@ public class SamolotWojskowy extends Samolot {
         nowaTrasa.add(Swiat.getLotniskaWojskowe().get("30_320"));
         setTrasa(nowaTrasa);
     }
-    
-//    private void wlaczDoTrasy(){
-//        setKierunek(Kierunek.LEWO);
-//        while(getPolozenie().getX() < 30){
-//            
-//        }
-//        
-//    }
+
     
     @Override
     public void znajdzTrase(Lokalizacja skad){
@@ -167,7 +197,7 @@ public class SamolotWojskowy extends Samolot {
         
         while(l != skad){
             znalezionaTrasa.addFirst(l);
-            System.out.println(l);
+//            System.out.println(l);
             l = poprzednik.get(l.getPolozenie().getX() + "_" + l.getPolozenie().getY());
         }
         znalezionaTrasa.addFirst(l);
@@ -186,15 +216,36 @@ public class SamolotWojskowy extends Samolot {
                 ruszaniePojazdu();
                 przemieszczaniePojazdu();
                 if (getNajblizszyCel() instanceof Lotnisko){
-                    if (((Lotnisko)getNajblizszyCel()).getRodzaj().equals(TypPortu.WOJSKOWY)){
-                        this.getNajblizszyCel().stopujPojazd(this);
+                    if (((Lotnisko)getNajblizszyCel()).getRodzaj().equals(TypPortu.CYWILNY)){                        
+                    }
+                    else{
+                        getNajblizszyCel().stopujPojazd(this);
                     }
                 }
-                zwolnijPole();
+                else if(getNajblizszyCel() instanceof Skrzyzowanie){
+                    getNajblizszyCel().stopujPojazd(this);
+                }
+                zwolnijPole();                
+//                if(!isDzialaj()) break;
                 konczenieTrasyPojazdu();
                 obslugaNaMiejscu();                                                       
-            }        
+            }
+//            zwolnijPole();
     }
+
+    @Override
+    public String toString() {
+        return "Samolot wojskowy " + getId();
+    }
+//    
+//    @Override
+//    public void usun(){
+////        System.out.println("USUWAM");
+////        Thread.currentThread().interrupt();
+//        super.usun();
+//        
+//    }
+    
 }
     
 //    public javafx.scene.image.ImageView getObrazek() {

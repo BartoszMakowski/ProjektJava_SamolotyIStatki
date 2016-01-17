@@ -103,10 +103,13 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
     public void setZajetePrzez(List<Samolot> zajetePrzez) {
         this.zajetePrzez = zajetePrzez;
     }
-    
-    @Override
+    /**
+     * Pozwala samolotowi wylądować dopiero wtedy, gdy będzie dla niego miejsce na lotnisku.
+     * @param samolot samolot, który chce wylądować
+     */
+//    @Override
     public void stopujPojazd(Pojazd samolot){
-        System.out.println("COS EWIDENTNIE NIE DZIAŁA. NAPRAW TO!");
+//        System.out.println("COS EWIDENTNIE NIE DZIAŁA. NAPRAW TO!");
         while(!zajetePrzez.contains(samolot)){
             try {
                 Thread.sleep(30);
@@ -114,9 +117,9 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
                 Logger.getLogger(Lotnisko.class.getName()).log(Level.SEVERE, null, ex);
             }
             synchronized(this){
-                System.out.println("CHCE DODAC SAMOLOT");
+//                System.out.println("CHCE DODAC SAMOLOT");
                 if (this.zajetePrzez.size()<this.pojemnosc && !aktywne){
-                    System.out.println("DODAJE SAMOLOT");
+//                    System.out.println("DODAJE SAMOLOT");
                     this.zajetePrzez.add((Samolot)samolot);
                     aktywne = true;
                 }
@@ -138,36 +141,39 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
             t.start();
             }
             
-       
-//        try {
-//                Thread.sleep(200);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Lotnisko.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-        
-//        return false; 
+
     }
-    
+    /**
+     * Dodaje samolot do listy samolotów na lotnisku.
+     * @param samolot samolot do dodania
+     */   
     @Override
     public void startujPojazd(Pojazd samolot){
         synchronized(this){
             this.zajetePrzez.remove((Samolot)samolot);
         }         
     }
-    
+    /**
+     * Usuwa samolot z listy samolotów na lotnisku.
+     * @param samolot samolot do usunięcia z listy
+     */
     public void zaklepMiejsce(Pojazd samolot){
         synchronized(this){
             if(this.zajetosc<this.pojemnosc)
                 this.zajetosc++;
         }  
     }
-
+    
+    /**
+     * Przenosi pasażera z lotniska do samolotu, jeśli samolot leci w pożądanym przez pasażera kierunku.
+     * @param dokad samolot, do którego może odbyć się przsiadka
+     */
     @Override
     public void przesiadkaPasazera(Pasazerski dokad) {
         LinkedList<Podrozny> doUsuniecia = new LinkedList<>();
         for (Podrozny pasazer : this.odwiedzajacy){
             if (!pasazer.isOdpoczywa()){
-                System.out.println("NIE ODPOCZYWAM");
+//                System.out.println("NIE ODPOCZYWAM");
                 synchronized(dokad){
                     if ( (pasazer.czyWsiasc(dokad)) && (dokad.czyJestMiejsce()) ) {
                         doUsuniecia.add(pasazer);
@@ -182,21 +188,33 @@ public class Lotnisko extends Lokalizacja implements Pasazerski{
             this.usunPasazera(p);
         }
     }
-
+    
+    /**
+     * Dodaje pasażera do odwiedzających lotnisko.
+     * @param pasazer pasażer do dodania
+     */
     @Override
     public void dodajPasazera(Podrozny pasazer) {
         pasazer.getPlan().remove(0);
         this.odwiedzajacy.add(pasazer);
     }
-
+    
+    /**
+     * Usuwa pasażera z odwiedzających lotnisko.
+     * @param pasazer pasażer do usunięcia
+     */
     @Override
     public void usunPasazera(Podrozny pasazer) {
         this.odwiedzajacy.remove(pasazer);
     }
-
+    
+    /**
+     * Odpowiada, czy na lotnisku jest miejsce dla pasażera.
+     * @return dostępność wolnych miejsc
+     */
     @Override
     public boolean czyJestMiejsce() {
-        if (this.rodzaj.equals(rodzaj.CYWILNY)){
+        if (this.getRodzaj().equals(getRodzaj().CYWILNY)){
             return true;
         }
         return false;

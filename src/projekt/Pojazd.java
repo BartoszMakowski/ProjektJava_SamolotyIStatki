@@ -8,6 +8,7 @@ import javafx.application.Platform;
 
 /**
  * Created by bartosz on 18.10.15.
+ * Implementuje pojazd.
  */
 public abstract class Pojazd implements Runnable {
     private Polozenie polozenie;
@@ -25,7 +26,13 @@ public abstract class Pojazd implements Runnable {
     private int deltaX;
     private int deltaY;
     private boolean dzialaj;
-
+    
+    /**
+     * Tworzy pojazd.
+     * @param polozenie położenie startowe tworzonego pojazdu
+     * @param predkosc prędkość tworzonego pojazdu
+     * @param trasa trasa tworzonego pojazdu
+     */
     public Pojazd(Polozenie polozenie, int predkosc, List<Lokalizacja> trasa) {
         this.polozenie = new Polozenie(polozenie.getX(),polozenie.getY());
         this.predkosc = predkosc;
@@ -36,7 +43,14 @@ public abstract class Pojazd implements Runnable {
 //        losujTrase(polozenie);
         //        this.zmienCel(trasa.listIterator().next());
     }
-
+    
+    /**
+     * Tworzy pojazd.
+     * @param polozenie położenie startowe tworzonego pojazdu
+     * @param predkosc prędkość tworzonego pojazdu
+     * @param najblizszyCel najbliższy Cel tworzonego pojazdu
+     * @param trasa tasa tworzonego pojazdu
+     */
     public Pojazd(Polozenie polozenie, int predkosc, Lokalizacja najblizszyCel, List<Lokalizacja> trasa){
         this(polozenie, predkosc, trasa);
         this.najblizszyCel = najblizszyCel;
@@ -45,6 +59,11 @@ public abstract class Pojazd implements Runnable {
         znajdzTrase(najblizszyCel);
     }
     
+    /**
+     * Tworzy pojazd.
+     * @param polozenie położenie startowe tworzonego pojazdu
+     * @param predkosc prędkość tworzonego pojazdu
+     */
     public Pojazd(Polozenie polozenie, int predkosc){
         this(polozenie, predkosc, null);
 //        this.najblizszyCel = najblizszyCel;
@@ -52,55 +71,77 @@ public abstract class Pojazd implements Runnable {
         this.trasa = new LinkedList<>();
 //        znajdzTrase(najblizszyCel);
     }
-
+    
+    /**
+     * Zwraca prędkosć pojazdu.
+     * @return prędkość pojazdu
+     */
     public int getPredkosc() {
         return predkosc;
     }
-
+    
+    /**
+     * Zwraca trasę pojazdu.
+     * @return trasa pojazdu
+     */
     public List<Lokalizacja> getTrasa() {
         return trasa;
     }
-
+    
+    /**
+     * Ustawia trasę pojazdu.
+     * @param trasa nowa trasa pojazdu
+     */
     public void setTrasa(List<Lokalizacja> trasa) {
         this.trasa = trasa;
     }
-
+    
+    /**
+     * Zwraca ID pojazdu.
+     * @return ID pojazdu
+     */
     public int getId() {
         return id;
     }
-
+    
+    /**
+     * Zwraca aktualne położenie pojazdu.
+     * @return aktualne położenie pojazdu
+     */
     public Polozenie getPolozenie() {
         return polozenie;
     }
-
+    
+    /**
+     * Zwraca najbliższy cel pojazdu.
+     * @return najbliższy cel pojazdu
+     */
     public Lokalizacja getNajblizszyCel() {
         return najblizszyCel;
     }
-
+    /**
+     * Ustawia najbliższy cel pojazdu.
+     * @param najblizszyCel nowy najbliższy cel pojazdu
+     */
     public void setNajblizszyCel(Lokalizacja najblizszyCel) {
         this.najblizszyCel = najblizszyCel;
-//        this.kierunek = Kierunek.LEWO;
-    }
-
-    public void usun(){
-          
-//        Thread.currentThread().interrupt();
-        getObrazek().setX(-100);
-//        System.out.println("TERAZ USUNĘ");
-        synchronized(Swiat.getSamoloty()){
-            zwolnijPole(); 
-        }        
-        dzialaj = false;
-        
-//        this.setObrazek(null);
-               
     }
     
+    /**
+     * Usuwa pojazd.
+     */
+    public void usun(){
+        dzialaj = false;
+//        Thread.currentThread().interrupt();
+//        zwolnijPole();
+    }
+    
+    /**
+     * Ustawia parametry lotu dla nowego celu.
+     * @param lok nowy cel
+     */
     public void zmienCel(Lokalizacja lok){
         this.najblizszyCel = lok;
-//        System.out.println( this.toString() +  ": Ustalono nowy cel: " + this.najblizszyCel.getNazwa() + this.najblizszyCel.getPolozenie() );
-//        System.out.println("ZEROWY INDEKS TRASY: " + this.trasa.get(0).getNazwa());
-//        System.out.println("NAJBLIŻSZY CEL: " + this.najblizszyCel.getNazwa());
         this.setKierunek(this.trasa.get(0).jakDojechac( this.najblizszyCel ).getKierunek());
         
          switch (this.getKierunek())
@@ -152,12 +193,15 @@ public abstract class Pojazd implements Runnable {
         this.odleglosc = this.trasa.get(0).jakDojechac( this.najblizszyCel ).getOdleglosc();
 //        System.out.println("ODLEGŁOŚĆ: " + this.odleglosc);
     }
-
+    
+    /**
+     * Przemieszcza pojazd o 1 piksel.
+     * @throws InterruptedException 
+     */
     public void przemiescSie() throws InterruptedException {
-//        if (!dzialaj){
-//            System.out.println("TERAZ WYJDĘ");
-//            return;
-//        }
+        if (!dzialaj){
+            return;
+        }
          
         this.polozenie.setY(this.polozenie.getY()+getDeltaY());
         this.polozenie.setX(this.polozenie.getX()+getDeltaX());
@@ -173,17 +217,26 @@ public abstract class Pojazd implements Runnable {
 
 
     }
-
+    
+    /**
+     * Ustawia położenie pojazdu.
+     * @param polozenie nowe położenie pojazdu.
+     */
     public void setPolozenie(Polozenie polozenie) {
         this.polozenie = polozenie;
     }
-
+    
+    /**
+     * Zwraca kierunek pojazdu.
+     * @return kierunek pojazdu
+     */
     public Kierunek getKierunek() {
         return kierunek;
     }
 
     /**
-     * @param kierunek the kierunek to set
+     * Ustawia kierunek pojazdu.
+     * @param kierunek nowy kierunek pojazdu
      */
     public void setKierunek(Kierunek kierunek) {
         this.kierunek = kierunek;
@@ -192,88 +245,75 @@ public abstract class Pojazd implements Runnable {
     
 
     /**
-     * @return the odleglosc
+     * Zwraca odległość od najbliższego celu.
+     * @return odległość od najbliższego celu
      */
     public int getOdleglosc() {
         return odleglosc;
     }
 
     /**
-     * @return the obrazek
+     * Zwraca ikonę pojazdu.
+     * @return ikona pojazdu
      */
     public javafx.scene.image.ImageView getObrazek() {
         return obrazek;
     }
 
     /**
-     * @param obrazek the obrazek to set
+     * Ustawia ikonę pojazdu.
+     * @param obrazek nowa ikona pojazdu
      */
     public void setObrazek(javafx.scene.image.ImageView obrazek) {
         this.obrazek = obrazek;
     }
     
+    /**
+     * Wykrywa kolizje z pojazdami poprzedzającymi.
+     * @return zaistnienie kolizji
+     */
     public boolean sprawdzPole(){
         boolean czy = true;
-//        synchronized(Swiat.getSamoloty()){
             for(int i=1; i<20; i++){
                 if(Swiat.getSamoloty().containsKey(( polozenie.getX() + getModyfikatorX() + i*getDeltaX())+"_" + (polozenie.getY()+ getModyfikatorY() + i * getDeltaY()))){
-                    System.out.println(( polozenie.getX() +  i*getDeltaX())+"_" + (polozenie.getY()+ i * getDeltaY()));
+//                    System.out.println(( polozenie.getX() +  i*getDeltaX())+"_" + (polozenie.getY()+ i * getDeltaY()));
                     czy = false;
                     break;
                 }
             }
-//        }
         return czy;
     }
     
-    private void zajmijPole(){
-//        Swiat.getSamoloty().put((polozenie.getX() + getModyfikatorX() + getDeltaX() ) + "_" + (polozenie.getY() + getModyfikatorY() + getDeltaY()), (Samolot) this);
-//        System.out.println((polozenie.getX() + deltaX) + "_" + (polozenie.getY() + deltaY));
-        
-    }
+ 
+    private void zajmijPole(){}
+
+    private void zwolnijPole(){}
     
-    private void zwolnijPole(){
-//        Swiat.getSamoloty().remove((polozenie.getX() + getModyfikatorX()) + "_" + (polozenie.getY() + getModyfikatorY()));        
-    }
-    
+    /**
+     * * Sprawdz możliwość wykonania ruchu. Metoda implementowana przez klasy dziedziczące.
+     * @return możliwość wykonania ruchu
+     * @throws InterruptedException 
+     */
     public boolean czyMozna() throws InterruptedException{
-//        boolean czy = true;
-//        while (czy){
-//            
-//            synchronized(Swiat.getSamoloty()){
-//                if(sprawdzPole()){
-//                    zajmijPole();
-//                    zwolnijPole();
-//                    czy = false;
-//                }
-//            }
-//            if(czy){
-//                Thread.sleep(50);
-////                System.out.println("NIE MOZNA!");
-//            }
-//            
-//        }
         return true;
     }
 
     /**
-     * @return the paliwo
+     * Zwraca aktualną ilość paliwa.
+     * @return aktualna ilość paliwa
      */
     public int getPaliwo() {
         return paliwo;
     }
     
     protected void losujTrase(Polozenie p){
-//        int i = Swiat.getTrasy().get(p.getX() + "_" + p.getY()).size();
-//        this.trasa = new LinkedList<>(Swiat.getTrasy().get(p.getX() +"_" + p.getY())
-//                                .get((int)(Math.random() * i)));
-//        System.out.println("MOŻLIWOŚCI: "+ i);
-////        if(this instanceof SamolotPasazerski){
-            trasa.removeAll(trasa);
             znajdzTrase(Swiat.getLokalizacje().get(p.getX() + "_" + p.getY()));
 //        }
     }
     
+    /**
+     * Losuje nową trasę pojazdu.
+     */
     public void zmienTrase(){
 //        Lokalizacja l = trasa.get(0);
         znajdzTrase(trasa.get(0));             
@@ -287,6 +327,10 @@ public abstract class Pojazd implements Runnable {
             {                
                 ruszaniePojazdu();
                 przemieszczaniePojazdu();
+                if(!dzialaj){
+                    zwolnijPole();
+                    break;
+                }
                 this.najblizszyCel.stopujPojazd(this);
                 zwolnijPole();
                 konczenieTrasyPojazdu();
@@ -295,65 +339,79 @@ public abstract class Pojazd implements Runnable {
     }
 
     /**
-     * @return the modyfikatorX
+     * Zwraca przesunięcie ikony pojazdu w osi X.
+     * @return przesunięcie ikony pojazdu w osi X
      */
     public int getModyfikatorX() {
         return modyfikatorX;
     }
 
     /**
-     * @return the modyfikatorY
+     * Zwraca przesunięcie ikony pojazdu w osi Y.
+     * @return przesunięcie ikony pojazdu w osi Y
      */
     public int getModyfikatorY() {
         return modyfikatorY;
     }
 
     /**
-     * @return the deltaX
+     * Zwraca wartość składowej X wektora prędkości pojazdu.
+     * @return składowej X wektora prędkości pojazdu
      */
     public int getDeltaX() {
         return deltaX;
     }
 
     /**
-     * @return the deltaY
+     * * Zwraca wartość składowej Y wektora prędkości pojazdu.
+     * @return składowa Y wektora prędkości pojazdu
      */
     public int getDeltaY() {
         return deltaY;
     }
     
+    /**
+     * Start pojazdu z lokalizacji.
+     */
     public void ruszaniePojazdu(){
+        
         if(odleglosc>0){
                                         
             Platform.runLater(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            getObrazek().setX(-30);
-                            getObrazek().setY(-30);
-                        }
+                @Override
+                public void run() {
+                    getObrazek().setX(-30);
+                    getObrazek().setY(-30);
+                }
             });
 
             for(int i=0; i<5; i++){
-                    try {
-                            this.przemiescSie();
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                try {
+                        this.przemiescSie();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                 }
         }
     }
     
+    /**
+     * Przemieszcza pojazd w kierunku celu.
+     */
     public void przemieszczaniePojazdu(){
         while (this.getOdleglosc()>20){
-            try {
+             try {
                 czyMozna();
                 this.przemiescSie();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
             }
-    //                    zwolnijPole();
+             if(!dzialaj){
+                 break;
+            }
+             
             Platform.runLater(new Runnable() {
 
                 @Override
@@ -366,11 +424,16 @@ public abstract class Pojazd implements Runnable {
         }  
     }
     
+    /**
+     * Przemieszcza pojazd do celu, gdy pojazd ten zarezerwował już w nim miejsce.
+     */
     public void konczenieTrasyPojazdu(){
         int predkoscOryginalna = predkosc;
         predkosc = 8;
         while (this.getOdleglosc()>0){
-//        System.out.println("WOLNE");
+//            if(!dzialaj){
+//                break;
+//            }
             try {
                 this.przemiescSie();
             } catch (InterruptedException ex) {
@@ -388,12 +451,22 @@ public abstract class Pojazd implements Runnable {
         predkosc = predkoscOryginalna;
     }
     
+    /**
+     * Losuje nową trasę pojazdu zaczynającą się od podanej lokalizacji
+     * @param skad lokalizacja początkowa
+     */
     public void znajdzTrase(Lokalizacja skad){}
     
+    /**
+     * Implemntuje czynności wykonywane w lokaliacjach, w których zatrzymuje się pojazd.
+     */
     public void obslugaNaMiejscu(){
+//        if(!dzialaj){            
+//            return;
+//        }
         int sen;
         if ((this instanceof Pasazerski) && (this.trasa.get(0) instanceof Pasazerski)){
-            System.out.println("        " + this.trasa.get(0).getNazwa());
+//            System.out.println("        " + this.trasa.get(0).getNazwa());
             ((Pasazerski)this).przesiadkaPasazera((Pasazerski)this.trasa.get(0));
             sen = 1500 +(int)Math.random() * 3500;
 
@@ -424,7 +497,7 @@ public abstract class Pojazd implements Runnable {
             this.zmienCel(this.trasa.get(1));
         }
         else{
-            System.out.println("Dotarłem do: " + this.najblizszyCel.getNazwa() + ".\nKONIEC TRASY.");
+//            System.out.println("Dotarłem do: " + this.najblizszyCel.getNazwa() + ".\nKONIEC TRASY.");
             while(trasa.size() <2){
                 znajdzTrase(najblizszyCel);
             }            
@@ -444,16 +517,24 @@ public abstract class Pojazd implements Runnable {
     }
 
     /**
-     * @return the dzialaj
+     * Zwraca stan pojazdu (aktywny/do usunięcia).
+     * @return prawdziwość stanu aktywnego pojazdu
      */
     public boolean isDzialaj() {
         return dzialaj;
     }
     
+    /**
+     * Uzupełnia zapas paliwa pojazdu.
+     */
     public void tankuj(){
         paliwo = 999;
     }
     
+    /**
+     * Uzupełnia zapas paliwa pojazdu do podanej wartości.
+     * @param f nowa ilość paliwa
+     */
     public void tankuj(int f){
         if(f<10000 && f>0){
             paliwo = f;
@@ -464,32 +545,40 @@ public abstract class Pojazd implements Runnable {
         
     }
 
-    /**
-     * @param modyfikatorX the modyfikatorX to set
+    /** Ustawia wartość przesunięcia ikony pojazdu w osi X.
+     * @param modyfikatorX nowa wartość przesunięcia ikony pojazdu w osi X
      */
     public void setModyfikatorX(int modyfikatorX) {
         this.modyfikatorX = modyfikatorX;
     }
 
-    /**
-     * @param modyfikatorY the modyfikatorY to set
+    /** Ustawia wartość przesunięcia ikony pojazdu w osi Y.
+     * @param modyfikatorY nowa wartość przesunięcia ikony pojazdu w osi Y
      */
     public void setModyfikatorY(int modyfikatorY) {
         this.modyfikatorY = modyfikatorY;
     }
 
-    /**
-     * @param deltaX the deltaX to set
+    /** Ustawia wartość składowej X wektora prędkości pojazdu.
+     * @param deltaX nowa wartość składowej X wektora prędkości pojazdu
      */
     public void setDeltaX(int deltaX) {
         this.deltaX = deltaX;
     }
 
-    /**
-     * @param deltaY the deltaY to set
+    /** Ustawia wartość składowej Y wektora prędkości pojazdu.
+     * @param deltaY nowa wartość składowej Y wektora prędkości pojazdu
      */
     public void setDeltaY(int deltaY) {
         this.deltaY = deltaY;
+    }
+
+    /**
+     * Ustawia stan pojazdu (aktywny/do usunięcia).
+     * @param dzialaj nowa wartość dla prawdziwości działania
+     */
+    public void setDzialaj(boolean dzialaj) {
+        this.dzialaj = dzialaj;
     }
     
 }

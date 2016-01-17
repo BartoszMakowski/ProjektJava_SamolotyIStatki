@@ -5,34 +5,51 @@ import java.util.logging.Logger;
 
 /**
  * Created by bartosz on 19.10.15.
+ * Implementuje skrzyżowanie.
  */
 public class Skrzyzowanie extends Lokalizacja {
     private Pojazd zajetePrzez;
-
+    
+    /**
+     * Tworzy skrzyżowanie.
+     * @param x współrzędna X skrzyżowania
+     * @param y współrzędna Y skrzyżowania
+     * @param nazwa nazwa skrzyżowania
+     */
     public Skrzyzowanie(int x, int y, String nazwa) {
         super(x, y, nazwa);
         this.zajetePrzez = null;
     }
-
+    
+    /**
+     * Zwraca pojazd, który zajmuje skrzyżowanie.
+     * @return pojazd zajmujący skrzyżowanie
+     */
     public Pojazd getZajetePrzez() {
         return zajetePrzez;
     }
-
+    
+    /**
+     * Oznacza skrzyżowanie jako zajęte przez dany pojazd.
+     * @param zajetePrzez pojazd zajmujący skrzyżowanie
+     */
     public void setZajetePrzez(Pojazd zajetePrzez) {
         this.zajetePrzez = zajetePrzez;
     }
     
     @Override
     public void stopujPojazd(Pojazd p){
-        System.out.println("WTF");
-        
+           
         while(!p.equals(this.zajetePrzez)){
-            System.out.println("WSZEDŁEM DO WHILE'a");
+            if(!p.isDzialaj()){
+            return;
+            }  
+//            System.out.println("WSZEDŁEM DO WHILE'a");
             synchronized(this){
                 if(this.zajetePrzez==null){
                     this.zajetePrzez=p;
                 }
-                else System.out.println("Zajete przez: " + this.zajetePrzez.toString());
+//                else System.out.println("Zajete przez: " + this.zajetePrzez.toString());
             }
             try {
                 Thread.sleep(30);

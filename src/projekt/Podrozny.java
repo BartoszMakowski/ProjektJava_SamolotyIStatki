@@ -10,31 +10,41 @@ import java.util.logging.Logger;
 
 /**
  * Created by bartosz on 19.10.15.
+ * enum z rodzajami podróży - prywatną i służbową
  */
 enum RodzajPodrozy{
     PRYWATNA, SLUZBOWA}
-
+/**
+ * Implementuje podróżnego.
+ * @author bartosz
+ */
 public class Podrozny implements Runnable{
     private static String[] imiona={"Jan","Anna","Krzysztof","Maria","Dominika","Mariusz", "Janusz", "Hiacynta", "Leokadia", "Krystyna"};
     private static String[] nazwiska={"Jurek","Nowak","Krzak","Błękit","Jawa","Komar", "Łużyn", "Messi", "Ronaldo",};
     private String imie;
     private String nazwisko;
+    private int wiek;
     private long pesel;
     private Lokalizacja dom;
     private List<Lokalizacja> plan;
-    private Lokalizacja cel;
+//    private Lokalizacja cel;
     private RodzajPodrozy rodzajPodrozy;
-    private Object gdzieAktualnie;
+//    private Object gdzieAktualnie;
     private boolean odpoczywa;
     private static int bazaPesel = 1;
 
-    public Podrozny(String imie, String nazwisko, long pesel, Lokalizacja dom) {
-        this.imie = imie;
-        this.nazwisko = nazwisko;
-        this.pesel = pesel;
-        this.dom = dom;
-    }
     
+//    public Podrozny(String imie, String nazwisko, long pesel, Lokalizacja dom) {
+//        this.imie = imie;
+//        this.nazwisko = nazwisko;
+//        this.pesel = pesel;
+//        this.dom = dom;
+//    }
+    
+    /**
+     * Tworzy pasażera.
+     * @param dom lokalizacja domowa pasażera
+     */
     public Podrozny(Lokalizacja dom){
         this.imie=imiona[(int) (Math.random() * (imiona.length -1))];
         this.nazwisko=nazwiska[(int) (Math.random() * (nazwiska.length -1))];
@@ -43,52 +53,72 @@ public class Podrozny implements Runnable{
         this.dom = dom;
         this.odpoczywa = false;
         this.rodzajPodrozy = Math.random() > 0.5 ? RodzajPodrozy.PRYWATNA : RodzajPodrozy.SLUZBOWA;
-//        System.out.println(znajdzTrase(dom, Swiat.getLokalizacje().get("90_550")));
-        
+        this.wiek = 3 + (int)(Math.random() * 112);
         Lokalizacja cel = Swiat.getMiasta().get((int)(Swiat.getMiasta().size() * Math.random()));
-        System.out.println( this + ": MOIM CELEM JEST: " + cel.getNazwa());
-
         this.plan = znajdzTrase(dom, cel);
         Lokalizacja cel2 = Swiat.getMiasta().get((int)(Swiat.getMiasta().size() * Math.random()));
         this.plan.addAll(znajdzTrase(cel, cel2));
         this.plan.addAll(znajdzTrase(cel2, dom));
-        
-//        losujPlan(dom);
         Swiat.getPasazerowie().put("" + pesel, this); 
-       
- 
-//        System.out.println(this.plan);
         
     }
-
+    
+    /**
+     * Zwraca imię podróżnego.
+     * @return imię podróżnego
+     */
     public String getImie() {
         return imie;
     }
-
+    
+    /**
+     * Zwraca nazwisko podróżnego.
+     * @return nazwisko podróżnego
+     */
     public String getNazwisko() {
         return nazwisko;
     }
-
+    
+    /**
+     * Zwraca PESEL podróżnego.
+     * @return PESEL podróżnego 
+     */
     public long getPesel() {
         return pesel;
     }
-
+    
+    /**
+     * Zwraca lokalizację domową podróżnego.
+     * @return lokalizacja domowa podróżnego
+     */
     public Lokalizacja getDom() {
         return dom;
     }
-
+    
+    /**
+     * Zwraca plan podróży podróżnego.
+     * @return plan podróży podróżnego
+     */
     public List<Lokalizacja> getPlan() {
         return plan;
     }
+    
+//    public Lokalizacja getCel() {
+//        return cel;
+//    }
 
-    public Lokalizacja getCel() {
-        return cel;
-    }
-
+    /**
+     * Zwraca rodzaj podróży podróżnego.
+     * @return rodzaj podróży podróżnego.
+     */
     public RodzajPodrozy getRodzajPodrozy() {
         return rodzajPodrozy;
     }
-
+    
+    /**
+     * Losuje podróżnemu plan podróżny.
+     * @param start lokalizacja startowa
+     */
     private void losujPlan(Lokalizacja start){
         Lokalizacja dokad = start;
         while(dokad == start){
@@ -162,7 +192,7 @@ public class Podrozny implements Runnable{
             if (l instanceof Pasazerski){
                 znalezionaTrasa.addFirst(l);
             }
-            System.out.println(l);
+//            System.out.println(l);
             l = poprzednik.get(l.getPolozenie().getX() + "_" + l.getPolozenie().getY());
         }
 //        znalezionaTrasa.addFirst(l);
@@ -170,14 +200,19 @@ public class Podrozny implements Runnable{
         return znalezionaTrasa;       
     }
 
-    public Object getGdzieAktualnie() {
-        return gdzieAktualnie;
-    }
-
-    public void setGdzieAktualnie(Object gdzieAktualnie) {
-        this.gdzieAktualnie = gdzieAktualnie;
-    }
+//    public Object getGdzieAktualnie() {
+//        return gdzieAktualnie;
+//    }
+//
+//    public void setGdzieAktualnie(Object gdzieAktualnie) {
+//        this.gdzieAktualnie = gdzieAktualnie;
+//    }
     
+    /**
+     * Sprawdza, czy podróżny chce wsiąść do pojazdu.
+     * @param pojazd docelowy pojazd
+     * @return decyzja o chęci wejścia do poajzdu
+     */
     public boolean czyWsiasc(Pasazerski pojazd){
         if (this.plan.size()<1){
             losujPlan(((Pojazd)pojazd).getTrasa().get(0));
@@ -193,18 +228,24 @@ public class Podrozny implements Runnable{
         return false;
     }
     
+    /**
+     * Sprawdza, czy podróżny chce wysiąść w danej lokalizacji pasażerskiej.
+     * @param l docelowa lokalizacja pasażerska
+     * @return 
+     */
     public boolean czyWysiasc(Pasazerski l){
-//        System.out.println("jestem w: " + ((Lokalizacja)l).getNazwa() + "   chcę do: " + this.plan.get(0).getNazwa() );
         if (((Lokalizacja)l).equals(this.plan.get(0))){
-//            System.out.println("TAK, WYSIADAM");
-//            this.plan.remove(0);
             return true;
         }        
         return false;
     }
     
+    /**
+     * Usypia wątek pasażera.
+     * @throws InterruptedException 
+     */
     public void odpocznij() throws InterruptedException{
-        if (this.rodzajPodrozy.equals(RodzajPodrozy.PRYWATNA)){
+        if (this.getRodzajPodrozy().equals(RodzajPodrozy.PRYWATNA)){
             this.setOdpoczywa(true);
             Thread.sleep(15000);
         }
@@ -215,9 +256,7 @@ public class Podrozny implements Runnable{
         this.setOdpoczywa(false);
     }
     
-//    public void wsiadzWysiadz()
-    
-        
+       
 
     @Override
     public void run() {
@@ -241,22 +280,17 @@ public class Podrozny implements Runnable{
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-//    public losujCzlowieka()
-//    {
-//        this.imie = "Jan";
-//        this.nazwisko = "Kowalski";
-//        return this;
-//    }
-
     /**
-     * @return the czyOdpoczywa
+     * Zwraca stan podróżnego.
+     * @return odpowiedź, czy pasażer odpoczywa
      */
     public boolean isOdpoczywa() {
         return odpoczywa;
     }
 
     /**
-     * @param odpoczywa the odpoczywa to set
+     * Ustawia stan podróżnego.
+     * @param odpoczywa docelowy stan podróżnego
      */
     public void setOdpoczywa(boolean odpoczywa) {
         this.odpoczywa = odpoczywa;
@@ -265,6 +299,14 @@ public class Podrozny implements Runnable{
     @Override
     public String toString(){
         return(""+pesel);
+    }
+
+    /**
+     * Zwraca wiek podróżnego.
+     * @return wiek podróżnego
+     */
+    public int getWiek() {
+        return wiek;
     }
 
 }

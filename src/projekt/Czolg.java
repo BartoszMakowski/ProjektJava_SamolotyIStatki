@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 /**
  *
  * @author bartosz
+ * Implementuje czołg.
  */
 public class Czolg extends Pojazd implements Pasazerski{
     private final int miejsca;
@@ -24,6 +25,9 @@ public class Czolg extends Pojazd implements Pasazerski{
     private static Lokalizacja pieczyska;
     private static Pasazerski cel;
     
+    /**
+     * Tworzy czołg.
+     */
     public Czolg(){
         super(Swiat.getLotniskaCywilne().get("365_200").getPolozenie(),-150);
 //        System.out.println("AAA: " + Swiat.getLotniskaCywilne().get("365_200"));
@@ -44,15 +48,13 @@ public class Czolg extends Pojazd implements Pasazerski{
 //        s_pom = new Skrzyzowanie(365, 145, "S NA WYSPIE");
         kity = Swiat.getLokalizacje().get("365_200");
         pieczyska = Swiat.getLokalizacje().get("315_145");
-                
-//        s_pom.dodajDrogowskaz(new Drogowskaz(s_pom, kity));
-//        s_pom.dodajDrogowskaz(new Drogowskaz(s_pom, pieczyska));
-//        kity.dodajDrogowskaz(new Drogowskaz(kity, s_pom));
-//        pieczyska.dodajDrogowskaz(new Drogowskaz(pieczyska, s_pom));
-//        znajdzTrase(kity);
-        
+        getTrasa().add(pieczyska);        
     }
 
+    /**
+     * Przenosi pasażerów z czołgu do lokalizacji, jeśli jest ona w ich planie."
+     * @param dokad cel przesiadki
+     */
     @Override
     public void przesiadkaPasazera(Pasazerski dokad) {
         LinkedList<Podrozny> doUsuniecia = new LinkedList<>();
@@ -63,24 +65,33 @@ public class Czolg extends Pojazd implements Pasazerski{
                     dokad.dodajPasazera(p);
                 }
             }
-//            System.out.println("NIECH ODPOCZNIE");
             p.setOdpoczywa(true);
         }
         for(Podrozny p : doUsuniecia){
             this.usunPasazera(p);
         }
     }
-
+    
+    /**
+     * Bezwarunkowo dodaje pasażera do listy pasażerów czołgu.
+     * @param pasazer pasażer do dodania
+     */
     @Override
     public void dodajPasazera(Podrozny pasazer) {
         this.getPasazerowie().add(pasazer);
     }
-
+    /**
+     * Usuwa pasażera z listy pasażerów czołgu.
+     * @param pasazer pasażer do usunięcia
+     */
     @Override
     public void usunPasazera(Podrozny pasazer) {
         getPasazerowie().remove(pasazer);
     }
-
+    /**
+     * Sprawdza, czy są wolne miejsca dla pasażerów.
+     * @return istnienie wolnych miejsc
+     */
     @Override
     public boolean czyJestMiejsce() {
         if (this.getPasazerowie().size() < this.getMiejsca()){
@@ -90,42 +101,25 @@ public class Czolg extends Pojazd implements Pasazerski{
     }
 
     /**
-     * @return the miejsca
+     * Zwraca liczbę wolnych miejsc.
+     * @return liczba wolnych miejsc
      */
     public int getMiejsca() {
         return miejsca;
     }
 
-    /**
-     * @return the pasazerowie
+    /**Zwraca listę pasażerów w czołgu.
+     * @return lista pasażerów
      */
     public List <Podrozny> getPasazerowie() {
         return pasazerowie;
     }
-//    
-//    @Override
-//    public void znajdzTrase(Lokalizacja skad){
-//        System.out.println("DOBRA METODA");
-//        if(skad.equals(pieczyska)){
-//            getTrasa().clear();
-//            getTrasa().add(pieczyska);
-//            getTrasa().add(s_pom);
-//            getTrasa().add(kity);            
-//        }
-//        else{
-//            getTrasa().clear();
-//            getTrasa().add(kity);
-//            getTrasa().add(s_pom);
-//            getTrasa().add(pieczyska);
-//        }    
-//        System.out.println("TRASA: " + getTrasa());       
-//    }
-    
+
     @Override
     public void run(){
 //        Image gpojazd;
             while(isDzialaj())
-            {   
+            {                   
                 try {
                     przejazdCzolgu();
                 } catch (InterruptedException ex) {
@@ -135,8 +129,10 @@ public class Czolg extends Pojazd implements Pasazerski{
                 
             }        
     }
-    
-    @Override
+    /**
+     * Implementuje obsługę w miejscach docelowych.
+     */
+//    @Override
     public void obslugaNaMiejscu(){
         przesiadkaPasazera(cel);
         int sen;
@@ -172,7 +168,8 @@ public class Czolg extends Pojazd implements Pasazerski{
             setDeltaY(0);
             while(getPolozenie().getX() != 315){
                 przemieszczanieCzolgu();
-            }            
+            }
+            getTrasa().remove(0);
             getTrasa().add(kity);
         }
         else{
@@ -187,12 +184,10 @@ public class Czolg extends Pojazd implements Pasazerski{
             while(getPolozenie().getY() != 200){
                 przemieszczanieCzolgu();
             }
+            getTrasa().remove(0);
             getTrasa().add(pieczyska);
             
         }
-        
-        
-        
     }
     
     private void przemieszczanieCzolgu() throws InterruptedException{
@@ -206,10 +201,15 @@ public class Czolg extends Pojazd implements Pasazerski{
                 }
             });
     }
-
+    
     @Override
     public String toString() {
         return "Rudy 102";
+    }
+    
+    @Override
+    public int getPredkosc(){
+        return 1;
     }
     
     

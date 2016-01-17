@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 /**
  * Created by bartosz on 19.10.15.
+ * Implementuje port morski.
  */
 public class PortMorski extends Lokalizacja implements Pasazerski{
     private List<Podrozny> odwiedzajacy;
@@ -14,6 +15,12 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
     private int pojemnosc;
     private boolean aktywny;
 
+    /**
+     * Tworzy port morski.
+     * @param x współrzędna X położenia
+     * @param y współrzędna Y położenia
+     * @param nazwa nazwa portu
+     */
     public PortMorski(int x, int y, String nazwa) {
         super(x, y, nazwa);
         this.odwiedzajacy = new LinkedList<>();
@@ -21,19 +28,35 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
         this.aktywny = false;
         this.pojemnosc = 5;
     }
-
+    
+    /**
+     * Zwraca listę statków znajdujących się w porcie.
+     * @return lsita statków w porcie
+     */
     public List<Wycieczkowiec> getZajetyPrzez() {
         return zajetyPrzez;
     }
-
+    
+    /**
+     * Ustawia nową listę statków znajdujących się w porcie.
+     * @param zajetyPrzez nowa lista statków w porcie
+     */
     public void setZajetyPrzez(List<Wycieczkowiec> zajetyPrzez) {
         this.zajetyPrzez = zajetyPrzez;
     }
-
+    
+    /**
+     * Zwraca listę podróżnych znajdujących się w porcie.
+     * @return lsita podróżnych w porcie
+     */
     public List<Podrozny> getOdwiedzajacy() {
         return odwiedzajacy;
     }
-
+    
+    /**
+     * Ustawia nową listę podróżnych znajdujących się w porcie.
+     * @param odwiedzajacy nowa lista podróżnych w porcie
+     */
     public void setOdwiedzajacy(List<Podrozny> odwiedzajacy) {
         this.odwiedzajacy = odwiedzajacy;
     }
@@ -110,7 +133,8 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
     }
 
     /**
-     * @return the pojemnosc
+     * Zwraca pojemność portu.
+     * @return pojemność portu
      */
     public int getPojemnosc() {
         return pojemnosc;
@@ -120,6 +144,7 @@ public class PortMorski extends Lokalizacja implements Pasazerski{
      *
      * @param statek
      */
+    @Override
     public void startujPojazd(Pojazd statek){
         synchronized(this){
             zajetyPrzez.remove(statek);

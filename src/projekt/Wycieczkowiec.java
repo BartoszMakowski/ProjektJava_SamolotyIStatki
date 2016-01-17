@@ -13,17 +13,28 @@ import javafx.scene.image.ImageView;
 
 /**
  * Created by bartosz on 19.10.15.
+ * Implementuje wycieczkowiec.
  */
 public class Wycieczkowiec extends Statek implements Pasazerski{
     private int miejsca;
-    private int zajeteMiejsca;
     private String firma;
     private List<Podrozny> pasazerowie;
 
+    /**
+     * Tworzy wycieczkowiec
+     * @param polozenie położenie startowe
+     * @param predkosc prędkość
+     * @param najblizszyCel najbliższy cel
+     * @param trasa trasa
+     */
     public Wycieczkowiec(Polozenie polozenie, int predkosc, PortMorski najblizszyCel, List<Lokalizacja> trasa) {
         super(polozenie, predkosc, najblizszyCel, trasa);
     }
     
+    /**
+     * Tworzy wycieczkowiec
+     * @param lokalizacja startowy port morski
+     */
     public Wycieczkowiec(PortMorski lokalizacja){
         super(lokalizacja.getPolozenie(), (int) (3 + Math.random() * 10), lokalizacja, null);
         this.miejsca = 2 + (int) (Math.random()*18);
@@ -48,23 +59,26 @@ public class Wycieczkowiec extends Statek implements Pasazerski{
         getObrazek().setId("" + this.getId());
     }
 
-
+    /**
+     * Zwraca liczbę miejsc.
+     * @return liczba miejsc
+     */
     public int getMiejsca() {
         return miejsca;
     }
 
-    public int getZajeteMiejsca() {
-        return zajeteMiejsca;
-    }
-
-    public void setZajeteMiejsca(int zajeteMiejsca) {
-        this.zajeteMiejsca = zajeteMiejsca;
-    }
-
+    /**
+     * Zwraca nazwę przewoźnika
+     * @return nazwa przewoźnika
+     */
     public String getFirma() {
         return firma;
     }
-
+    
+    /**
+     * Zwraca listę podróżnych na wycieczkowcu.
+     * @return lista podróżnych na wycieczkowcu
+     */
     public List<Podrozny> getPasazerowie() {
         return pasazerowie;
     }
@@ -106,6 +120,7 @@ public class Wycieczkowiec extends Statek implements Pasazerski{
         return false;
     }
     
+    @Override
     public void obslugaNaMiejscu(){
     int sen;
     if (getTrasa().get(0) instanceof Pasazerski){
@@ -172,8 +187,9 @@ public class Wycieczkowiec extends Statek implements Pasazerski{
     
     @Override
     public void usun(){
-        this.pasazerowie = new LinkedList<>();
+        pasazerowie = new LinkedList<>();
         super.usun();
+        zwolnijPole();
         
     }
     
@@ -252,4 +268,10 @@ public class Wycieczkowiec extends Statek implements Pasazerski{
         getTrasa().addAll(znalezionaTrasa);
                      
     }
+
+    @Override
+    public String toString() {
+        return "Wycieczkowiec " + getId();
+    }
+    
 }

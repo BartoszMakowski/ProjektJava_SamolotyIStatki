@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Created by bartosz on 19.10.15.
- * Implementuje lokalizacje
+ * Implementuje lokalizację.
  *
  */
 public abstract class Lokalizacja {
@@ -75,11 +75,18 @@ public abstract class Lokalizacja {
         this.odleglosci.add(d);
         return odleglosci.size();
     }
-    
+    /**
+     * Umożliwia pojazdowi zatrzymanie się w lokalizacji, gdy będzie to możliwe.
+     * @param pojazd zatrzymujący się pojazd
+     */
     public void stopujPojazd(Pojazd pojazd){
         
+        
     }
-    
+    /**
+     * Obsługuje opuszczenie lokalizacji przez pojazd.
+     * @param pojazd pojazd opuszczający lokalizację
+     */
     public void startujPojazd(Pojazd pojazd){
         
     }

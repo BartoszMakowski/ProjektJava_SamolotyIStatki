@@ -7,19 +7,28 @@ import javafx.application.Platform;
 
 /**
  * Created by bartosz on 19.10.15.
+ * Implementuje statek.
  */
 public abstract class Statek extends Pojazd {
-
+    
+    /**
+     * Tworzy statek.
+     * @param polozenie położenie startowe
+     * @param predkosc prędkość
+     * @param najblizszyCel najbliższy cel
+     * @param trasa trasa
+     */
     public Statek(Polozenie polozenie, int predkosc, PortMorski najblizszyCel, List<Lokalizacja> trasa) {
         super(polozenie, predkosc, najblizszyCel, trasa);
     }
 
-    private boolean sprawdzPole(){
+    @Override
+    public boolean sprawdzPole(){
         boolean czy = true;
-//        synchronized(Swiat.getSamoloty()){
+//        synchronized(Swiat.getStatki()){
             for(int i=1; i<15; i++){
                 if(Swiat.getStatki().containsKey(( getPolozenie().getX() + getModyfikatorX() + i*getDeltaX())+"_" + (getPolozenie().getY()+ getModyfikatorY() + i * getDeltaY()))){
-                    System.out.println(( getPolozenie().getX() +  i*getDeltaX())+"_" + (getPolozenie().getY()+ i * getDeltaY()));
+//                    System.out.println(( getPolozenie().getX() +  i*getDeltaX())+"_" + (getPolozenie().getY()+ i * getDeltaY()));
                     czy = false;
                     break;
                 }
@@ -28,18 +37,25 @@ public abstract class Statek extends Pojazd {
         return czy;
     }
     
+    /**
+     * Oznacza pole jako zajęte przez wywołujący metodę statek. Przydatne w unikaniu kolizji.
+     */
     public void zajmijPole(){
         Swiat.getStatki().put((getPolozenie().getX() + getModyfikatorX() + getDeltaX() ) + "_" + (getPolozenie().getY() + getModyfikatorY() + getDeltaY()), this);
 //        System.out.println((polozenie.getX() + deltaX) + "_" + (polozenie.getY() + deltaY));
         
     }
     
+    /**
+     * Zwalnie pole oznaczone wcześniej jako zajęte.
+     */
     public void zwolnijPole(){
 //        System.out.println("JEDNAK JEST LEPIEJ");
         Swiat.getStatki().remove((getPolozenie().getX() + getModyfikatorX()) + "_" + (getPolozenie().getY() + getModyfikatorY()));        
     }
     
-    private boolean czyMozna() throws InterruptedException{
+    @Override
+    public boolean czyMozna() throws InterruptedException{
         boolean czy = true;
         while (czy){
             
@@ -65,6 +81,9 @@ public abstract class Statek extends Pojazd {
             try {
                 czyMozna();
                 przemiescSie();
+                if(!isDzialaj()){
+                    break;
+                }
             } catch (InterruptedException ex) {
                 Logger.getLogger(Pojazd.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -85,8 +104,7 @@ public abstract class Statek extends Pojazd {
     public void tankuj(){
         tankuj(5000);
         
-    }
-    
+    }  
 
     
 }

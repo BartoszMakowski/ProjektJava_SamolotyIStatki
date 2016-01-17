@@ -6,7 +6,6 @@
 package projekt;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import javafx.application.Application;
@@ -19,6 +18,7 @@ import static javafx.application.Application.launch;
 /**
  *
  * @author bartosz
+ * Implementuje świat.
  */
 public class Swiat extends Application {
     private static HashMap<String, Lotnisko> lotniskaCywilne;
@@ -28,86 +28,96 @@ public class Swiat extends Application {
     private static HashMap<String, Podrozny> pasazerowie;
     private static HashMap<String, Lokalizacja> lokalizacje;
     private static HashMap<String, Skrzyzowanie> skrzyzowania;
-    private static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> trasy;
-    private static HashMap<String, LinkedList<Lokalizacja>> rozklady;
+//    private static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> trasy;
+//    private static HashMap<String, LinkedList<Lokalizacja>> rozklady;
     private static HashMap<String, Samolot> samoloty;
     private static HashMap<String, Statek> statki;
-//    public static SamolotPasazerski sp;
-    
-//    public static LinkedList<Lokalizacj> ptrasa;
+//    private static Czolg czolg;
 
     /**
-     * @return the lotniska
+     * Zwraca listę lotnisk cywilnych.
+     * @return lista lotnisk cywilnych
+     * 
      */
     public static HashMap<String, Lotnisko> getLotniska() {
         return getLotniskaCywilne();
     }
 
     /**
-     * @return the pojazdy
+     * Zwraca hashmapę samolotów.
+     * @return hashmapa samolotów
      */
     public static HashMap<String, Samolot> getSamoloty() {
         return samoloty;
     }
 
     /**
-     * @return the pasazerowie
+     * Zwraca hashmapę pasażerów.
+     * @return hashmapa pasażerów
      */
     public static HashMap<String, Podrozny> getPasazerowie() {
         return pasazerowie;
     }
 
     /**
-     * @return the portyMorskie
+     * Zwradca hashmapę portów morskich.
+     * @return hashmapa portów morskich
      */
     public static HashMap<String, PortMorski> getPortyMorskie() {
         return portyMorskie;
     }
 
     /**
-     * @return the statki
+     * Zwraca hashmapę statków.
+     * @return hashmapa statków
      */
     public static HashMap<String, Statek> getStatki() {
         return statki;
     }
 
     /**
-     * @return the lokalizacje
+     * Zwraca hashmapę wszystki lokalizacji.
+     * @return hashmapa lokalizacji
      */
     public static HashMap<String, Lokalizacja> getLokalizacje() {
         return lokalizacje;
     }
 
     /**
-     * @return the lotniskaWojskowe
+     * Zwraca hashmapę lotnisk wojskowych.
+     * @return hashmapa lotnisko wojskowych
      */
     public static HashMap<String, Lotnisko> getLotniskaWojskowe() {
         return lotniskaWojskowe;
     }
 
     /**
-     * @return the skrzyzowania
+     * Zwraca hashmapę skrzyżowań.
+     * @return hashmapa skrzyżowań
      */
     public static HashMap<String, Skrzyzowanie> getSkrzyzowania() {
         return skrzyzowania;
     }
 
-    /**
-     * @return the trasy
-     */
-    public static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> getTrasy() {
-        return trasy;
-    }
+//    /**
+//     * Zwraca
+//     * @return the trasy
+//     */
+//    public static HashMap<String, ArrayList<LinkedList<Lokalizacja>>> getTrasy() {
+//        return trasy;
+//    }
 
     /**
-     * @return the miasta
+     * Zwraca tablicę lokalizacji dostępnych dla podróżnych.
+     * @return tablica lokalizacji dostępnych dla podróżnych
      */
     public static ArrayList<Lokalizacja> getMiasta() {
         return miasta;
     }
 
     /**
-     * @return the lotniskaCywilne
+     * Zwraca hashmapę lotnisk cywilnych.
+     * @return hashmapa lotnisk cywilnych
      */
     public static HashMap<String, Lotnisko> getLotniskaCywilne() {
         return lotniskaCywilne;
@@ -135,7 +145,7 @@ public class Swiat extends Application {
                 pasazerowie = new HashMap<String, Podrozny>();
                 samoloty = new HashMap<String, Samolot>();
                 statki = new HashMap<String, Statek>();
-                trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
+//                trasy = new HashMap<String, ArrayList<LinkedList<Lokalizacja>>>();
                 miasta = new ArrayList<>();
                 
 //                TWORZENIE LOTNISK CYWILNYCH
@@ -335,7 +345,7 @@ public class Swiat extends Application {
                 sm3.dodajDrogowskaz(new Drogowskaz(sm3, sm1));
                 sm3.dodajDrogowskaz(new Drogowskaz(sm3, samo)); 
                 
-//                TYMCZASOWE ROZWIĄZANIE:
+//              ROZWIĄZANIE POZWALAJĄCE PASAŻEROM LOSOWANIE TRAS SKŁADAJĄCYCH SIĘ Z LOTNISK I PORTÓW:
 
                 pieczyska.dodajDrogowskaz(new Drogowskaz(pieczyska,kity));
                 kity.dodajDrogowskaz(new Drogowskaz(kity,pieczyska));
@@ -358,140 +368,6 @@ public class Swiat extends Application {
                     System.out.println(l.getNazwa());
                 }
 
-                LinkedList<Lokalizacja> trasa; //= new LinkedList<>();
-                LinkedList<Lokalizacja> trasa2;
-//                trasa.push(brzysko);
-//                trasa.push(s1);
-//                trasa.push(kity);
-//                trasa.push(s1);
-//                trasa.push(brzysko);
-//                trasy.put("550_20",trasa);
-//                trasy.put("550_20", null);
-//                System.out.println(trasy.get("550_20").size());
-//                ptrasa = trasa;
-                
-                ArrayList<LinkedList<Lokalizacja>> tr550_20 = new ArrayList<>();
-                ArrayList<LinkedList<Lokalizacja>> tr365_200 = new ArrayList<>();
-                ArrayList<LinkedList<Lokalizacja>> tr550_550 = new ArrayList<>();
-                ArrayList<LinkedList<Lokalizacja>> tr550_360 = new ArrayList<>();
-                ArrayList<LinkedList<Lokalizacja>> tr365_550 = new ArrayList<>();
-                ArrayList<LinkedList<Lokalizacja>> tr90_550 = new ArrayList<>();
-                
-                ArrayList<LinkedList<Lokalizacja>> tr275_20 = new ArrayList<>();
-                
-                trasa = new LinkedList<>();
-                trasa.add(brzysko);
-                trasa.add(s1);
-                trasa.add(kity);
-                trasa.add(s8);
-                trasa.add(s10);
-                trasa.add(leszcze);
-                tr550_20.add(trasa);
-                
-                trasa2 = new LinkedList<>(trasa);
-                trasa2.remove(0);
-                trasa2.remove(0);
-                trasa2.add(s13);
-                trasa2.add(zlawies);
-                
-                tr365_200.add(trasa2);
-                
-                trasa2 = new LinkedList<>(trasa);
-                trasa2.add(s14);
-                trasa2.add(samokleski);
-                trasa2.add(s12);
-                trasa2.add(koty);
-                trasa2.add(s4);
-                trasa2.add(brzysko);
-                
-                tr550_20.add(trasa2);
-                
-                
-                trasa = new LinkedList<>();
-                trasa.add(brzysko);
-                trasa.add(s4);
-                trasa.add(kity);
-                
-                tr550_20.add(trasa);
-                
-                trasa = new LinkedList<>();
-                trasa.add(brzysko);
-                trasa.add(s4);
-                trasa.add(koty);
-                trasa.add(s12);
-                trasa.add(samokleski);                
-                tr550_20.add(trasa);
-                
-                trasa = new LinkedList<>();
-                trasa.add(leszcze);
-                trasa.add(s10);
-                trasa.add(s8);
-                trasa.add(kity);                
-                tr365_550.add(trasa);
-                
-                trasa = new LinkedList<>();
-                trasa.add(leszcze);
-                trasa.add(s10);
-                trasa.add(s8);
-                trasa.add(kity); 
-                trasa.add(s4);
-                trasa.add(brzysko);               
-                tr365_550.add(trasa);
-                
-                trasa = new LinkedList<>();
-                trasa.add(samokleski);
-                trasa.add(s12);
-                trasa.add(s11);
-                trasa.add(s10);
-                trasa.add(s8);
-                trasa.add(kity);
-                trasa.add(s1);
-                trasa.add(brzysko);
-                tr550_550.add(trasa);
-                
-                trasa = new LinkedList<>();
-                trasa.add(zlawies);
-                trasa.add(s13);
-                trasa.add(leszcze);                
-                tr90_550.add(trasa);
-                
-                trasa = new LinkedList<>();
-                trasa.add(koty);
-                trasa.add(s4);
-                trasa.add(kity);                
-                tr550_360.add(trasa);
-                
-                
-                
-                getTrasy().put("550_20", tr550_20);
-                getTrasy().put("365_200", tr365_200);
-                getTrasy().put("365_550", tr365_550);
-                getTrasy().put("550_550", tr550_550);
-                getTrasy().put("550_360", tr550_360);
-                getTrasy().put("90_550", tr90_550);
-                
-                
-                trasa = new LinkedList<>();
-                trasa.add(powidzPrzystan);
-                trasa.add(sm1);
-                trasa.add(borowno);
-                tr275_20.add(trasa);
-                
-                getTrasy().put("275_20", tr275_20);      
-                
-                
-                
-                ArrayList<LinkedList<Lokalizacja>> tr250_20 = new ArrayList<>();
-                
-                trasa = new LinkedList<>();
-                trasa.add(powidz);
-                trasa.add(s3);
-                trasa.add(s2);
-                trasa.add(alcatraz);
-                tr250_20.add(trasa);
-                
-                getTrasy().put("250_20", tr250_20);       
-                
             }
         };
         
@@ -507,6 +383,6 @@ public class Swiat extends Application {
         launch(args);
         
     }
-   
+
     
 }

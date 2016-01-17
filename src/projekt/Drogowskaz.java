@@ -9,7 +9,11 @@ public class Drogowskaz {
     private Lokalizacja dokad;
     private Kierunek kierunek;
     
-    
+    /**
+     * Tworzy drogowskaz.
+     * @param skad miejsce lokalizacji drogowskazu
+     * @param dokad miejsce docelowe
+     */
     public Drogowskaz(Lokalizacja skad, Lokalizacja dokad){
         this.dokad = dokad;
         this.odleglosc = dokad.getPolozenie().getX() - skad.getPolozenie().getX() + dokad.getPolozenie().getY() - skad.getPolozenie().getY();
